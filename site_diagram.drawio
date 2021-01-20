@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-01-20T16:53:14.178Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="dRvzN-Hy0zgWqAOcUqcN" version="14.2.5" type="github">
+<mxfile host="app.diagrams.net" modified="2021-01-20T17:02:14.211Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="d6DT4Lj7CcXQkqqHwd9d" version="14.2.5" type="github">
   <diagram id="zUxbDx-NtFO-UQzZDu3f" name="Page-1">
     <mxGraphModel dx="2426" dy="1291" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
       <root>
@@ -565,6 +565,49 @@
               <mxPoint x="40" y="1080" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-133" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="40" y="1600" as="sourcePoint" />
+            <mxPoint x="400" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-134" value="Переход возможен только в одну сторону&lt;br&gt;Transition is only possible in one direction" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1620" width="310" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-135" value="Переход возможен в обе стороны&lt;br&gt;The transition is possible in both directions" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1013" y="1620" width="310" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-136" value="" style="endArrow=classic;startArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="968" y="1600" as="sourcePoint" />
+            <mxPoint x="1368" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-137" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1820" y="1600" as="sourcePoint" />
+            <mxPoint x="2030" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-140" value="Условие&lt;br&gt;Condition" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="sWHFQ5oZg5fBOhKdgctv-137">
+          <mxGeometry x="0.377" y="-2" relative="1" as="geometry">
+            <mxPoint x="15.29" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-138" value="" style="endArrow=classic;startArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="2080" y="1600" as="sourcePoint" />
+            <mxPoint x="2280" y="1600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-141" value="Условие&lt;br&gt;Condition" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="sWHFQ5oZg5fBOhKdgctv-138">
+          <mxGeometry x="0.4812" relative="1" as="geometry">
+            <mxPoint x="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-139" value="Переход с условием&lt;br&gt;Transition with condition" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1899.51" y="1620" width="310" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
