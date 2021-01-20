@@ -1,1 +1,46 @@
-<mxfile host="app.diagrams.net" modified="2021-01-20T11:44:16.306Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" version="14.2.5" etag="1TwY58rHjVfSkshciOO8" type="github"><diagram id="zUxbDx-NtFO-UQzZDu3f">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-01-20T12:09:37.575Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" etag="_9PS80632Zp0eETBgmkb" version="14.2.5" type="github">
+  <diagram id="zUxbDx-NtFO-UQzZDu3f" name="Page-1">
+    <mxGraphModel dx="2062" dy="1097" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-2" value="Главная страница&lt;br&gt;Home page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="379" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-3" value="Страница маркетинг&lt;br&gt;Marketing page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="155" y="489" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-4" value="Страница веб-разработка&lt;br&gt;Web development page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="155" y="349" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-5" value="Страница мобильная разработка&lt;br&gt;Mobile development page" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="155" y="419" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-6" value="Страница дизайн&lt;br&gt;Page design" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="155" y="279" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-9" value="Личный кабинет пользователя" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="815" y="379" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-10" value="Страница регистрации" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="815" y="239" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-13" value="Страница авторизации" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="815" y="309" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-14" value="Страница хабра" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="549" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-15" value="Страница администратора" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="815" y="519" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-16" value="Страница модератора" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="815" y="449" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sWHFQ5oZg5fBOhKdgctv-17" value="Страница помощь" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="485" y="219" width="200" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
