@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import HttpResponseRedirect, render
 from .models import User
 from .forms import UserLoginForm, UserRegisterForm
+from django.contrib import auth
+from django.urls import reverse
+
 
 # Create your views here.
 
