@@ -35,6 +35,14 @@ def web_development(request):
     return render(request, 'mainapp/index.html', context)
 
 
+def marketing(request):
+    title = 'Маркетинг'
+    context = {
+        'title': title,
+    }
+    return render(request, 'mainapp/index.html', context)
+
+
 def help_page(request):
     title = 'Помощь'
     context = {

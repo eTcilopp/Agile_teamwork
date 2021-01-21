@@ -6,6 +6,6 @@ import authapp.views as authapp
 app_name = 'authapp'
 
 urlpatterns = [
-    path('', authapp.login, name='login'),
+    path('login', authapp.login, name='login'),
     path('register', authapp.register, name='register'),
 ]

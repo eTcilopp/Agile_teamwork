@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import HttpResponseRedirect, render
 from .models import User
 from .forms import UserLoginForm, UserRegisterForm
+from django.contrib import auth
+from django.urls import reverse
+
 
 # Create your views here.
 
@@ -22,7 +25,7 @@ def login(request):
         "title": title,
         "login_form": login_form
     }
-    return render(request, 'mainapp/index.html', content)
+    return render(request, 'authapp/login.html', content)
 
 
 def logout(request):
@@ -43,4 +46,4 @@ def register(request):
         register_form = UserRegisterForm()
 
     content = {"title": title, "register_form": register_form}
-    return render(request, "mainapp/index.html", content)
+    return render(request, "authapp/register.html", content)
