@@ -30,7 +30,9 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
+"""
+ТЕКСТ
+"""
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -77,12 +79,18 @@ WSGI_APPLICATION = 'TeamHabr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+"""
+ТЕКСТ
+"""
 # DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.sqlite3',
-#          'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#      }
-#  }
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+"""
+ТЕКСТ
+"""
 
 DATABASES = {
    'default': {
