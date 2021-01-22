@@ -1,12 +1,15 @@
 from django.shortcuts import render
+from authapp.models import User
 
 # Create your views here.
 
 
 def index(request):
     title = 'Главная'
+    users = User.objects.all()
+    print(users)
     context = {
-        'title': title,
+        'title': title, 'users': users,
     }
     return render(request, 'mainapp/index.html', context)
 
