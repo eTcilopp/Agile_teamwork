@@ -4,6 +4,12 @@ from .models import User
 
 
 class UserLoginForm(AuthenticationForm):
+
+    """
+    ТЕКСТ
+    :param AuthenticationForm - ТЕКСТ
+    """
+    
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
@@ -15,6 +21,10 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserRegisterForm(UserCreationForm):
+    """
+    ТЕКСТ
+    :param AuthenticationForm - ТЕКСТ
+    """
     def __init__(self, *args, **kwargs):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():

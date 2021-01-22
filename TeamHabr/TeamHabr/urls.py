@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+"""
+ТЕКСТ
+"""
 urlpatterns = [
     path('', include('mainapp.urls', namespace='main')),
     path('', include('authapp.urls', namespace='auth')),

@@ -5,6 +5,11 @@ from authapp.models import User
 
 
 def index(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Главная'
     users = User.objects.all()
     print(users)
@@ -15,6 +20,11 @@ def index(request):
 
 
 def design(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Дизайн'
     context = {
         'title': title,
@@ -23,6 +33,11 @@ def design(request):
 
 
 def mobile_development(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Мобильная разработка'
     context = {
         'title': title,
@@ -31,6 +46,11 @@ def mobile_development(request):
 
 
 def web_development(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Веб разработка'
     context = {
         'title': title,
@@ -47,6 +67,11 @@ def marketing(request):
 
 
 def help_page(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Помощь'
     context = {
         'title': title,

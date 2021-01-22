@@ -4,6 +4,10 @@ import datetime
 
 
 class User(AbstractUser):
+    """
+    ТЕКСТ
+    :param AbstractUser - ТЕКСТ
+    """
     username = models.CharField(verbose_name="Логин", max_length=64, unique=True)
     name = models.CharField(verbose_name="Имя", max_length=64, default='')
     surname = models.CharField(verbose_name="Фамилия", max_length=64, default='')
