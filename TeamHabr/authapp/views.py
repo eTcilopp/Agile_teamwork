@@ -4,7 +4,13 @@ from .forms import UserLoginForm, UserRegisterForm
 
 # Create your views here.
 
+
 def login(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: HttpResponseRedirect(reverse("index")) - ТЕКСТ, render(request, 'mainapp/index.html', content) - ТЕКСТ
+    """
     title = 'Авторизация'
 
     login_form = UserLoginForm()
@@ -26,11 +32,21 @@ def login(request):
 
 
 def logout(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: HttpResponseRedirect(reverse("index")) - ТЕКСТ
+    """
     auth.logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
 def register(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: HttpResponseRedirect(reverse("index")) - ТЕКСТ, render(request, "mainapp/index.html", content) - ТЕКСТ
+    """
     title = "регистрация"
 
     if request.method == "POST":

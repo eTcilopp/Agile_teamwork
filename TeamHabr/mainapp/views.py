@@ -4,6 +4,11 @@ from django.shortcuts import render
 
 
 def index(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Главная'
     context = {
         'title': title,
@@ -12,6 +17,11 @@ def index(request):
 
 
 def design(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Дизайн'
     context = {
         'title': title,
@@ -20,6 +30,11 @@ def design(request):
 
 
 def mobile_development(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Мобильная разработка'
     context = {
         'title': title,
@@ -28,6 +43,11 @@ def mobile_development(request):
 
 
 def web_development(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Веб разработка'
     context = {
         'title': title,
@@ -36,6 +56,11 @@ def web_development(request):
 
 
 def help_page(request):
+    """
+    ТЕКСТ
+    :param request - ТЕКСТ
+    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
+    """
     title = 'Помощь'
     context = {
         'title': title,

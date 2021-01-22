@@ -4,9 +4,18 @@ import datetime
 
 
 class StatusUser(models.Model):
+    """
+    ТЕКСТ
+    :param models.Model - ТЕКСТ
+    """
     status = models.CharField(verbose_name="Имя", max_length=64, unique=True)
 
+
 class User(AbstractUser):
+    """
+    ТЕКСТ
+    :param AbstractUser - ТЕКСТ
+    """
     username = models.CharField(verbose_name="Логин", max_length=64, unique=True)
     name = models.CharField(verbose_name="Имя", max_length=64, default='')
     surname = models.CharField(verbose_name="Фамилия", max_length=64, default='')

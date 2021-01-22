@@ -5,6 +5,9 @@ import mainapp.views as mainapp
 
 app_name = 'mainapp'
 
+"""
+ТЕКСТ
+"""
 urlpatterns = [
     path('', mainapp.index, name='index'),
     path('design', mainapp.design, name='design'),
