@@ -9,6 +9,6 @@ app_name = 'authapp'
 ТЕКСТ
 """
 urlpatterns = [
-    path('', authapp.login, name='login'),
+    path('login', authapp.login, name='login'),
     path('register', authapp.register, name='register'),
 ]
