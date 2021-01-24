@@ -41,7 +41,7 @@ def logout(request):
     :return: HttpResponseRedirect(reverse("index")) - ТЕКСТ
     """
     auth.logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("mainapp:index"))
 
 
 def register(request):

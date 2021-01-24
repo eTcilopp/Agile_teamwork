@@ -24,7 +24,12 @@
                     <li><a href="{% url 'main:web_development' %}">Веб-разработка</a></li>
                     <li><a href="{% url 'main:mobile_development' %}">Мобильная разработка</a></li>
                     <li><a href="{% url 'main:marketing' %}">Маркетинг</a></li>
-                    <li><a href="{% url 'auth:login' %}">Логин</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="#">{{ user.name }}</a></li>
+                    <li><a href="{% url 'auth:logout' %}">Выход</a></li>
+                    {% else %}
+                    <li><a href="{% url 'auth:login' %}">Вход</a></li>
+                    {% endif %}
 
                 </ul>
                 <hr>
