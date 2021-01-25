@@ -149,3 +149,5 @@ STATICFILES_DIRS = (
 )
 
 AUTH_USER_MODEL = 'authapp.User'
+
+LOGIN_URL = '/login/'
