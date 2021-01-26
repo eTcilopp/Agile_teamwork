@@ -10,21 +10,21 @@
     <img src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" alt="" class="avatar" width="30px" height="30px">
     {% endif %}
     <p class="user-name">{{ inf.name }} {{ inf.surname }}</p>
-    <p>Р’РѕР·СЂР°СЃС‚: {{ inf.age }}</p>
-    <p>РћРїРёСЃР°РЅРёРµ: {{ inf.desc }}</p>
-    <div class="btn"><a href="">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</a></div>
+    <p>Возраст: {{ inf.age }}</p>
+    <p>Описание: {{ inf.desc }}</p>
+    <div class="btn"><a href="">Редактировать</a></div>
   {% endfor %}
 </div>
 
 <hr>
 
-<div class="btn"><a href="">РЎРѕР·РґР°С‚СЊ СЃС‚Р°С‚СЊСЋ</a></div>
+<div class="btn"><a href="">Создать статью</a></div>
 <div class="habs">
-  <h3 class="title" style='text-align: center'>РњРѕРё СЃС‚Р°С‚СЊРё</h3>
+  <h3 class="title" style='text-align: center'>Мои статьи</h3>
   {% if user.article %}
   <p class="article">{{ user.article }}</p>
   {% else %}
-  <h4 style='text-align: center'>РЈ РІР°СЃ РµС‰С‘ РЅРµС‚ СЃС‚Р°С‚РµР№</h4>
+  <h4 style='text-align: center'>У вас ещё нет статей</h4>
   {% endif %}
 </div>
 {% endblock %}
