@@ -3,84 +3,108 @@ from django.shortcuts import render
 from authapp.models import User
 from .forms import CreateArticleForm
 from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.views import View
 
 
 # Create your views here.
 
 
-def index(request):
-    """
-    ТЕКСТ
-    :param request - ТЕКСТ
-    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
-    """
+class Index(View):
     title = 'Главная'
-    users = User.objects.all()
-    print(users)
+    template_name = 'mainapp/index.html'
     context = {
-        'title': title, 'users': users,
+        'title': title,
     }
-    return render(request, 'mainapp/index.html', context)
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.context)
 
 
-def design(request):
-    """
-    ТЕКСТ
-    :param request - ТЕКСТ
-    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
-    """
+class Design(View):
     title = 'Дизайн'
+    template_name = 'mainapp/index.html'
     context = {
         'title': title,
     }
-    return render(request, 'mainapp/index.html', context)
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.context)
 
 
-def mobile_development(request):
-    """
-    ТЕКСТ
-    :param request - ТЕКСТ
-    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
-    """
+class MobileDevelopment(View):
     title = 'Мобильная разработка'
+    template_name = 'mainapp/index.html'
     context = {
         'title': title,
     }
-    return render(request, 'mainapp/index.html', context)
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.context)
 
 
-def web_development(request):
-    """
-    ТЕКСТ
-    :param request - ТЕКСТ
-    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
-    """
+class WebDevelopment(View):
     title = 'Веб разработка'
+    template_name = 'mainapp/index.html'
     context = {
         'title': title,
     }
-    return render(request, 'mainapp/index.html', context)
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.context)
 
 
-def marketing(request):
+class Marketing(View):
     title = 'Маркетинг'
+    template_name = 'mainapp/index.html'
     context = {
         'title': title,
     }
-    return render(request, 'mainapp/index.html', context)
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.context)
 
 
-def help_page(request):
-    """
-    ТЕКСТ
-    :param request - ТЕКСТ
-    :return: render(request, 'mainapp/index.html', context) - ТЕКСТ
-    """
+class HelpPage(View):
     title = 'Помощь'
+    template_name = 'mainapp/index.html'
     context = {
         'title': title,
     }
-    return render(request, 'mainapp/index.html', context)
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.context)
 
 
 # @login_required
