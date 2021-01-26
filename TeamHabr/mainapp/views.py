@@ -1,7 +1,7 @@
 from django.views import View
 from django.shortcuts import render
 from authapp.models import User
-from .forms import CreateArticleForm
+from .forms import CommentForm, PostCreationForm
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -107,27 +107,10 @@ class HelpPage(View):
         return render(request, self.template_name, self.context)
 
 
-# @login_required
-# def account(request):
-#     """
-#     Контроллер личного кабинета. Для входа в личный кабинет требуется аутентификация.
-#     :param request -
-#     :return: render(request, 'mainapp/account.html', context)
-#     """
-#
-#     title = 'Личный кабинет'
-#     context = {
-#         'title': title
-#     }
-#     first_name = request.user.name
-#     last_name = request.user.surname
-#     html = f'<h1>Личный кабинет пользователя: {first_name} {last_name}</h1>'
-#     return HttpResponse(html)
-
-
 class Account(View):
     title = 'Личный кабинет пользователя'
-    template_name = 'mainapp/account.html'
+    template_name = 'authapp/account.html'
+
     context = {
         'title': title
     }
@@ -143,18 +126,18 @@ class ArticleCreate(View):
 
 
     def post(self, request):
-        form = CreateArticleForm(request.POST)
+        form = PostCreationForm(request.POST)
         context = {
             'title': self.title,
             'form': form,
         }
         if form.is_valid():
-            #form.save()
+            form.save()
             return redirect('mainapp:account')
         return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
-        form = CreateArticleForm()
+        form = PostCreationForm()
         context = {
             'title': self.title,
             'form': form,

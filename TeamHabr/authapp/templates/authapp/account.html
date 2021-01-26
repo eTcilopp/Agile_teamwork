@@ -2,29 +2,28 @@
 {% load static %}
 
 {% block content %}
+<a href="{% url 'main:article-create' %}">РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ СЃС‚Р°С‚СЊСЋ</a>
 <div class="user-inf">
-  {% for inf in user %}
-    {% if inf.avatar %}
-    <img src="{{ inf.avatar }}" alt="" class="avatar" width="40px" height="40px">
+    {% if user.avatar %}
+    <img src="{{ user.avatar }}" alt="" class="avatar" width="40px" height="40px">
     {% else %}
     <img src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" alt="" class="avatar" width="30px" height="30px">
     {% endif %}
-    <p class="user-name">{{ inf.name }} {{ inf.surname }}</p>
-    <p>Возраст: {{ inf.age }}</p>
-    <p>Описание: {{ inf.desc }}</p>
-    <div class="btn"><a href="">Редактировать</a></div>
-  {% endfor %}
+    <p class="user-name">{{ user.name }} {{ user.surname }}</p>
+    <p>Р’РѕР·СЂР°СЃС‚: {{ user.age }}</p>
+    <p>Р‘РёРѕРіСЂР°С„РёСЏ: {{ user.desc }}</p>
+    <div class="btn"><a href="">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</a></div>
 </div>
 
 <hr>
 
-<div class="btn"><a href="">Создать статью</a></div>
+<div class="btn"><a href="">РЎРѕР·РґР°С‚СЊ СЃС‚Р°С‚СЊСЋ</a></div>
 <div class="habs">
-  <h3 class="title" style='text-align: center'>Мои статьи</h3>
+  <h3 class="title" style='text-align: center'>РњРѕРё СЃС‚Р°С‚СЊРё</h3>
   {% if user.article %}
   <p class="article">{{ user.article }}</p>
   {% else %}
-  <h4 style='text-align: center'>У вас ещё нет статей</h4>
+  <h4 style='text-align: center'>РЈ РІР°СЃ РµС‰С‘ РЅРµС‚ СЃС‚Р°С‚РµР№</h4>
   {% endif %}
 </div>
 {% endblock %}
