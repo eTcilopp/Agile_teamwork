@@ -1,46 +1,85 @@
-from django.shortcuts import render
+from django.shortcuts import HttpResponseRedirect, render
 from .models import User
 from .forms import UserLoginForm, UserRegisterForm
+from django.contrib import auth
+from django.urls import reverse
+from django.views import View
+
 
 # Create your views here.
 
-def login(request):
+
+class Login(View):
     title = 'Авторизация'
+    form = UserLoginForm
+    template_name = 'authapp/login.html'
+    content = {
+        "title": title,
+        "login_form": form
+    }
 
-    login_form = UserLoginForm()
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.content)
 
-    if request.method == "POST" and login_form.is_valid():
+    def post(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        """
         username = request.POST["username"]
         password = request.POST["password"]
-
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("main:index"))
+        return render(request, self.template_name, self.content)
 
+
+class Logout(View):
+    template_name = 'mainapp/index.html'
+
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name) - ТЕКСТ
+        """
+        auth.logout(request)
+        return render(request, self.template_name)
+
+
+class Register(View):
+    title = 'Регистрация'
+    form = UserRegisterForm
+    template_name = 'authapp/register.html'
     content = {
         "title": title,
-        "login_form": login_form
+        "register_form": form
     }
-    return render(request, 'mainapp/index.html', content)
 
+    def get(self, request, *args, **kwargs):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        """
+        return render(request, self.template_name, self.content)
 
-def logout(request):
-    auth.logout(request)
-    return HttpResponseRedirect(reverse("index"))
-
-
-def register(request):
-    title = "регистрация"
-
-    if request.method == "POST":
-        register_form = UserRegisterForm(request.POST)
-
+    def post(self, request):
+        """
+        ТЕКСТ
+        :param request - ТЕКСТ
+        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        """
+        register_form = self.form(request.POST)
         if register_form.is_valid():
             register_form.save()
             return HttpResponseRedirect(reverse("auth:login"))
-    else:
-        register_form = UserRegisterForm()
 
-    content = {"title": title, "register_form": register_form}
-    return render(request, "mainapp/index.html", content)
+        return render(request, self.template_name, self.content)

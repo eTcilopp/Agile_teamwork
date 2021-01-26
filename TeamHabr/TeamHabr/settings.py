@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,9 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
+"""
+ТЕКСТ
+"""
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,22 +79,28 @@ WSGI_APPLICATION = 'TeamHabr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+"""
+ТЕКСТ
+"""
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+"""
+ТЕКСТ
+"""
 
 DATABASES = {
-    'default': {
+   'default': {
 
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '2Be-U>Zq2h[!',
-        'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
-        'PORT': '5432',
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'postgres',
+       'USER': 'postgres',
+       'PASSWORD': '2Be-U>Zq2h[!',
+       'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
+       'PORT': '5432',
 
     }
 }
@@ -135,4 +144,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
 AUTH_USER_MODEL = 'authapp.User'
+
+LOGIN_URL = '/login/'
