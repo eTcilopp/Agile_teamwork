@@ -1,6 +1,8 @@
 from django.views import View
 from django.shortcuts import render
 from authapp.models import User
+from .forms import CreateArticleForm
+from django.shortcuts import redirect
 
 
 # Create your views here.
@@ -99,7 +101,6 @@ def help_page(request):
 #     return HttpResponse(html)
 
 
-
 class Account(View):
     title = 'Личный кабинет пользователя'
     template_name = 'mainapp/account.html'
@@ -109,3 +110,29 @@ class Account(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.context)
+
+
+class ArticleCreate(View):
+    title = 'Создание новой статьи'
+    template_name = 'mainapp/article-create.html'
+
+
+
+    def post(self, request):
+        form = CreateArticleForm(request.POST)
+        context = {
+            'title': self.title,
+            'form': form,
+        }
+        if form.is_valid():
+            #form.save()
+            return redirect('mainapp:account')
+        return render(request, self.template_name, context)
+
+    def get(self, request, *args, **kwargs):
+        form = CreateArticleForm()
+        context = {
+            'title': self.title,
+            'form': form,
+        }
+        return render(request, self.template_name, context)
