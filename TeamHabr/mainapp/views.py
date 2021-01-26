@@ -99,3 +99,13 @@ def account(request):
     last_name = request.user.surname
     html = f'<h1>Личный кабинет пользователя: {first_name} {last_name}</h1>'
     return HttpResponse(html)
+
+class Account(View):
+    title = 'Личный кабинет'
+    template_name = 'authapp/account.html'
+    context = {
+        'title': title
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
