@@ -25,10 +25,10 @@
                     <li><a href="{% url 'main:mobile_development' %}">Мобильная разработка</a></li>
                     <li><a href="{% url 'main:marketing' %}">Маркетинг</a></li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'mainapp:account' %}">{{ user.name }}</a></li>
-                    <li><a href="{% url 'auth:logout' %}">Выход</a></li>
+                        <li><a href="{% url 'mainapp:account' %}">{{ user.name }}</a></li>
+                        <li><a href="{% url 'auth:logout' %}">Выход</a></li>
                     {% else %}
-                    <li><a href="{% url 'auth:login' %}">Вход</a></li>
+                       <li><a href="{% url 'auth:login' %}">Вход</a></li>
                     {% endif %}
 
                 </ul>
