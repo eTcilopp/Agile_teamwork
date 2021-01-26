@@ -14,9 +14,9 @@ class CategoryPost(models.Model):
 
 
 class StatusPost(models.Model):
-    CHOICES_STATUS = ('Одобрено', 'Опубликовано', 'Удалено', 'Черновик')
+    CHOICES_STATUS = (('Apr', 'Одобрено'), ('Pub', 'Опубликовано'), ('Del','Удалено'), ('Drf', 'Черновик'))
 
-    name_status = models.CharField(verbose_name='Статус', choices=CHOICES_STATUS, default='Черновик')
+    name_status = models.CharField(verbose_name='Статус', choices=CHOICES_STATUS, default='Drf', max_length=32,)
 
     def __str__(self):
         return self.name_status
@@ -40,7 +40,7 @@ class Post(models.Model):
 class Comment(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-    parent_comment = models.CharField('self', null=True, blank=True, related_name='ответы')
+    parent_comment = models.ForeignKey('self', null=True, blank=True, related_name='ответы', on_delete=models.CASCADE)
     text = models.TextField(verbose_name='Комментарий')
     date_create = models.DateField(verbose_name='Дата создания комментария', default=datetime.date.today)
     date_update = models.DateField(verbose_name='Дата изменения комментария', default=datetime.date.today)
@@ -50,9 +50,10 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
-    author_user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    author_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Author_like')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
+    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE, default=None)
     date_create = models.DateField(default=datetime.date.today)
     date_update = models.DateField(default=datetime.date.today)
 
