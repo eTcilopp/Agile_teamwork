@@ -4,6 +4,7 @@ from .forms import UserLoginForm, UserRegisterForm
 from django.contrib import auth
 from django.urls import reverse
 from django.views import View
+from mainapp.models import Post
 
 
 # Create your views here.
@@ -83,3 +84,19 @@ class Register(View):
             return HttpResponseRedirect(reverse("auth:login"))
 
         return render(request, self.template_name, self.content)
+
+
+class Account(View):
+    title = 'Личный кабинет пользователя'
+    template_name = 'authapp/account.html'
+
+    context = {
+        'title': title
+    }
+
+    def get(self, request, *args, **kwargs):
+        articles = Post.objects.filter(user_id=self.request.user.id)
+        self.context = {
+            'articles': articles
+        }
+        return render(request, self.template_name, self.context)

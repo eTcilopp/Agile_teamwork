@@ -16,7 +16,6 @@ urlpatterns = [
     path('web_development', mainapp.WebDevelopment.as_view(), name='web_development'),
     path('marketing', mainapp.Marketing.as_view(), name='marketing'),
     path('help_page', mainapp.HelpPage.as_view(), name='help_page'),
-    path('account/', login_required(mainapp.Account.as_view()), name='account'),
     path('article-create/', login_required(mainapp.ArticleCreate.as_view()), name='article-create'),
 
 ]

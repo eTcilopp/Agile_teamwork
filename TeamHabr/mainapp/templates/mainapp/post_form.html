@@ -1,0 +1,16 @@
+{% extends 'mainapp-base.html' %}
+{% load static %}
+
+{% block users %}
+{% endblock %}
+
+{% block content %}
+    <h1>Форма создания новой статьи</h1>
+<div class="order_form">
+        <form method=post action=''>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit", value="сохранить", name="save-article">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}

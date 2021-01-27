@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from authapp.models import User
 import datetime
 
@@ -13,22 +14,14 @@ class CategoryPost(models.Model):
         return self.name
 
 
-class StatusPost(models.Model):
-    CHOICES_STATUS = (('Apr', 'Одобрено'), ('Pub', 'Опубликовано'), ('Del','Удалено'), ('Drf', 'Черновик'))
-
-    name_status = models.CharField(verbose_name='Статус', choices=CHOICES_STATUS, default='Drf', max_length=32,)
-
-    def __str__(self):
-        return self.name_status
-
-
 class Post(models.Model):
+    CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Опубликовано'), ('Del', 'Удалено'), ('Drf', 'Черновик')]
     category_id = models.ForeignKey(CategoryPost, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(verbose_name='Заголовок', max_length=64)
     slug = models.SlugField(allow_unicode=True, max_length=64)
     text = models.TextField(verbose_name='Содержание')
-    status = models.ForeignKey(StatusPost, on_delete=models.PROTECT)
+    post_status = models.CharField(max_length=3, choices=CHOICES_STATUS, default='Drf')
     status_update = models.DateField(verbose_name='Дата обновления статуса', default=datetime.date.today)
     date_create = models.DateField(verbose_name='Дата создания статьи', default=datetime.date.today)
     date_update = models.DateField(verbose_name='Дата изменения статьи', default=datetime.date.today)
