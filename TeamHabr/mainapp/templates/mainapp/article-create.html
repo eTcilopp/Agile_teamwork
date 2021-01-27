@@ -8,7 +8,7 @@
     <h1>Форма создания новой статьи</h1>
         <form method=post action='#'>
             {% csrf_token %}
-            {{ form }}
+            {{ form.as_p }}
             <button type="submit", name="save-article">Сохранить</button>
         </form>
 {% endblock %}

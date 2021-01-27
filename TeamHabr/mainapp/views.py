@@ -113,6 +113,8 @@ class ArticleCreate(View):
 
     def post(self, request):
         form = PostCreationForm(request.POST)
+        form.instance.user_id = self.request.user
+        self.object = form.save()
         context = {
             'title': self.title,
             'form': form,
