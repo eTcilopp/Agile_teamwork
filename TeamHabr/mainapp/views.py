@@ -111,8 +111,6 @@ class ArticleCreate(View):
     title = 'Создание новой статьи'
     template_name = 'mainapp/article-create.html'
 
-
-
     def post(self, request):
         form = PostCreationForm(request.POST)
         context = {
@@ -121,7 +119,7 @@ class ArticleCreate(View):
         }
         if form.is_valid():
             form.save()
-            return redirect('mainapp:account')
+            return redirect('authapp:account')
         return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
