@@ -4,6 +4,7 @@ from .forms import UserLoginForm, UserRegisterForm
 from django.contrib import auth
 from django.urls import reverse
 from django.views import View
+from mainapp.models import Post
 
 
 # Create your views here.
@@ -93,4 +94,8 @@ class Account(View):
     }
 
     def get(self, request, *args, **kwargs):
+        articles = Post.objects.filter(user_id=self.request.user.id)
+        self.context = {
+            'articles': articles
+        }
         return render(request, self.template_name, self.context)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from authapp.models import User
 import datetime
 
@@ -16,7 +17,7 @@ class CategoryPost(models.Model):
 class Post(models.Model):
     CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Опубликовано'), ('Del', 'Удалено'), ('Drf', 'Черновик')]
     category_id = models.ForeignKey(CategoryPost, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(verbose_name='Заголовок', max_length=64)
     slug = models.SlugField(allow_unicode=True, max_length=64)
     text = models.TextField(verbose_name='Содержание')

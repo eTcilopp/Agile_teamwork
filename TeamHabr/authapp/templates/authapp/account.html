@@ -25,8 +25,17 @@
     <a href="{% url 'main:article-create' %}">Создать новую статью</a>
     <div class="habs">
       <h3 class="title" style='text-align: center'>Мои статьи</h3>
-      {% if user.article %}
-        <p class="article">{{ user.article }}</p>
+      {% if articles %}
+        {% for article in articles %}
+        {% if article.status == Drf %}
+
+        <h6>Статус ручками:Черновик</h6>
+        {% else %}
+        {% endif %}
+        <h3>Статус через гет:{{ article.get_post_status_display }}</h3>
+        <h1 class="article">{{ article.title }}</h1>
+        <p class="article">{{ article.text }}</p>
+        {% endfor %}
       {% else %}
         <h4 style='text-align: center'>У вас ещё нет статей</h4>
       {% endif %}
