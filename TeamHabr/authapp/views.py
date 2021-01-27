@@ -85,6 +85,7 @@ class Register(View):
 
         return render(request, self.template_name, self.content)
 
+
 class Account(View):
     title = 'Личный кабинет пользователя'
     template_name = 'authapp/account.html'

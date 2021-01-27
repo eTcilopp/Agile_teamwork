@@ -4,5 +4,20 @@
 {% block content %}
 
 <h2 style="text-align: center">Тут потом будут статьи <hr> раздела {{title}}</h2>
+<div style="text-align: center">
+{% for article in articles %}
+    <h1>
+{{article.title}}
+        </h1>
+<hr>
+{{article.text}}
+<hr>
+    <h5>
+Автор: {{article.user_id.username}}
+        </h5>
+<br>
+
+{% endfor %}
+    </div>
 {% endblock %}
 
