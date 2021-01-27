@@ -83,3 +83,14 @@ class Register(View):
             return HttpResponseRedirect(reverse("auth:login"))
 
         return render(request, self.template_name, self.content)
+
+class Account(View):
+    title = 'Личный кабинет пользователя'
+    template_name = 'authapp/account.html'
+
+    context = {
+        'title': title
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)

@@ -107,18 +107,6 @@ class HelpPage(View):
         return render(request, self.template_name, self.context)
 
 
-class Account(View):
-    title = 'Личный кабинет пользователя'
-    template_name = 'authapp/account.html'
-
-    context = {
-        'title': title
-    }
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, self.context)
-
-
 class ArticleCreate(View):
     title = 'Создание новой статьи'
     template_name = 'mainapp/article-create.html'
