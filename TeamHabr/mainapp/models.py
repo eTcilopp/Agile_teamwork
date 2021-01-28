@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from authapp.models import User
 import datetime
+from slugify import slugify
+
 
 
 class CategoryPost(models.Model):
@@ -12,6 +14,13 @@ class CategoryPost(models.Model):
 
     def __str__(self):
         return self.name
+
+    # Функция переделывает значение поля slug из Кириллицы в Slug
+    # TODO - спрятать в форме добавления категории поле slug
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class Post(models.Model):
