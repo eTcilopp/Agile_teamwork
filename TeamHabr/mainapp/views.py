@@ -19,8 +19,10 @@ from slugify import slugify
 class Index(View):
     title = 'Главная'
     template_name = 'mainapp/index.html'
+    categories = CategoryPost.objects.all()
     context = {
         'title': title,
+        'categories': categories,
     }
 
     def get(self, request, slug="all", *args, **kwargs):
@@ -29,76 +31,13 @@ class Index(View):
         :param request - ТЕКСТ
         :return: render(request, self.template_name, self.context) - ТЕКСТ
         """
+
         if slug == "all":
             articles = Post.objects.filter(post_status='Apr')
         else:
             category = get_object_or_404(CategoryPost, slug=slug)
             articles = Post.objects.filter(post_status='Apr', category_id=category)
-        self.context = {'articles': articles}
-        return render(request, self.template_name, self.context)
-
-
-class Design(View):
-    title = 'Дизайн'
-    template_name = 'mainapp/index.html'
-    context = {
-        'title': title,
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.context) - ТЕКСТ
-        """
-        return render(request, self.template_name, self.context)
-
-
-class MobileDevelopment(View):
-    title = 'Мобильная разработка'
-    template_name = 'mainapp/index.html'
-    context = {
-        'title': title,
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.context) - ТЕКСТ
-        """
-        return render(request, self.template_name, self.context)
-
-
-class WebDevelopment(View):
-    title = 'Веб разработка'
-    template_name = 'mainapp/index.html'
-    context = {
-        'title': title,
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.context) - ТЕКСТ
-        """
-        return render(request, self.template_name, self.context)
-
-
-class Marketing(View):
-    title = 'Маркетинг'
-    template_name = 'mainapp/index.html'
-    context = {
-        'title': title,
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.context) - ТЕКСТ
-        """
+        self.context.update({'articles': articles})
         return render(request, self.template_name, self.context)
 
 
@@ -119,29 +58,6 @@ class HelpPage(View):
 
 
 class ArticleCreate(CreateView):
-    # title = 'Создание новой статьи'
-    # template_name = 'mainapp/article-create.html'
-    #
-    # def post(self, request):
-    #     form = PostCreationForm(request.POST)
-    #     form.instance.user_id = self.request.user
-    #     self.object = form.save()
-    #     context = {
-    #         'title': self.title,
-    #         'form': form,
-    #     }
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('authapp:account')
-    #     return render(request, self.template_name, context)
-    #
-    # def get(self, request, *args, **kwargs):
-    #     form = PostCreationForm()
-    #     context = {
-    #         'title': self.title,
-    #         'form': form,
-    #     }
-    #     return render(request, self.template_name, context)
 
     model = Post
     fields = ['title', 'text', 'category_id']
