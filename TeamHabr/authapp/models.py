@@ -16,3 +16,8 @@ class User(AbstractUser):
     date_create = models.DateField(verbose_name="Дата создания", default=datetime.date.today)
     date_update = models.DateField(verbose_name="Дата редактирования", default=datetime.date.today)
 
+    class Meta:
+        verbose_name_plural = 'Пользователи'
+        verbose_name = 'Пользователь'
+        ordering = ['username']
+

@@ -21,6 +21,12 @@ class CategoryPost(models.Model):
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name_plural = 'Категории'
+        verbose_name = 'Категория'
+        ordering = ['name']
+
+
 
 class Post(models.Model):
     CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Опубликовано'), ('Del', 'Удалено'), ('Drf', 'Черновик')]
@@ -42,6 +48,11 @@ class Post(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'Статьи'
+        verbose_name = 'Статья'
+        ordering = ['-date_update']
 
 
 class Comment(models.Model):
