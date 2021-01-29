@@ -95,7 +95,7 @@ class Account(View):
     }
 
     def get(self, request, *args, **kwargs):
-        articles = Post.objects.filter(user_id=self.request.user.id)
+        articles = Post.objects.filter(user_id=self.request.user.id).order_by('-date_update')
         self.context = {
             'articles': articles
         }
