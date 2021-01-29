@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse, reverse_lazy
 from django.db import transaction
@@ -17,32 +17,44 @@ from slugify import slugify
 # Create your views here.
 
 
-class Index(View):
-    title = 'Главная'
-    template_name = 'mainapp/index.html'
-    categories = CategoryPost.objects.all()
-    context = {
-        'title': title,
-        'categories': categories,
-    }
+class Index(ListView):
     paginate_by = 4
+    model = Post
+    categories = CategoryPost.objects.all()
 
-    def get(self, request, slug="all", *args, **kwargs):
-        """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.context) - ТЕКСТ
-        """
-
-        if slug == "all":
-            articles = Post.objects.filter(
+    def get_queryset(self, *args, **kwargs):
+        queryset = self.model.objects.filter(
                 post_status='Apr').order_by("-date_create")
-        else:
-            category = get_object_or_404(CategoryPost, slug=slug)
-            articles = Post.objects.filter(
-                post_status='Apr', category_id=category).order_by("-date_create")
-        self.context.update({'articles': articles})
-        return render(request, self.template_name, self.context)
+        if self.kwargs.get('slug'):
+            queryset = self.model.objects.filter(
+                category_id__slug=self.kwargs['slug'], post_status='Apr').order_by("-date_create")
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Главная'
+        context['categories'] = self.categories
+        return context
+
+
+
+
+    # def get(self, request, slug="all", *args, **kwargs):
+    #     """
+    #     ТЕКСТ
+    #     :param request - ТЕКСТ
+    #     :return: render(request, self.template_name, self.context) - ТЕКСТ
+    #     """
+    #
+    #     if slug == "all":
+    #         articles = Post.objects.filter(
+    #             post_status='Apr').order_by("-date_create")
+    #     else:
+    #         category = get_object_or_404(CategoryPost, slug=slug)
+    #         articles = Post.objects.filter(
+    #             post_status='Apr', category_id=category).order_by("-date_create")
+    #     self.context.update({'articles': articles})
+    #     return render(request, self.template_name, self.context)
 
 
 class HelpPage(View):
