@@ -33,10 +33,12 @@ class Index(View):
         """
 
         if slug == "all":
-            articles = Post.objects.filter(post_status='Apr').order_by('-date_update')
+            articles = Post.objects.filter(
+                post_status='Apr')
         else:
             category = get_object_or_404(CategoryPost, slug=slug)
-            articles = Post.objects.filter(post_status='Apr', category_id=category)
+            articles = Post.objects.filter(
+                post_status='Apr', category_id=category)
         self.context.update({'articles': articles})
         return render(request, self.template_name, self.context)
 

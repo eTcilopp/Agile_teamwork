@@ -53,6 +53,7 @@ class Post(models.Model):
         verbose_name_plural = 'Статьи'
         verbose_name = 'Статья'
         ordering = ['-date_update']
+        #TODO - сортировка идет по дате, а нужно по дате-времени. иначе статьи, созданные в один день, сортируются по-алфавиту
 
 
 class Comment(models.Model):
