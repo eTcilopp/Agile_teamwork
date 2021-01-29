@@ -54,7 +54,7 @@ class Post(models.Model):
     class Meta:
         verbose_name_plural = 'Статьи'
         verbose_name = 'Статья'
-        ordering = ['-date_update']
+        ordering = ['-date_create']
         #TODO - сортировка идет по дате, а нужно по дате-времени. иначе статьи, созданные в один день, сортируются по-алфавиту
 
     def get_absolute_url(self):

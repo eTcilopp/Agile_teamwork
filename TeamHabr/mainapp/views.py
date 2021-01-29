@@ -20,41 +20,20 @@ from slugify import slugify
 class Index(ListView):
     paginate_by = 4
     model = Post
-    categories = CategoryPost.objects.all()
 
     def get_queryset(self, *args, **kwargs):
         queryset = self.model.objects.filter(
-                post_status='Apr').order_by("-date_create")
+                post_status='Apr')
         if self.kwargs.get('slug'):
             queryset = self.model.objects.filter(
-                category_id__slug=self.kwargs['slug'], post_status='Apr').order_by("-date_create")
+                category_id__slug=self.kwargs['slug'], post_status='Apr')
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная'
-        context['categories'] = self.categories
+        context['categories'] = CategoryPost.objects.all()
         return context
-
-
-
-
-    # def get(self, request, slug="all", *args, **kwargs):
-    #     """
-    #     ТЕКСТ
-    #     :param request - ТЕКСТ
-    #     :return: render(request, self.template_name, self.context) - ТЕКСТ
-    #     """
-    #
-    #     if slug == "all":
-    #         articles = Post.objects.filter(
-    #             post_status='Apr').order_by("-date_create")
-    #     else:
-    #         category = get_object_or_404(CategoryPost, slug=slug)
-    #         articles = Post.objects.filter(
-    #             post_status='Apr', category_id=category).order_by("-date_create")
-    #     self.context.update({'articles': articles})
-    #     return render(request, self.template_name, self.context)
 
 
 class HelpPage(View):
