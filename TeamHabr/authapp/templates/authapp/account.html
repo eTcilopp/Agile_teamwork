@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="user-inf">
+    <div class="user-inf" style="text-align: center">
         {% if user.avatar %}
             <img src="{{ user.avatar }}" alt="" class="avatar" width="40px" height="40px">
         {% else %}
@@ -23,7 +23,7 @@
     <hr>
 
     <a href="{% url 'main:article-create' %}">Создать новую статью</a>
-    <div class="habs">
+    <div class="habs" style="text-align: center">
       <h3 class="title" style='text-align: center'>Мои статьи</h3>
       {% if articles %}
         {% for article in articles %}
@@ -34,7 +34,7 @@
         {% endif %}
         <h3>Статус через гет:{{ article.get_post_status_display }}</h3>
         <h1 class="article">{{ article.title }}</h1>
-        <p class="article">{{ article.text }}</p>
+        <p class="article">{{ article.text| truncatewords:20 }}</p>
         {% endfor %}
       {% else %}
         <h4 style='text-align: center'>У вас ещё нет статей</h4>
