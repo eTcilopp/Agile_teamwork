@@ -2,16 +2,30 @@ from django.db import models
 from django.conf import settings
 from authapp.models import User
 import datetime
+from slugify import slugify
+
 
 
 class CategoryPost(models.Model):
     name = models.CharField(verbose_name='Категория', max_length=30, unique=True)
-    slug = models.SlugField(allow_unicode=True, max_length=64)
+    slug = models.SlugField(allow_unicode=True, max_length=64, editable=False)
     description = models.TextField(verbose_name='Описание', max_length=64)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+    # Функция переделывает значение поля slug из Кириллицы в Slug
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'Категории'
+        verbose_name = 'Категория'
+        ordering = ['name']
+
 
 
 class Post(models.Model):
@@ -19,7 +33,7 @@ class Post(models.Model):
     category_id = models.ForeignKey(CategoryPost, on_delete=models.CASCADE)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(verbose_name='Заголовок', max_length=64)
-    slug = models.SlugField(allow_unicode=True, max_length=64)
+    slug = models.SlugField(allow_unicode=True, max_length=64, editable=False)
     text = models.TextField(verbose_name='Содержание')
     post_status = models.CharField(max_length=3, choices=CHOICES_STATUS, default='Drf')
     status_update = models.DateField(verbose_name='Дата обновления статуса', default=datetime.date.today)
@@ -28,6 +42,18 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.text} ({self.category_id.name}) by {self.user_id.name}'
+
+    # Функция переделывает значение поля slug из Кириллицы в Slug
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'Статьи'
+        verbose_name = 'Статья'
+        ordering = ['-date_update']
+        #TODO - сортировка идет по дате, а нужно по дате-времени. иначе статьи, созданные в один день, сортируются по-алфавиту
 
 
 class Comment(models.Model):

@@ -20,10 +20,10 @@
             </div>
             <div class="header">
                 <ul class="menu">
-                    <li><a href="{% url 'main:design' %}">Дизайн</a></li>
-                    <li><a href="{% url 'main:web_development' %}">Веб-разработка</a></li>
-                    <li><a href="{% url 'main:mobile_development' %}">Мобильная разработка</a></li>
-                    <li><a href="{% url 'main:marketing' %}">Маркетинг</a></li>
+                        <li><a href="{% url 'main:index' %}">Главная</a></li>
+                    {% for category in categories %}
+                        <li><a href="{% url 'main:by_category' slug=category.slug %}">{{ category.name }}</a></li>
+                    {% endfor %}
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'authapp:account' %}">{{ user.name }}</a></li>
                         <li><a href="{% url 'auth:logout' %}">Выход</a></li>
