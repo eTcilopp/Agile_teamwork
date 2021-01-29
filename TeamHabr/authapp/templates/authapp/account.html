@@ -12,8 +12,8 @@
             <img src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" alt="" class="avatar" width="30px" height="30px">
         {% endif %}
             <p class="user-name">{{ user.name }} {{ user.surname }}</p>
-            <p>Возраст: {{ user.age }}</p>
-            <p>Биография: {{ user.desc }}</p>
+            <p class="inf-link">Возраст: {{ user.age }}</p>
+            <p class="inf-link">Биография: {{ user.desc }}</p>
 
         <div class="btn">
             <a href="#">Редактировать</a>
@@ -22,22 +22,26 @@
 
     <hr>
 
-    <a href="{% url 'main:article-create' %}">Создать новую статью</a>
+    <h3 class="title" style='text-align: center'>Мои статьи</h3>
     <div class="habs" style="text-align: center">
-      <h3 class="title" style='text-align: center'>Мои статьи</h3>
-      {% if articles %}
-        {% for article in articles %}
-        {% if article.status == 'Drf' %}
+        <div class="btn">
+            <a href="{% url 'main:article-create' %}">Создать новую статью</a>
+        </div>
+        <div class="hab">
+            {% if articles %}
+            {% for article in articles %}
+            {% if article.status == 'Drf' %}
 
-        <h6>Статус ручками:Черновик</h6>
-        {% else %}
-        {% endif %}
-        <h3>Статус через гет:{{ article.get_post_status_display }}</h3>
-        <h1 class="article">{{ article.title }}</h1>
-        <p class="article">{{ article.text| truncatewords:20 }}</p>
-        {% endfor %}
-      {% else %}
-        <h4 style='text-align: center'>У вас ещё нет статей</h4>
-      {% endif %}
+            <p class="status">Статус ручками:Черновик</p>
+            {% else %}
+            {% endif %}
+            <p class="status">Статус через гет:{{ article.get_post_status_display }}</p>
+            <p class="title-article">{{ article.title }}</p>
+            <p class="article">{{ article.text| truncatewords:20 }}</p>
+            {% endfor %}
+            {% else %}
+            <p class="title" style='text-align: center'>У вас ещё нет статей</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
