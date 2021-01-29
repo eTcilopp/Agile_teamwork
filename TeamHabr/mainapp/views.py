@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.views.generic import CreateView
+from django.views.generic.detail import DetailView
 from django.urls import reverse, reverse_lazy
 from django.db import transaction
 from .models import Post, CategoryPost
@@ -24,6 +25,7 @@ class Index(View):
         'title': title,
         'categories': categories,
     }
+    paginate_by = 4
 
     def get(self, request, slug="all", *args, **kwargs):
         """
@@ -34,11 +36,11 @@ class Index(View):
 
         if slug == "all":
             articles = Post.objects.filter(
-                post_status='Apr')
+                post_status='Apr').order_by("-date_create")
         else:
             category = get_object_or_404(CategoryPost, slug=slug)
             articles = Post.objects.filter(
-                post_status='Apr', category_id=category)
+                post_status='Apr', category_id=category).order_by("-date_create")
         self.context.update({'articles': articles})
         return render(request, self.template_name, self.context)
 
@@ -89,3 +91,16 @@ class ArticleCreate(CreateView):
                 postitems.save()
 
         return super(ArticleCreate, self).form_valid(form)
+
+
+class PostRead(DetailView):
+    model = Post
+
+    def get_context_data(self, **kwargs):
+        context = super(PostRead, self).get_context_data(**kwargs)
+        context["title"] = "Статья"
+        return context
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Post, slug=self.kwargs.get('slug'))
+
