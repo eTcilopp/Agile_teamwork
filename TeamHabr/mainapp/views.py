@@ -14,22 +14,35 @@ from .models import Post, CategoryPost
 from slugify import slugify
 
 
-# Create your views here.
-
-
 class Index(ListView):
-    paginate_by = 4
+    """
+    Класс контроллера обрабоки запросов на просмотр главной станицы.
+    Класс наследует от встроенного класса ListView
+    Задается связанная модель
+    Задается количество статей, выводимых на одном экране одновременно (пагинация)
+    """
     model = Post
+    paginate_by = 4
 
     def get_queryset(self, *args, **kwargs):
+        """
+        Функция получения набора данных со статьями из базы данных. Выдираются только статьи со статусом 'Утверждено'
+        В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
+        Функция возвращает queryset, используемой родительским классом ListView
+        """
         queryset = self.model.objects.filter(
-                post_status='Apr')
+            post_status='Apr')
         if self.kwargs.get('slug'):
             queryset = self.model.objects.filter(
                 category_id__slug=self.kwargs['slug'], post_status='Apr')
         return queryset
 
     def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенной функция получения информации из базы данных,
+        передаваемой шаблону для формирования главной старицы.
+        В словарь context добавляются значения заголовка и списка категорий для формирования меню.
+        """
         context = super().get_context_data(**kwargs)
         context['title'] = 'Главная'
         context['categories'] = CategoryPost.objects.all()
@@ -37,6 +50,11 @@ class Index(ListView):
 
 
 class HelpPage(View):
+    """
+    Класс контроллера обрабоки запросов на просмотр станицы помощи.
+    Класс наследуется от встроенного класса View
+    Для формирования словаря context задается заголовок, имя шаблона, контекст.
+    """
     title = 'Помощь'
     template_name = 'mainapp/index.html'
     context = {
@@ -45,20 +63,35 @@ class HelpPage(View):
 
     def get(self, request, *args, **kwargs):
         """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.context) - ТЕКСТ
+        Метод обработки заросов get для просмотра страницы помощи.
+        Метод возвращает функцию render с объектом request, содержащим зарпос, имя шаблона
+        и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
 
 
 class ArticleCreate(CreateView):
+    """
+    Класс контроллера обрабоки запросов на создание новой статьи.
+    Класс наследуется от встроенного класса CreateView
+    Задается связанная модель - Post
+    Определяются отображаемые поляЖ 'title', 'text', 'category_id'
+    Задается url для перехода в случае успешного создания статьи
+    """
 
     model = Post
     fields = ['title', 'text', 'category_id']
     success_url = reverse_lazy("authapp:account")
 
     def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенного метода get_context_data
+        Добавляется проверка: в случае получения запроса методом POST, создается экземпляр класса PostCreationForm
+        с параметром POST, и с заполненными полями.
+        если запрос получен другим методом (очевидно, get),
+        создается экземпляр класса PostCreationForm с пустыми полями.
+        Далее, в словарь data добавляется экземпряр класса PostCreationForm и обновленный словарь возвращается шаблону.
+        """
         data = super(ArticleCreate, self).get_context_data(**kwargs)
 
         if self.request.POST:
@@ -70,6 +103,11 @@ class ArticleCreate(CreateView):
         return data
 
     def form_valid(self, form):
+        """
+        Метод выполняет проверку правильности заполнения формы данными,
+        осуществляет дозаполнение поля сгенерируемым автоматически слагом,
+        сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
+        """
         context = self.get_context_data()
         postitems = context["postitems"]
         with transaction.atomic():
@@ -85,13 +123,23 @@ class ArticleCreate(CreateView):
 
 
 class PostRead(DetailView):
+    """
+    Класс контроллера обрабоки запросов на просмотр индивидуальной статьи.
+    Класс наследуется от встроенного класса DetailView
+    Задается связанная модель - Post
+    """
     model = Post
 
     def get_context_data(self, **kwargs):
+        """
+        В словарь контекста data добавляется заголовок страницы
+        """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
         return context
 
     def get_object(self, queryset=None):
+        """
+        Функция возвращает объект со статьей и базы данных, найденный по полю slug
+        """
         return get_object_or_404(Post, slug=self.kwargs.get('slug'))
-

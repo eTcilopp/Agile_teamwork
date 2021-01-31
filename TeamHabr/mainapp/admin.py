@@ -4,18 +4,15 @@ from .models import Post, Comment, CategoryPost, Like
 
 class PostAdmin(admin.ModelAdmin):
     pass
-    # prepopulated_fields = {"slug": ("title",)}
+
+
+class CategoryPostAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.register(Post, PostAdmin)
 
 admin.site.register(Comment)
-
-
-class CategoryPostAdmin(admin.ModelAdmin):
-    pass
-    # prepopulated_fields = {"slug": ("name",)}
-
 
 admin.site.register(CategoryPost, CategoryPostAdmin)
 admin.site.register(Like)
