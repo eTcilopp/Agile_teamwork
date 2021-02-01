@@ -4,10 +4,12 @@ from .models import Post, Comment
 
 
 class CommentForm(forms.ModelForm):
-
     """
-    ТЕКСТ
-    :param CommentForm - ТЕКСТ
+    Класс определяет форму создания комментария
+    Класс наследутеся от класса встроенной формы ModelForm,
+    переопределяя значение атрибута 'class' на 'form-control'
+    Вложенный класс Meta определяет сбязанную модель и задает выводимое поле:
+    'text'
     """
 
     def __int__(self, *args, **kwargs):
@@ -22,9 +24,13 @@ class CommentForm(forms.ModelForm):
 
 class PostCreationForm(forms.ModelForm):
     """
-    ТЕКСТ
-    :param PostCreationForm - ТЕКСТ
+    Класс определяет форму создания статьи
+    Класс наследутеся от класса встроенной формы ModelForm,
+    переопределяя значение атрибута 'class' на 'form-control'
+    Вложенный класс Meta определяет сбязанную модель и задает выводимое поле:
+    'title', 'text', 'category_id'
     """
+
     def __int__(self, *args, **kwargs):
         super(PostCreationForm, self).__int__(*args, **kwargs)
         for field_name, field in self.fields.items():
@@ -33,5 +39,6 @@ class PostCreationForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'text', 'category_id')
-
+        fields = ('title',
+                  'text',
+                  'category_id')

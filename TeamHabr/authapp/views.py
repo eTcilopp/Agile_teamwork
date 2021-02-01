@@ -7,10 +7,10 @@ from django.views import View
 from mainapp.models import Post
 
 
-# Create your views here.
-
-
 class Login(View):
+    """
+    Класс контроллера обрабоки запросов на авторизацию пользователя.
+    """
     title = 'Авторизация'
     form = UserLoginForm
     template_name = 'authapp/login.html'
@@ -21,17 +21,21 @@ class Login(View):
 
     def get(self, request, *args, **kwargs):
         """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        Функция обработки get-запросов на авторизацию пользователя.
+        :param request - фукнция получает объект request, содержажщий параментры запроса
+        :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем с передаваемыми данными;
         """
         return render(request, self.template_name, self.content)
 
     def post(self, request, *args, **kwargs):
         """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        Функция обработки post-запросов на авторизацию пользователя.
+        Функция получает из запроса параметры username и password, после чего определяет,
+        существует ли учетная запись пользователя в базе данных и
+        не является и учетная запись деактивированной.
+        :param request - фукнция получает объект request, содержажщий параментры запроса
+        :return: функция возвращает функцию render, комбинирующую указанный шаблон
+        со словарем с передаваемыми шаблону данными;
         """
         username = request.POST["username"]
         password = request.POST["password"]
@@ -43,19 +47,26 @@ class Login(View):
 
 
 class Logout(View):
+    """
+    Класс контроллера обрабоки запросов на выход из системы авторихованного пользователя.
+    """
     template_name = 'mainapp/index.html'
 
     def get(self, request, *args, **kwargs):
         """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name) - ТЕКСТ
+        Функция обработки get-запросов на выход из системы авторихованного пользователя.
+        :param request - фукнция получает объект request, содержажщий параментры запроса;
+        :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем
+        с передаваемыми шаблону данными;
         """
         auth.logout(request)
         return render(request, self.template_name)
 
 
 class Register(View):
+    """
+    Класс контроллера обрабоки запросов на регистрацию нового пользователя.
+    """
     title = 'Регистрация'
     form = UserRegisterForm
     template_name = 'authapp/register.html'
@@ -66,17 +77,20 @@ class Register(View):
 
     def get(self, request, *args, **kwargs):
         """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        Функция обработки get-запросов на на регистрацию нового пользователя.
+        :param request - фукнция получает объект request, содержажщий параментры запроса;
+        :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем
+        с передаваемыми шаблону данными;
         """
         return render(request, self.template_name, self.content)
 
     def post(self, request):
         """
-        ТЕКСТ
-        :param request - ТЕКСТ
-        :return: render(request, self.template_name, self.content) - ТЕКСТ
+        Функция обработки post-запросов на авторизацию пользователя.
+        Функция определяет валидность введенных в форму данных и выполняет запись данных в базу данных.
+        :param request - фукнция получает объект request, содержажщий параментры запроса
+        :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
+        со словарем с передаваемыми шаблону данными;
         """
         register_form = self.form(request.POST)
         if register_form.is_valid():
@@ -87,6 +101,9 @@ class Register(View):
 
 
 class Account(View):
+    """
+    Класс контроллера обрабоки запросов на просмотр личного кабинета пользователя.
+    """
     title = 'Личный кабинет пользователя'
     template_name = 'authapp/account.html'
 
@@ -95,7 +112,15 @@ class Account(View):
     }
 
     def get(self, request, *args, **kwargs):
-        articles = Post.objects.filter(user_id=self.request.user.id).exclude(post_status='Del')
+        """
+        Функция обработки get-запросов на просмотр личного кабинета пользователя.
+        :param request - фукнция получает объект request, содержажщий параментры запроса
+        :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
+        со словарем с передаваемыми шаблону данными;
+        """
+        articles = Post.objects.filter(
+            user_id=self.request.user.id).exclude(
+            post_status='Del')
         self.context = {
             'articles': articles
         }

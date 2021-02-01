@@ -5,9 +5,7 @@ import mainapp.views as mainapp
 
 app_name = 'mainapp'
 
-"""
-ТЕКСТ
-"""
+
 urlpatterns = [
 
     path('', mainapp.Index.as_view(), name='index'),
