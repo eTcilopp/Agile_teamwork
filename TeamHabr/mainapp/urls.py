@@ -5,13 +5,41 @@ import mainapp.views as mainapp
 
 app_name = 'mainapp'
 
+"""
+Ссылки на элементы приложения mainapp
+index - Генерация главной страницы 
+category - Генерация тематических разделов
+article_create - Создание новой статьи
+post - Вывод индививдуальной статьи
+help - Страница помощи
+"""
 
 urlpatterns = [
 
-    path('', mainapp.Index.as_view(), name='index'),
-    path('category/<str:slug>/', mainapp.Index.as_view(), name='by_category'),
-    path('help_page', mainapp.HelpPage.as_view(), name='help_page'),
-    path('article-create/', login_required(mainapp.ArticleCreate.as_view()), name='article-create'),
-    path('post/<slug:slug>/', mainapp.PostRead.as_view(), name='post'),
+    path(
+        '',
+        mainapp.Index.as_view(),
+        name='index'),
+
+    path(
+        'category/<str:slug>/',
+        mainapp.Index.as_view(),
+        name='category'),
+
+
+    path(
+        'post/create/',
+        login_required(mainapp.ArticleCreate.as_view()),
+        name='article_create'),
+
+    path(
+        'post/<slug:slug>/',
+        mainapp.PostRead.as_view(),
+        name='post'),
+
+    path(
+        'help',
+        mainapp.HelpPage.as_view(),
+        name='help'),
 
 ]
