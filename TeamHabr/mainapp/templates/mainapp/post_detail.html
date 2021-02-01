@@ -23,7 +23,11 @@
     <form action="">
         <textarea name="" id="" cols="60" rows="5"></textarea>
         <div class="">
+            {% if user.is_authenticated %}
             <a href="">Отправить</a>
+            {% else %}
+            <a href="{% url 'auth:login' %}">Отправить</a>
+            {% endif %}
         </div>
     </form>
 </div>
