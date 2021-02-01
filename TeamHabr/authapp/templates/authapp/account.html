@@ -5,43 +5,53 @@
 {% endblock %}
 
 {% block content %}
-    <div class="user-inf" style="text-align: center">
-        {% if user.avatar %}
-            <img src="{{ user.avatar }}" alt="" class="avatar" width="40px" height="40px">
-        {% else %}
-            <img src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" alt="" class="avatar" width="30px" height="30px">
-        {% endif %}
-            <p class="user-name">{{ user.name }} {{ user.surname }}</p>
-            <p class="inf-link">Возраст: {{ user.age }}</p>
-            <p class="inf-link">Биография: {{ user.desc }}</p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-center">
+                {% if user.avatar %}
+                <img  src="{{ user.avatar }}" alt="" width="40px" height="40px">
+                {% else %}
+                <img class="img-thumbnail" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" alt="" width="100px" height="100px">
+                {% endif %}
+                <p class="user-name">{{ user.name }} {{ user.surname }}</p>
+            </div>
+            <div class="col text-justify">
+                <p>Возраст: {{ user.age }}</p>
+                <p>Пол: {{ user.sex }}</p>
+                <p>Биография: {{ user.desc }}</p>
+                <div class="text-center">
+                    <a class="text-info" href="#">Редактировать</a>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
 
-        <div class="btn">
-            <a href="#">Редактировать</a>
+        <hr>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col">
+                <p class="h3">Мои статьи</p>
+                <a class="text-info" href="{% url 'main:article-create' %}">Создать новую статью</a>
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-justify">
+                    {% if articles %}
+                    {% for article in articles %}
+                        <p class="h4 text-center">{{ article.title }}</p>
+                        <p>Статус: {{ article.get_post_status_display }}</p>
+                        <p>{{ article.text| truncatewords:200 }}</p>
+                    {% endfor %}
+                    {% else %}
+                        <p class="h4 text-center">У вас ещё нет статей</p>
+                    {% endif %}
+            </div>
+            <div class="col-2"></div>
         </div>
     </div>
 
-    <hr>
-
-    <h3 class="title" style='text-align: center'>Мои статьи</h3>
-    <div class="habs" style="text-align: center">
-        <div class="btn">
-            <a href="{% url 'main:article_create' %}">Создать новую статью</a>
-        </div>
-        <div class="hab">
-            {% if articles %}
-            {% for article in articles %}
-            {% if article.status == 'Drf' %}
-
-            <p class="status">Статус ручками:Черновик</p>
-            {% else %}
-            {% endif %}
-            <p class="status">Статус через гет:{{ article.get_post_status_display }}</p>
-            <p class="title-article">{{ article.title }}</p>
-            <p class="article">{{ article.text| truncatewords:20 }}</p>
-            {% endfor %}
-            {% else %}
-            <p class="title" style='text-align: center'>У вас ещё нет статей</p>
-            {% endif %}
-        </div>
-    </div>
 {% endblock %}
