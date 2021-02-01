@@ -1,3 +1,6 @@
+
+# from django.http import HttpResponse, HttpResponseRedirect
+
 from django.shortcuts import render, get_object_or_404
 from .forms import PostCreationForm
 from django.views import View
@@ -5,8 +8,9 @@ from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
-from .models import Post, CategoryPost
+from .models import Post, CategoryPost, Comment
 from slugify import slugify
+from django.db.models import Count
 
 
 class Index(ListView):
@@ -42,27 +46,6 @@ class Index(ListView):
         context['title'] = 'Главная'
         context['categories'] = CategoryPost.objects.all()
         return context
-
-
-class HelpPage(View):
-    """
-    Класс контроллера обрабоки запросов на просмотр станицы помощи.
-    Класс наследуется от встроенного класса View
-    Для формирования словаря context задается заголовок, имя шаблона, контекст.
-    """
-    title = 'Помощь'
-    template_name = 'mainapp/index.html'
-    context = {
-        'title': title,
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        Метод обработки заросов get для просмотра страницы помощи.
-        Метод возвращает функцию render с объектом request, содержащим зарпос, имя шаблона
-        и словарь с передаваемыми шаблону данными.
-        """
-        return render(request, self.template_name, self.context)
 
 
 class ArticleCreate(CreateView):
@@ -124,17 +107,74 @@ class PostRead(DetailView):
     Задается связанная модель - Post
     """
     model = Post
+    form = CommentForm
+
+    def get_success_url(self):
+        return reverse_lazy('main:post', kwargs={'slug': self.object.slug})
 
     def get_context_data(self, **kwargs):
         """
-        В словарь контекста data добавляется заголовок страницы
+        В словарь контекста data добавляется заголовок страницы, коментарии, количество коментариев
         """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
+        context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
+        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).aggregate(Count('id'))
+        context['form'] = self.form()
         return context
+
+    def form_valid(self, form):
+        """
+        Метод выполняет проверку правильности заполнения формы данными,
+        осуществляет дозаполнение полeй юзера и id статьи,
+        сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
+        """
+        form.instance.post_id = self.object
+        form.instance.user_id = self.request.user
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        """
+        Метод выполняется при не прохождении проверки правильности заполнения формы данными
+        """
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_object(self, queryset=None):
         """
         Функция возвращает объект со статьей и базы данных, найденный по полю slug
         """
         return get_object_or_404(Post, slug=self.kwargs.get('slug'))
+
+    def post(self, *args, **kwargs):
+        """
+        Метод срабатывает при отправке данных из формы коментариев
+        """
+        self.object = self.get_object()
+        form = self.form(self.request.POST)
+        print(form)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+class HelpPage(View):
+    """
+    Класс контроллера обрабоки запросов на просмотр станицы помощи.
+    Класс наследуется от встроенного класса View
+    Для формирования словаря context задается заголовок, имя шаблона, контекст.
+    """
+    title = 'Помощь'
+    template_name = 'mainapp/index.html'
+    context = {
+        'title': title,
+    }
+
+    def get(self, request, *args, **kwargs):
+        """
+        Метод обработки заросов get для просмотра страницы помощи.
+        Метод возвращает функцию render с объектом request, содержащим зарпос, имя шаблона
+        и словарь с передаваемыми шаблону данными.
+        """
+        return render(request, self.template_name, self.context)
