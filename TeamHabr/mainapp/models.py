@@ -173,7 +173,7 @@ class Comment(models.Model):
         Переопределения метода __str__.
         При вызове команды print метод выводит текст комментария, имя автора и наименование комментируемой статьи.
         """
-        return f'{self.text} by {self.user_id.name} ({self.post_id.name})'
+        return f'{self.text} by {self.user_id.name} ({self.post_id.title})'
 
 
 class Like(models.Model):

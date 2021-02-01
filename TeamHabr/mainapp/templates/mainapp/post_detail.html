@@ -18,5 +18,31 @@
         {{object.date_create}}
     </p>
 </div>
+<h2>Коментариев: {{count_comments.id__count}}</h2>
+{% if comments %}
+<div class="alert alert-success text-center" role="alert">
+
+
+        {% for comment in comments %}
+        <h3>{{comment.text}}</h3>
+         <p style="text-align: right">Автор: {{comment.user_id.username}}
+        <br>
+        {{comment.date_create}}
+        </p>
+        {% endfor %}
+
+</div>
+{% endif %}
+<div class="alert alert-success text-center" role="alert">
+    <p>
+        <div class="order_form">
+        <form method=post action=''>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit", value="сохранить", name="save-article">Сохранить</button>
+        </form>
+    </div>
+    </p>
+</div>
 
 {% endblock %}

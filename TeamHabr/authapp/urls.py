@@ -5,6 +5,14 @@ import authapp.views as authapp
 
 app_name = 'authapp'
 
+"""
+Ссылки на элементы приложения authapp
+login - Создание процедуры Авторизации 
+logout - Процедура разлогинивания
+register - Создание процедуры Регистрации
+account - Вывод страницы личного кабинета
+"""
+
 urlpatterns = [
     path(
         'login/',
