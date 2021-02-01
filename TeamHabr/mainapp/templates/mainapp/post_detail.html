@@ -2,21 +2,27 @@
 {% load static %}
 
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-<div class="alert alert-success text-center" role="alert">
-
-    <h1>
-        {{object.title}}
-        </h1>
-    <hr>
-   <h4  class="alert-heading">
-       {{object.text}}
-   </h4>
-    <p style="text-align: right">Автор: {{object.user_id.username}}
-        <br>
-        {{object.date_create}}
-    </p>
-</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-justify text-success">
+                <p class="h2 text-center text-success">{{object.title}}</p>
+                <hr>
+                <p class="h5 text-justify">{{object.text}}</p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-justify text-success text-right">
+                <p class="text-center">Автор: {{object.user_id.username}}</p>
+            </div>
+            <div class="col text-justify text-success text-right">
+                <p class="text-center">Дата создания: {{object.date_create}}</p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
 
 {% endblock %}

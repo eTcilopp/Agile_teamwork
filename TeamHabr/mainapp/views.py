@@ -1,14 +1,9 @@
-from django.views import View
 from django.shortcuts import render, get_object_or_404
-from authapp.models import User
-from .forms import CommentForm, PostCreationForm
-from django.shortcuts import redirect
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from .forms import PostCreationForm
 from django.views import View
 from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.db import transaction
 from .models import Post, CategoryPost
 from slugify import slugify

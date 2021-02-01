@@ -3,39 +3,36 @@
 {% load i18n %}
 {% block content %}
 
-<div style="text-align: center">
-{% for article in object_list %}
-    <h1>
-{{article.title}}
-        </h1>
-    <br>
-{{article.text| truncatewords:10}}
-<br>
-    <a href="{% url 'main:post' article.slug %}">Читать целиком</a>
-    <br>
-    <h5>
-Автор: {{article.user_id.username}}
-        </h5>
-<br>
-
-{% endfor %}
-
-
-{% if is_paginated %}
-<div class="paginator">
-
-    {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
-    {% endif %}
-
-    <span class="current">{% trans "Cтраница" %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
-    </span>
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
-    {% endif %}
-
-</div>
-{% endif %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-justify">
+                <a class="text-info" href="{% url 'main:article-create' %}">Создать новую статью</a>
+                {% for article in object_list %}
+                    <p class="h2 text-center">{{article.title}}</p>
+                    <p>{{article.text| truncatewords:50}}</p>
+                    <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
+                {% endfor %}
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-center">
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
+                    {% endif %}
+                    <span class="current">{% trans "Cтраница " %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-2"></div>
+        </div>
     </div>
+
 {% endblock %}
 

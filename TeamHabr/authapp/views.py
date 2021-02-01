@@ -50,7 +50,6 @@ class Logout(View):
     """
     Класс контроллера обрабоки запросов на выход из системы авторихованного пользователя.
     """
-    template_name = 'mainapp/index.html'
 
     def get(self, request, *args, **kwargs):
         """
@@ -60,7 +59,7 @@ class Logout(View):
         с передаваемыми шаблону данными;
         """
         auth.logout(request)
-        return render(request, self.template_name)
+        return HttpResponseRedirect(reverse("main:index"))
 
 
 class Register(View):
