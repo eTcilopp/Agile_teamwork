@@ -123,10 +123,10 @@ class PostRead(DetailView):
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
         context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
-        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).aggregate(Count('id'))
+        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).count()
         context['form'] = self.form()
-        context['like_user'] = Like.objects.filter(user_id_id=self.get_object().user_id).aggregate(Count('id'))
-        context['like_post'] = Like.objects.filter(post_id_id=self.get_object().id).aggregate(Count('id'))
+        context['like_user'] = Like.objects.filter(user_id_id=self.get_object().user_id).count()
+        context['like_post'] = Like.objects.filter(post_id_id=self.get_object().id).count()
         context['like_comment'] = 1
         return context
 
