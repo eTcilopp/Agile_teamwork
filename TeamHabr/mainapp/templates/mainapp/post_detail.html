@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col text-justify text-success">
-                <p class="h2 text-center text-success">{{object.title}}</p>
+                <p class="h2 text-center text-success">{{object.title}}  <span id="like_post" style="font-size: 14px"><i class="bi bi-heart-fill"></i> {{like_post.id__count}}</span></p>
                 <hr>
                 <p class="h5 text-justify">{{object.text}}</p>
             </div>
@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col text-justify text-success text-right">
-                <p class="text-center">Автор: {{object.user_id.username}}</p>
+                <p class="text-center">Автор: {{object.user_id.username}} <span id="like_user" style="font-size: 14px"><i class="bi bi-heart-fill"></i> {{like_user.id__count}}</span></p>
             </div>
             <div class="col text-justify text-success text-right">
                 <p class="text-center">Дата создания: {{object.date_create}}</p>
@@ -33,6 +33,7 @@
 
         {% for comment in comments %}
         <h3>{{comment.text}}</h3>
+    <span id="like_comment" style="font-size: 14px"><i class="bi bi-heart-fill"></i> {{like_comment}}</span>
          <p style="text-align: right">Автор: {{comment.user_id.username}}
         <br>
         {{comment.date_create}}

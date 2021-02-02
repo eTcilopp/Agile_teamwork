@@ -22,7 +22,7 @@ urlpatterns = [
         name='index'),
 
     path(
-        'category/<str:slug>/',
+        'category/<slug:slug>/',
         mainapp.Index.as_view(),
         name='category'),
 
