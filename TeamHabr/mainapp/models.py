@@ -190,16 +190,22 @@ class Like(models.Model):
     """
     author_user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Author_like')
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None,
+        null=True,
+        blank=True)
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None,
+        null=True,
+        blank=True)
     comment_id = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, default=None)
+        Comment, on_delete=models.CASCADE, default=None,
+        null=True,
+        blank=True)
     date_create = models.DateTimeField(default=datetime.datetime.today)
     date_update = models.DateTimeField(default=datetime.datetime.today)
 
-    def __str__(self):
-        """
-        Переопределения метода __str__.
-        При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
-        """
-        return f'{self.post_id.name} ({self.user_id.name})'
+    # def __str__(self):
+    #     """
+    #     Переопределения метода __str__.
+    #     При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
+    #     """
+    #     return f'{self.post_id.name} ({self.user_id.name})'

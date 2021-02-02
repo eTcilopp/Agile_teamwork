@@ -7,9 +7,10 @@ from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
-from .models import Post, CategoryPost, Comment
+from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 from django.db.models import Count
+# from django.db.models import F, OuterRef, Subquery
 
 
 class Index(ListView):
@@ -42,7 +43,11 @@ class Index(ListView):
         В словарь context добавляются значения заголовка и списка категорий для формирования меню.
         """
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная'
+        if self.kwargs.get('slug'):
+            category = CategoryPost.objects.filter(slug=self.kwargs['slug'])
+            context['title'] = category[0].name
+        else:
+            context['title'] = 'Главная'
         context['categories'] = CategoryPost.objects.all()
         return context
 
@@ -118,8 +123,11 @@ class PostRead(DetailView):
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
         context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
-        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).aggregate(Count('id'))
+        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).count()
         context['form'] = self.form()
+        context['like_user'] = Like.objects.filter(user_id_id=self.get_object().user_id).count()
+        context['like_post'] = Like.objects.filter(post_id_id=self.get_object().id).count()
+        context['like_comment'] = 1
         return context
 
     def form_valid(self, form):
