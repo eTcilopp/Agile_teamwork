@@ -9,10 +9,17 @@ from django.db import transaction
 from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 import re
-from django.db.models import Count
 
 
-# from django.db.models import F, OuterRef, Subquery
+def likes(request, pk, type_likes):
+    author = request.user
+    if type_likes == 'user':
+        obj, created = Like.objects.update_or_create(user_id_id=pk, author_user_id_id=author.pk)
+    if type_likes == 'post':
+        obj, created = Like.objects.update_or_create(post_id_id=pk, author_user_id_id=author.pk)
+    if type_likes == 'comment':
+        obj, created = Like.objects.update_or_create(comment_id_id=pk, author_user_id_id=author.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class Index(ListView):
@@ -144,11 +151,7 @@ class PostRead(DetailView):
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
         context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
-        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).count()
         context['form'] = self.form()
-        context['like_user'] = Like.objects.filter(user_id_id=self.get_object().user_id).count()
-        context['like_post'] = Like.objects.filter(post_id_id=self.get_object().id).count()
-        context['like_comment'] = 1
         return context
 
     def form_valid(self, form):
