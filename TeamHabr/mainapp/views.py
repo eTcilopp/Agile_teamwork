@@ -1,4 +1,3 @@
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from .forms import PostCreationForm, CommentForm
@@ -7,9 +6,20 @@ from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
-from .models import Post, CategoryPost, Comment
+from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
-from django.db.models import Count
+import re
+
+
+def likes(request, pk, type_likes):
+    author = request.user
+    if type_likes == 'user':
+        obj, created = Like.objects.update_or_create(user_id_id=pk, author_user_id_id=author.pk)
+    if type_likes == 'post':
+        obj, created = Like.objects.update_or_create(post_id_id=pk, author_user_id_id=author.pk)
+    if type_likes == 'comment':
+        obj, created = Like.objects.update_or_create(comment_id_id=pk, author_user_id_id=author.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class Index(ListView):
@@ -42,7 +52,11 @@ class Index(ListView):
         В словарь context добавляются значения заголовка и списка категорий для формирования меню.
         """
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная'
+        if self.kwargs.get('slug'):
+            category = CategoryPost.objects.filter(slug=self.kwargs['slug'])
+            context['title'] = category[0].name
+        else:
+            context['title'] = 'Главная'
         context['categories'] = CategoryPost.objects.all()
         return context
 
@@ -57,8 +71,27 @@ class ArticleCreate(CreateView):
     """
 
     model = Post
+    category_post_model = CategoryPost
     fields = ['title', 'text', 'category_id']
     success_url = reverse_lazy("authapp:account")
+
+    def get_initial(self):
+        """
+        Функция задает исходные параметры полей формы создания статьи
+        :return: функуия возвращает словарь initial, содержащий исходные (присутствующие по умолчанию) параметры
+        """
+        initial = super(ArticleCreate, self).get_initial()
+        # опделеляем url страницы, с которой осуществлен переход
+        source_page = self.request.META["HTTP_REFERER"]
+        # с помощью регулярного выражения определен слаг страницы, с которой выполнен переход
+        result = re.search('.*/(.*)/', source_page).group(1)
+        # выполняется запрос в базу данных - по слагу определяется id категории из модели CategoryPost
+        category_id = self.category_post_model.objects.filter(
+            slug=result).values_list('id', flat=True).first()
+        # в случае, если категория найдена, ее значение добавляется в словарь itinial для передачи в форму
+        if category_id:
+            initial['category_id'] = category_id
+        return initial
 
     def get_context_data(self, **kwargs):
         """
@@ -118,7 +151,6 @@ class PostRead(DetailView):
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
         context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
-        context["count_comments"] = Comment.objects.filter(post_id=self.get_object().id).aggregate(Count('id'))
         context['form'] = self.form()
         return context
 

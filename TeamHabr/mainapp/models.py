@@ -138,6 +138,15 @@ class Post(models.Model):
                 "slug": self.slug,
                 "category_slug": self.category_id.name})
 
+    def get_count_post(self):
+        return Like.objects.filter(post_id_id=self.pk).count()
+
+    def get_count_user(self):
+        return Like.objects.filter(user_id_id=self.user_id.pk).count()
+
+    def count_all_comment(self):
+        return Comment.objects.filter(post_id_id=self.pk).count()
+
 
 class Comment(models.Model):
     """
@@ -175,6 +184,10 @@ class Comment(models.Model):
         """
         return f'{self.text} by {self.user_id.name} ({self.post_id.title})'
 
+    def get_count_comment(self):
+        return Like.objects.filter(comment_id_id=self.pk).count()
+
+
 
 class Like(models.Model):
     """
@@ -190,16 +203,22 @@ class Like(models.Model):
     """
     author_user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Author_like')
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None,
+        null=True,
+        blank=True)
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None,
+        null=True,
+        blank=True)
     comment_id = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, default=None)
+        Comment, on_delete=models.CASCADE, default=None,
+        null=True,
+        blank=True)
     date_create = models.DateTimeField(default=datetime.datetime.today)
     date_update = models.DateTimeField(default=datetime.datetime.today)
 
-    def __str__(self):
-        """
-        Переопределения метода __str__.
-        При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
-        """
-        return f'{self.post_id.name} ({self.user_id.name})'
+    # def __str__(self):
+    #     """
+    #     Переопределения метода __str__.
+    #     При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
+    #     """
+    #     return f'{self.post_id.name} ({self.user_id.name})'

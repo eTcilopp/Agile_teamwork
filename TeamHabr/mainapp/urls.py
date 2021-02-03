@@ -22,7 +22,7 @@ urlpatterns = [
         name='index'),
 
     path(
-        'category/<str:slug>/',
+        'category/<slug:slug>/',
         mainapp.Index.as_view(),
         name='category'),
 
@@ -36,6 +36,11 @@ urlpatterns = [
         'post/<slug:slug>/',
         mainapp.PostRead.as_view(),
         name='post'),
+
+    path(
+        'like/<int:pk>/<str:type_likes>',
+        mainapp.likes,
+        name='like'),
 
     path(
         'help',
