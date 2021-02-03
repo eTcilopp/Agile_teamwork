@@ -38,6 +38,11 @@ urlpatterns = [
         name='post'),
 
     path(
+        'like/<int:pk>/<str:type_likes>',
+        mainapp.likes,
+        name='like'),
+
+    path(
         'help',
         mainapp.HelpPage.as_view(),
         name='help'),

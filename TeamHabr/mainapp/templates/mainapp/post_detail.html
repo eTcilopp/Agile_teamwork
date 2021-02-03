@@ -4,41 +4,42 @@
 {% block content %}
 
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col text-justify text-success">
-                <p class="h2 text-center text-success">{{object.title}}  <span id="like_post" style="font-size: 14px"><i class="bi bi-heart-fill"></i> {{like_post}}</span></p>
-                <hr>
-                <p class="h5 text-justify">{{object.text}}</p>
-            </div>
-            <div class="col-2"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col text-justify text-success">
+            <p class="h2 text-center text-success">{{object.title}} <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_post}}</span></p>
+            <hr>
+            <p class="h5 text-justify">{{object.text}}</p>
         </div>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col text-justify text-success text-right">
-                <p class="text-center">Автор: {{object.user_id.username}} <span id="like_user" style="font-size: 14px"><i class="bi bi-heart-fill"></i> {{like_user}}</span></p>
-            </div>
-            <div class="col text-justify text-success text-right">
-                <p class="text-center">Дата создания: {{object.date_create}}</p>
-            </div>
-            <div class="col-2"></div>
-        </div>
+        <div class="col-2"></div>
     </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col text-justify text-success text-right">
+            <p class="text-center">Автор: {{object.user_id.username}} <span id="like_user" style="font-size: 14px">
+                    <a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_user}}</span></p>
+        </div>
+        <div class="col text-justify text-success text-right">
+            <p class="text-center">Дата создания: {{object.date_create}}</p>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 
-<h2>Коментариев: {{count_comments}}</h2>
+<h2>Коментариев: {{object.count_all_comment}}</h2>
 {% if comments %}
 <div class="alert alert-dark text-center" role="alert">
 
 
-        {% for comment in comments %}
-        <h3>{{comment.text}}</h3>
-    <span id="like_comment" style="font-size: 14px"><i class="bi bi-heart-fill"></i> {{like_comment}}</span>
-         <p style="text-align: right">Автор: {{comment.user_id.username}}
+    {% for comment in comments %}
+    <h3>{{comment.text}}</h3>
+    <span id="like_comment" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}><i class="bi bi-heart-fill"></i></a>{{comment.get_count_comment}}</span>
+    <p style="text-align: right">Автор: {{comment.user_id.username}}
         <br>
         {{comment.date_create}}
-        </p>
-        {% endfor %}
+    </p>
+    {% endfor %}
 
 </div>
 {% endif %}
@@ -53,7 +54,7 @@
             <button type="submit" value="отправить" name="save-article">Отправить</button>
             {% else %}
             <button type="submit" value="отправить" name="save-article">
-                <a href="{% url 'auth:register' %}">Отправить</a>
+                <a href="{% url 'auth:login' %}">Отправить</a>
             </button>
             {% endif %}
         </div>

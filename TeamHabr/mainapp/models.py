@@ -138,6 +138,15 @@ class Post(models.Model):
                 "slug": self.slug,
                 "category_slug": self.category_id.name})
 
+    def get_count_post(self):
+        return Like.objects.filter(post_id_id=self.pk).count()
+
+    def get_count_user(self):
+        return Like.objects.filter(user_id_id=self.user_id.pk).count()
+
+    def count_all_comment(self):
+        return Comment.objects.filter(post_id_id=self.pk).count()
+
 
 class Comment(models.Model):
     """
@@ -174,6 +183,10 @@ class Comment(models.Model):
         При вызове команды print метод выводит текст комментария, имя автора и наименование комментируемой статьи.
         """
         return f'{self.text} by {self.user_id.name} ({self.post_id.title})'
+
+    def get_count_comment(self):
+        return Like.objects.filter(comment_id_id=self.pk).count()
+
 
 
 class Like(models.Model):
