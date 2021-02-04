@@ -5,12 +5,12 @@ from .models import CategoryPost
 class BasicTest(TestCase):
 
     def test_fields(self):
-        comment = CategoryPost()
-        comment.name = 'TestCategory'
-        comment.save()
+        category = CategoryPost()
+        category.name = 'TestCategory'
+        category.save()
 
         read_record = CategoryPost.objects.get(pk=1)
-        self.assertEqual(read_record, comment)
+        self.assertEqual(read_record, category)
 
     def test_mainapp_common_urls(self):
         response = self.client.get('/')
