@@ -42,12 +42,12 @@
             <div class="col text-justify">
                     {% if articles %}
                     {% for article in articles %}
-                        <p class="h4 text-center">{{ article.title }}</p>
+                        <p class="h2 text-center">{{ article.title }}</p>
                         <p>Статус: {{ article.get_post_status_display }}</p>
                         <p>{{ article.text| truncatewords:200 }}</p>
                     {% endfor %}
                     {% else %}
-                        <p class="h4 text-center">У вас ещё нет статей</p>
+                        <p class="h2 text-center">У вас ещё нет статей</p>
                     {% endif %}
             </div>
             <div class="col-2"></div>
