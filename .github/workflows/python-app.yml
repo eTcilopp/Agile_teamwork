@@ -36,4 +36,5 @@ jobs:
         pwd
         ls
         cd TeamHabr
+        source teamhabrvenv/bin/activate
         python manage.py test
