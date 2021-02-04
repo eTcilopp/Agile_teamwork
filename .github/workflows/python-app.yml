@@ -34,4 +34,5 @@ jobs:
     - name: Test with built in test
       run: |
         pwd
+        ls
         python manage.py test
