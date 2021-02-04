@@ -28,6 +28,10 @@ urlpatterns = [
          include('authapp.urls',
                  namespace='auth')),
 
+    path('admins/',
+         include('adminapp.urls',
+                 namespace='admin')),
+
     path('admin/',
          admin.site.urls),
 ]
