@@ -20,3 +20,9 @@ a:hover[href] {
 .header {
     height: 100px;
 }
+
+.form-con textarea {
+    width: 700px;
+    height: 200px;
+    color: #bfbfbf;
+}

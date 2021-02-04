@@ -25,39 +25,53 @@
         </div>
         <div class="col-2"></div>
     </div>
-</div>
 
-<h2>Коментариев: {{object.count_all_comment}}</h2>
-{% if comments %}
-<div class="alert alert-dark text-center" role="alert">
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col">
+        <h2>Коментариев: {{object.count_all_comment}}</h2>
+        {% if comments %}
+        <div class="alert alert-dark text-center" role="alert">
 
 
-    {% for comment in comments %}
-    <h3>{{comment.text}}</h3>
-    <span id="like_comment" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}><i class="bi bi-heart-fill"></i></a>{{comment.get_count_comment}}</span>
-    <p style="text-align: right">Автор: {{comment.user_id.username}}
-        <br>
-        {{comment.date_create}}
-    </p>
-    {% endfor %}
+            {% for comment in comments %}
+            <h3>{{comment.text}}</h3>
+            <span id="like_comment" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}><i class="bi bi-heart-fill"></i></a>{{comment.get_count_comment}}</span>
+            <p style="text-align: right">Автор: {{comment.user_id.username}}
+                <br>
+                {{comment.date_create}}
+            </p>
+            {% endfor %}
 
+        </div>
+    </div>
+    <div class="col-2"></div>
 </div>
 {% endif %}
 
-<div class="comment">
-    <p>Написать комментарий</p>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="">
-            {% if user.is_authenticated %}
-            <button type="submit" value="отправить" name="save-article">Отправить</button>
-            {% else %}
-            <button type="submit" value="отправить" name="save-article">
-                <a href="{% url 'auth:login' %}">Отправить</a>
-            </button>
-            {% endif %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col">
+        <div class="comment">
+            <p>Написать комментарий</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <p class="form-con">{{field}}</p>
+                {% endfor %}
+                <div class="">
+                    {% if user.is_authenticated %}
+                    <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>
+                    {% else %}
+                    <button type="submit" value="отправить" name="save-article" class="btn btn-primary">
+                        <a href="{% url 'auth:login' %}">Отправить</a>
+                    </button>
+                    {% endif %}
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
+    <div class="col-2"></div>
+</div>
 </div>
 {% endblock %}
