@@ -37,4 +37,4 @@ jobs:
         ls
         cd TeamHabr
         ls
-        python manage.py test
+        python3 manage.py test
