@@ -153,7 +153,7 @@ class PostRead(DetailView):
         """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
-        context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
+        context["comments"] = Comment.objects.filter(post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
         return context
 

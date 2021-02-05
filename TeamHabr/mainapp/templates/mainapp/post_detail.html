@@ -26,64 +26,85 @@
         <div class="col-2"></div>
     </div>
 
-<div class="row">
-    <div class="col-2"></div>
-    <div class="col">
-        <h4>Коментариев: {{object.count_all_comment}}</h4>
-        {% if comments %}
-        <div class=" text-center" role="alert">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <h4>Коментариев: {{object.count_all_comment}}</h4>
+            {% if comments %}
+            <div class=" text-center" role="alert">
 
-            {% for comment in comments %}
-            <div class="comment shadow-sm p-3 mb-5 bg-light rounded">
-                <p style="text-align: left">{{comment.text}}</p>
-                <span id="like_comment" style="font-size: 14px">
-                    <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}>
-                        <i class="bi bi-heart-fill"></i>
-                    </a>{{comment.get_count_comment}}</span>
-                <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
-                    <br>
-                    {{comment.date_create}}
-                </p>
-                <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
-            </div>
-            {% endfor %}
-
-        </div>
-    </div>
-    <div class="col-2"></div>
-</div>
-{% endif %}
-
-<div class="row">
-    <div class="col-2"></div>
-    <div class="col">
-        <div class="comment">
-            <p>Написать комментарий</p>
-            <form action="" method="post" id="formReview">
-                {% csrf_token %}
-                {% for field in form %}
-                <input type="hidden" name="parent" id="contactparent" value="">
-                <p class="form-con">{{field}}</p>
-                {% endfor %}
-                <div class="">
-                    {% if user.is_authenticated %}
-                    <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>
-                    {% else %}
-                    <button type="submit" value="отправить" name="save-article" class="btn btn-primary">
-                        <a href="{% url 'auth:login' %}" style="color: white;">Отправить</a>
-                    </button>
-                    {% endif %}
+                {% for comment in comments %}
+                <div class="comment shadow-sm p-3 mb-5 bg-light rounded">
+                    <p style="text-align: left">{{comment.text}}</p>
+                    <span id="like_comment" style="font-size: 14px">
+                        <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}>
+                            <i class="bi bi-heart-fill"></i>
+                        </a>{{comment.get_count_comment}}</span>
+                    <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
+                        <br>
+                        {{comment.date_create}}
+                    </p>
+                    <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
                 </div>
-            </form>
+
+                {% for answer in comment.get_review %}
+                <div class="row">
+                <div class="col-1"></div>
+<!--                это подкомент {{comment.text}}-->
+                <div class="col comment shadow-sm p-3 mb-5 bg-light rounded">
+                    <p style="text-align: left">{{answer.text}}</p>
+                    <span style="font-size: 14px">
+                        <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}>
+                            <i class="bi bi-heart-fill"></i>
+                        </a>{{answer.get_count_comment}}</span>
+                    <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
+                        <br>
+                        {{answer.date_create}}
+                    </p>
+                    <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                </div>
+                </div>
+
+                {% endfor %}
+                {% endfor %}
+
+            </div>
         </div>
+        <div class="col-2"></div>
     </div>
-    <div class="col-2"></div>
-</div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <div class="comment">
+                <p>Написать комментарий</p>
+                <form action="" method="post" id="formReview">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <input type="hidden" name="parent" id="contactparent" value="">
+                    <p class="form-con">{{field}}</p>
+                    {% endfor %}
+                    <div class="">
+                        {% if user.is_authenticated %}
+                        <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>
+                        {% else %}
+                        <button type="submit" value="отправить" name="save-article" class="btn btn-primary">
+                            <a href="{% url 'auth:login' %}" style="color: white;">Отправить</a>
+                        </button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
 </div>
 <script>
     function addReview(name, id) {
         document.getElementById("contactparent").value = id;
         document.getElementById("id_text").innerText = `${name}, `
     }
+
 </script>
 {% endblock %}
