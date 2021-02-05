@@ -34,3 +34,11 @@ a:hover[href] {
     border-color: #bfbfbf;
     border-radius: 4px;
 }
+
+.open-button {
+    display: block;
+}
+
+.comment {
+    display: none;
+}

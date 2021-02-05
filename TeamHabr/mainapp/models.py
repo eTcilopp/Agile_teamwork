@@ -58,6 +58,9 @@ class CategoryPost(models.Model):
         """
         return reverse("by_category", kwargs={"slug": self.slug})
 
+    def count_all_post(self):
+        return Post.objects.filter(category_id_id=self.pk).count()
+
 
 class Post(models.Model):
     """
@@ -183,6 +186,9 @@ class Comment(models.Model):
         При вызове команды print метод выводит текст комментария, имя автора и наименование комментируемой статьи.
         """
         return f'{self.text} by {self.user_id.name} ({self.post_id.title})'
+
+    def get_review(self):
+        return Comment.objects.filter(parent_comment_id=self.pk)
 
     def get_count_comment(self):
         return Like.objects.filter(comment_id_id=self.pk).count()

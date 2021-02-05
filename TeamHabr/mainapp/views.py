@@ -153,7 +153,7 @@ class PostRead(DetailView):
         """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
-        context["comments"] = Comment.objects.filter(post_id=self.get_object().id)
+        context["comments"] = Comment.objects.filter(post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
         return context
 
@@ -165,6 +165,8 @@ class PostRead(DetailView):
         """
         form.instance.post_id = self.object
         form.instance.user_id = self.request.user
+        if self.request.POST.get("parent", None):
+            form.instance.parent_comment_id = int(self.request.POST.get("parent"))
         form.save()
         return HttpResponseRedirect(self.get_success_url())
 
