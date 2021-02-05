@@ -187,6 +187,9 @@ class Comment(models.Model):
         """
         return f'{self.text} by {self.user_id.name} ({self.post_id.title})'
 
+    def get_review(self):
+        return Comment.objects.filter(parent_comment_id=self.pk)
+
     def get_count_comment(self):
         return Like.objects.filter(comment_id_id=self.pk).count()
 
