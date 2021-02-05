@@ -33,7 +33,6 @@
         {% if comments %}
         <div class=" text-center" role="alert">
 
-
             {% for comment in comments %}
             <div class="comment shadow-sm p-3 mb-5 bg-light rounded">
                 <p style="text-align: left">{{comment.text}}</p>
@@ -45,6 +44,7 @@
                     <br>
                     {{comment.date_create}}
                 </p>
+                <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
             </div>
             {% endfor %}
 
@@ -59,9 +59,10 @@
     <div class="col">
         <div class="comment">
             <p>Написать комментарий</p>
-            <form action="" method="post">
+            <form action="" method="post" id="formReview">
                 {% csrf_token %}
                 {% for field in form %}
+                <input type="hidden" name="parent" id="contactparent" value="">
                 <p class="form-con">{{field}}</p>
                 {% endfor %}
                 <div class="">
@@ -79,4 +80,10 @@
     <div class="col-2"></div>
 </div>
 </div>
+<script>
+    function addReview(name, id) {
+        document.getElementById("contactparent").value = id;
+        document.getElementById("id_text").innerText = `${name}, `
+    }
+</script>
 {% endblock %}

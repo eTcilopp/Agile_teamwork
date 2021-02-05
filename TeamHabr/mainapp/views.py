@@ -165,6 +165,8 @@ class PostRead(DetailView):
         """
         form.instance.post_id = self.object
         form.instance.user_id = self.request.user
+        if self.request.POST.get("parent", None):
+            form.instance.parent_comment_id = int(self.request.POST.get("parent"))
         form.save()
         return HttpResponseRedirect(self.get_success_url())
 
