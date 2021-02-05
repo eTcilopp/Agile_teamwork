@@ -58,6 +58,9 @@ class CategoryPost(models.Model):
         """
         return reverse("by_category", kwargs={"slug": self.slug})
 
+    def count_all_post(self):
+        return Post.objects.filter(category_id_id=self.pk).count()
+
 
 class Post(models.Model):
     """
