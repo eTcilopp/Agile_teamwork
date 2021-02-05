@@ -12,13 +12,16 @@ import re
 
 
 def likes(request, pk, type_likes):
+    """
+    Функция создания лайков
+    :param request:
+    :param pk:
+    :param type_likes:
+    :return:
+    """
+    field_id = f"{type_likes}_id_id"
     author = request.user
-    if type_likes == 'user':
-        obj, created = Like.objects.update_or_create(user_id_id=pk, author_user_id_id=author.pk)
-    if type_likes == 'post':
-        obj, created = Like.objects.update_or_create(post_id_id=pk, author_user_id_id=author.pk)
-    if type_likes == 'comment':
-        obj, created = Like.objects.update_or_create(comment_id_id=pk, author_user_id_id=author.pk)
+    obj, created = Like.objects.update_or_create(**{field_id: pk}, author_user_id_id=author.pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
