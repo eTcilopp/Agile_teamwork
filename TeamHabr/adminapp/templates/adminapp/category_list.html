@@ -1,0 +1,45 @@
+{% extends 'adminapp/admin_base.html' %}
+{% block admin_content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>Название категории</th>
+            <th>Имя для адресной строки</th>
+            <th>Активность</th>
+            <th>Описание</th>
+            <th>Всего статей</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr class="text-center">
+            <td>{{ object.name }}
+            </td>
+
+            <td>
+                {{ object.slug }}
+            </td>
+
+            <td>
+                <h4>{{ object.is_active }}</h4>
+
+            </td>
+
+            <td>
+                {{ object.description }}
+            </td>
+            <td>
+                {{ object.count_all_post }}
+            </td>
+        </tr>
+        {% endfor %}
+
+
+
+    </tbody>
+</table>
+<button><a href="{% url 'admin:create_category' %}">+</a></button>
+
+
+
+{% endblock %}
