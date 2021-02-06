@@ -3,14 +3,14 @@ from .models import CategoryPost
 
 
 class BasicTest(TestCase):
-    # fixtures = ['mainapp.json']
+    fixtures = ['authapp.json', 'adminapp.json', 'mainapp.json', 'auth.json']
 
     def test_fields(self):
         category = CategoryPost()
         category.name = 'TestCategory1'
         category.save()
 
-        read_record = CategoryPost.objects.get(pk=1)
+        read_record = CategoryPost.objects.latest('id')
         self.assertEqual(read_record, category)
 
     def test_mainapp_common_urls(self):
