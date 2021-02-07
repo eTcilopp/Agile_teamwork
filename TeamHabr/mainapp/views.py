@@ -1,14 +1,16 @@
+from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from .forms import PostCreationForm, CommentForm
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
 from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 import re
+import datetime
 
 
 def likes(request, pk, type_likes):
@@ -133,6 +135,29 @@ class ArticleCreate(CreateView):
                 postitems.save()
 
         return super(ArticleCreate, self).form_valid(form)
+
+class ArticleUpdate(UpdateView):
+
+    model = Post
+    fields = ['title', 'text', 'category_id', 'date_update', 'post_status']
+    template_name_suffix = '_update_form'
+    success_url = reverse_lazy("authapp:account")
+
+
+    def get_initial(self):
+        """
+        Функция задает исходные параметры полей формы создания статьи
+        :return: функуия возвращает словарь initial, содержащий исходные (присутствующие по умолчанию) параметры
+        """
+        initial = super(ArticleUpdate, self).get_initial()
+        initial['date_update'] = datetime.datetime.today
+        initial['post_status'] = 'Drf'
+        return initial
+    #TODO: спрятать date_update и post_status - думаю, надо переопределить форму и задать в ней.
+    #TODO - сделать возврат на ту страницу, откуда пришел запрос на редактирование
+    #TODO - сделать, чтобы редактировать статью можно было со страницы статьи
+    #TODO- переход на страницу статьи можно делать, кликнув по заголовку статьи
+    #TODO - авить дату обновления к дате создания
 
 
 class PostRead(DetailView):

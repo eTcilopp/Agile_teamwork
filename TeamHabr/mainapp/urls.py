@@ -38,6 +38,11 @@ urlpatterns = [
         name='post'),
 
     path(
+        'post/edit/<slug:slug>/',
+        login_required(mainapp.ArticleUpdate.as_view()),
+        name='article_edit'),
+
+    path(
         'like/<int:pk>/<str:type_likes>',
         mainapp.likes,
         name='like'),

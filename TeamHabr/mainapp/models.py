@@ -79,7 +79,10 @@ class Post(models.Model):
     """
     CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Опубликовано'),
                       ('Del', 'Удалено'), ('Drf', 'Черновик')]
-    category_id = models.ForeignKey(CategoryPost, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(
+        CategoryPost,
+        on_delete=models.CASCADE,
+        verbose_name='Категория')
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
@@ -129,6 +132,7 @@ class Post(models.Model):
         verbose_name_plural = 'Статьи'
         verbose_name = 'Статья'
         ordering = ['-date_create']
+
 
 
     def get_absolute_url(self):
