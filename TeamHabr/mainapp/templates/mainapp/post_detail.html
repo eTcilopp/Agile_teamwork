@@ -22,7 +22,7 @@
         </div>
         <div class="col text-justify text-primary text-right" id="formReview">
             <p class="text-center">Дата создания: {{object.date_create}}</p>
-                {% if object.date_create != object.date_udpade %}
+                {%  if object.post_updated %}
                     <p class="text-center">Дата обновления: {{object.date_update}}</p>
                 {% endif %}
         </div>

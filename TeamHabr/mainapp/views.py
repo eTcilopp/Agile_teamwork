@@ -23,7 +23,8 @@ def likes(request, pk, type_likes):
     """
     field_id = f"{type_likes}_id_id"
     author = request.user
-    obj, created = Like.objects.update_or_create(**{field_id: pk}, author_user_id_id=author.pk)
+    obj, created = Like.objects.update_or_create(
+        **{field_id: pk}, author_user_id_id=author.pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -88,12 +89,15 @@ class ArticleCreate(CreateView):
         initial = super(ArticleCreate, self).get_initial()
         # опделеляем url страницы, с которой осуществлен переход
         source_page = self.request.META["HTTP_REFERER"]
-        # с помощью регулярного выражения определен слаг страницы, с которой выполнен переход
+        # с помощью регулярного выражения определен слаг страницы, с которой
+        # выполнен переход
         result = re.search('.*/(.*)/', source_page).group(1)
-        # выполняется запрос в базу данных - по слагу определяется id категории из модели CategoryPost
+        # выполняется запрос в базу данных - по слагу определяется id категории
+        # из модели CategoryPost
         category_id = self.category_post_model.objects.filter(
             slug=result).values_list('id', flat=True).first()
-        # в случае, если категория найдена, ее значение добавляется в словарь itinial для передачи в форму
+        # в случае, если категория найдена, ее значение добавляется в словарь
+        # itinial для передачи в форму
         if category_id:
             initial['category_id'] = category_id
         return initial
@@ -136,7 +140,11 @@ class ArticleCreate(CreateView):
 
         return super(ArticleCreate, self).form_valid(form)
 
+
 class ArticleUpdate(UpdateView):
+    """
+    Контроллер редактирования статьи, использует встроенный контроллер Django UpdateView
+    """
 
     model = Post
     fields = ['title', 'text', 'category_id']
@@ -144,31 +152,48 @@ class ArticleUpdate(UpdateView):
     success_url = reverse_lazy("authapp:account")
 
     def get(self, request, *args, **kwargs):
+        # Выполняем проверку авторства. Если этого не сделать,
+        # авторизованный пользователь может редактировать чужие статьи
+
         self.object = self.get_object()
+        # Получаем ID пользователя, запрашивающего вожможность редактирования
         editor_id = self.request.user.username
+        # Получаем ID автора статьи
         author_id = str(self.object.user_id)
+        # В случае, если автор и пользователь, запросивший возможность редактирования, имеют разные ID, пользователь
+        # отправляется на страницу-уведомление о необходимости авторизоваться как автор статьи
         if editor_id == author_id:
             return super(ArticleUpdate, self).get(request, *args, **kwargs)
         else:
-            return HttpResponse(f'<h2>Для редактирования статьи авторизуйтесь как {author_id}.</h2>')
-
-
+            return HttpResponse(
+                f'<h2>Для редактирования статьи авторизуйтесь как {author_id}.</h2>')
 
     def form_valid(self, form):
 
+        # При редактировании статьи вожможно создание дубликатов слагов. Чтобы этого не происходило,
+        # выполняем проверку на наличие дубликата слага в базе
+
+        # получаем слаг из обновленного заглавия статьи
         title = form.cleaned_data.get("title")
         slug = slugify(title)
+        # получаем id редактируемого поста
         post_id = form.instance.id
-        slug_count = self.model.objects.filter(slug=slug).exclude(id=post_id).values_list('slug', flat=True).count()
-        print(f'Post ID: {post_id}')
-        print(f'Slug Count: {slug_count}')
-
+        # ополучаем количество аналогичных слагов в базе - исключая редактируему статью
+        slug_count = self.model.objects.filter(
+            slug=slug).exclude(
+            id=post_id).values_list(
+            'slug',
+            flat=True).count()
+        # если такие статьи найдены, к слагу статьи добавляется ее уникальный ID.
+        # Пара ID+слаг обеспечивает уникальность слага
         if slug_count > 0:
             slug = str(post_id) + '_' + slug
 
+        # заносим одновленный слаг в форму
         form.instance.slug = slug
-
+        # заносим в форму текущую дату/время: дата обновления статьи
         form.instance.date_update = datetime.datetime.today()
+        # если произошло изменение статьи, ее статус следует изменить на Неутверждено
         # form.instance.post_status = 'Drf'
         return super(ArticleUpdate, self).form_valid(form)
 
@@ -191,7 +216,8 @@ class PostRead(DetailView):
         """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
-        context["comments"] = Comment.objects.filter(post_id=self.get_object().id, parent_comment=None)
+        context["comments"] = Comment.objects.filter(
+            post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
         return context
 
@@ -204,7 +230,8 @@ class PostRead(DetailView):
         form.instance.post_id = self.object
         form.instance.user_id = self.request.user
         if self.request.POST.get("parent", None):
-            form.instance.parent_comment_id = int(self.request.POST.get("parent"))
+            form.instance.parent_comment_id = int(
+                self.request.POST.get("parent"))
         form.save()
         return HttpResponseRedirect(self.get_success_url())
 

@@ -107,6 +107,15 @@ class Post(models.Model):
         verbose_name='Дата изменения статьи',
         default=datetime.datetime.today)
 
+    @property
+    def post_updated(self):
+        """
+        Свойство для определения, был ли обновлен пост. Если сравнивать date_update и date_create,
+        получается разница  8e-06 секунд - и Django фиксирует обновление.
+        В данном методе, передаваемом в шаблон, пост считается обносленным, если date_update > date_create на 10 сек
+        """
+        return (self.date_update - self.date_create).total_seconds() > 10
+
     def __str__(self):
         """
         Переопределения метода __str__.
