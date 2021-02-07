@@ -139,25 +139,38 @@ class ArticleCreate(CreateView):
 class ArticleUpdate(UpdateView):
 
     model = Post
-    fields = ['title', 'text', 'category_id', 'date_update', 'post_status']
+    fields = ['title', 'text', 'category_id']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        editor_id = self.request.user.username
+        author_id = str(self.object.user_id)
+        if editor_id == author_id:
+            return super(ArticleUpdate, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(f'<h2>Для редактирования статьи авторизуйтесь как {author_id}.</h2>')
 
-    def get_initial(self):
-        """
-        Функция задает исходные параметры полей формы создания статьи
-        :return: функуия возвращает словарь initial, содержащий исходные (присутствующие по умолчанию) параметры
-        """
-        initial = super(ArticleUpdate, self).get_initial()
-        initial['date_update'] = datetime.datetime.today
-        initial['post_status'] = 'Drf'
-        return initial
-    #TODO: спрятать date_update и post_status - думаю, надо переопределить форму и задать в ней.
-    #TODO - сделать возврат на ту страницу, откуда пришел запрос на редактирование
-    #TODO - сделать, чтобы редактировать статью можно было со страницы статьи
-    #TODO- переход на страницу статьи можно делать, кликнув по заголовку статьи
-    #TODO - авить дату обновления к дате создания
+
+
+    def form_valid(self, form):
+
+        title = form.cleaned_data.get("title")
+        slug = slugify(title)
+        post_id = form.instance.id
+        slug_count = self.model.objects.filter(slug=slug).exclude(id=post_id).values_list('slug', flat=True).count()
+        print(f'Post ID: {post_id}')
+        print(f'Slug Count: {slug_count}')
+
+        if slug_count > 0:
+            slug = str(post_id) + '_' + slug
+
+        form.instance.slug = slug
+
+        form.instance.date_update = datetime.datetime.today()
+        # form.instance.post_status = 'Drf'
+        return super(ArticleUpdate, self).form_valid(form)
 
 
 class PostRead(DetailView):
