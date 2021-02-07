@@ -31,4 +31,9 @@ urlpatterns = [
         login_required(
             authapp.Account.as_view()),
         name='account'),
+    path(
+        'edit/',
+        authapp.Edit.as_view(),
+        name='edit',
+    )
 ]

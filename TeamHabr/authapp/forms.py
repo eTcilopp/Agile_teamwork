@@ -47,3 +47,29 @@ class UserRegisterForm(UserCreationForm):
             "password1",
             "password2",
             "email")
+
+
+class UserEditForm(UserChangeForm):
+    """
+    Класс определяет форму изменения данных пользователя.
+    Форма наследуется от встроенного класса UserChangeForm,
+    переопределяя значение атрибута 'class' на 'form-control'
+    Вложенный класс Meta определяет выводимые поля формы:
+    "username", "name", "surname", "password", "email"
+    """
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+            field.help_text = ''
+            if field_name == 'password':
+                field.widget = forms.HiddenInput()
+
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "name",
+            "surname",
+            "password",
+            "email")
