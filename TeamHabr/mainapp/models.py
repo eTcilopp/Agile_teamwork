@@ -112,7 +112,7 @@ class Post(models.Model):
         """
         Свойство для определения, был ли обновлен пост. Если сравнивать date_update и date_create,
         получается разница  8e-06 секунд - и Django фиксирует обновление.
-        В данном методе, передаваемом в шаблон, пост считается обносленным, если date_update > date_create на 10 сек
+        В данном методе, передаваемом в шаблон, пост считается обновленным, если date_update > date_create на 10 сек
         """
         return (self.date_update - self.date_create).total_seconds() > 10
 
