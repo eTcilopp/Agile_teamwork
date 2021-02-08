@@ -22,6 +22,9 @@
         </div>
         <div class="col text-justify text-primary text-right" id="formReview">
             <p class="text-center">Дата создания: {{object.date_create}}</p>
+                {%  if object.post_updated %}
+                    <p class="text-center">Дата обновления: {{object.date_update}}</p>
+                {% endif %}
         </div>
         <div class="col-2"></div>
     </div>
