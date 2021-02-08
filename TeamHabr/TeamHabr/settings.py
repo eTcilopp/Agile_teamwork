@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mainapp',
     'authapp',
+    'mainapp',
+    'adminapp',
 
 ]
 
@@ -79,31 +81,39 @@ WSGI_APPLICATION = 'TeamHabr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-"""
-ТЕКСТ
-"""
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-"""
-ТЕКСТ
-"""
-
-DATABASES = {
-   'default': {
-
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'postgres',
-       'USER': 'postgres',
-       'PASSWORD': '2Be-U>Zq2h[!',
-       'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
-       'PORT': '5432',
-
+#
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+        }
     }
-}
+else:
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #     }
+    # }
+    DATABASES = {
+       'default': {
+
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'postgres',
+           'USER': 'postgres',
+           'PASSWORD': '2Be-U>Zq2h[!',
+           'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
+           'PORT': '5432',
+
+        }
+    }
 
 
 # Password validation

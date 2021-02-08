@@ -1,23 +1,21 @@
-﻿{% extends 'authapp/base.html' %}
+﻿{% extends 'mainapp_base.html' %}
 {% load static %}
 
 {% block content %}
 
-<form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
-    {% csrf_token %}
-    {{ login_form.as_p }}
-    <br>
-    <input class="form-control" type="submit" value="войти">
-</form>
-<button class="btn btn-round form-control">
-    <a href="{% url 'auth:register' %}" class="">
-        зарегистрироваться
-    </a>
-</button>
-<button class="btn btn-round form-control">
-    <a href="{% url 'main:index' %}" class="">
-        Вернуться на главную
-    </a>
-</button>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <p class="h2 text-center">Авторизация</p>
+            <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
+                {% csrf_token %}
+                {{ login_form.as_p }}
+                <input class="form-control" type="submit" value="войти">
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
 
 {% endblock content %}

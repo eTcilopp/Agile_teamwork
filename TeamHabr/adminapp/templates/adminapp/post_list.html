@@ -1,0 +1,52 @@
+{% extends 'adminapp/admin_base.html' %}
+{% block admin_content %}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>Удалить статью</th>
+            <th>Статус</th>
+            <th>Автор</th>
+            <th>Категория</th>
+            <th>Заголовок</th>
+            <th>Читать</th>
+            <th>Дата создания/обновления</th>
+            <th>Дата смены статуса</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr class="text-center">
+            <td>
+            </td>
+            <td>
+                {{object.get_post_status_display}}
+            </td>
+            <td>
+                {{object.user_id.name}}
+            </td>
+            <td>
+                {{object.category_id.name}}
+            </td>
+            <td>
+                {{object.title}}
+            </td>
+            <td>
+                <a href="{% url 'main:post' object.slug %}">читать статью</a>
+            </td>
+            <td>
+                {{object.date_create}} <br> {{object.date_update}}
+            </td>
+            <td>
+                {{object.status_update}}
+            </td>
+
+
+        </tr>
+        {% endfor %}
+
+
+
+    </tbody>
+</table>
+{% endblock %}

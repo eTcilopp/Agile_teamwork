@@ -6,17 +6,45 @@ import mainapp.views as mainapp
 app_name = 'mainapp'
 
 """
-ТЕКСТ
+Ссылки на элементы приложения mainapp
+index - Генерация главной страницы 
+category - Генерация тематических разделов
+article_create - Создание новой статьи
+post - Вывод индививдуальной статьи
+help - Страница помощи
 """
+
 urlpatterns = [
 
-    path('', mainapp.Index.as_view(), name='index'),
-    path('design', mainapp.Design.as_view(), name='design'),
-    path('mobile_development', mainapp.MobileDevelopment.as_view(), name='mobile_development'),
-    path('web_development', mainapp.WebDevelopment.as_view(), name='web_development'),
-    path('marketing', mainapp.Marketing.as_view(), name='marketing'),
-    path('help_page', mainapp.HelpPage.as_view(), name='help_page'),
-    path('account/', login_required(mainapp.Account.as_view()), name='account'),
-    path('article-create/', login_required(mainapp.ArticleCreate.as_view()), name='article-create'),
+    path(
+        '',
+        mainapp.Index.as_view(),
+        name='index'),
+
+    path(
+        'category/<slug:slug>/',
+        mainapp.Index.as_view(),
+        name='category'),
+
+
+    path(
+        'post/create/',
+        login_required(mainapp.ArticleCreate.as_view()),
+        name='article_create'),
+
+    path(
+        'post/<slug:slug>/',
+        mainapp.PostRead.as_view(),
+        name='post'),
+
+    path(
+        'like/<int:pk>/<str:type_likes>',
+        mainapp.likes,
+        name='like'),
+
+    path(
+        'help',
+        mainapp.HelpPage.as_view(),
+        name='help'),
 
 ]

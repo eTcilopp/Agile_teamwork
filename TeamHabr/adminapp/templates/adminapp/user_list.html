@@ -1,0 +1,54 @@
+{% extends 'adminapp/admin_base.html' %}
+{% block admin_content %}
+{% load auth_extras %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>Группа</th>
+            <th>Блокирован</th>
+            <th>Username</th>
+            <th>Имя/Фамилия</th>
+            <th>Email</th>
+            <th>Last Logged</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr class="text-center">
+            <td>{% if object.is_superuser %}Админ всея Хабра{% elif object|has_group:"Moder" %}Модератор{% else %}Юзверь{% endif %}
+                {% if user.is_superuser %}{% if object.is_superuser %}{% elif object|has_group:"Moder" %}<a href="{% url 'admin:delete_moder' object.pk %}">Разжаловать</a>{% else %}<a href="{% url 'admin:create_moder' object.pk %}">Назначить модером</a>{% endif %}{% endif %}
+
+            </td>
+
+            <td>
+                {{ object.status_block }}
+                {% if object.status_block == True %}
+                <br>
+                {{object.status_update}}
+                {% endif  %}
+            </td>
+
+            <td>
+                <h4>{{ object.username }}</h4>
+
+            </td>
+
+            <td>
+                {{ object.name }} /
+                {{ object.surname }}
+            </td>
+            <td>
+                {{ object.email }}
+            </td>
+            <td>
+                {{ object.last_login }}
+            </td>
+        </tr>
+        {% endfor %}
+
+
+
+    </tbody>
+</table>
+
+{% endblock %}
