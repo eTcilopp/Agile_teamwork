@@ -42,7 +42,10 @@
         <div class="col text-justify">
             {% if articles %}
             {% for article in articles %}
-            <p class="h2 text-center">{{ article.title }}</p>
+            <p class="h2 text-center">{{ article.title }} {% if article.post_status == 'Drf' %}
+                <a href="{% url 'admin:change_status_post' article.slug 'Pub'%}">
+                    <i class="bi bi-truck"></i></a>
+                {% endif %}</p>
             <p>Статус: {{ article.get_post_status_display }}</p>
             <a href="{% url 'main:article_edit' slug=article.slug %}">Редактировать статью</a>
             <p>{{ article.text| truncatewords:200 }}</p>
