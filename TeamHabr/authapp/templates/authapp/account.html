@@ -21,7 +21,7 @@
             <p>Пол: {{ user.sex }}</p>
             <p>Биография: {{ user.desc }}</p>
             <div class="text-center">
-                <a class="text-info" href="#">Редактировать</a>
+                <a class="text-info" href="{% url 'auth:edit' %}">Редактировать</a>
             </div>
         </div>
         <div class="col-2"></div>
