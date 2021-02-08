@@ -25,6 +25,9 @@ def likes(request, pk, type_likes):
     author = request.user
     obj, created = Like.objects.update_or_create(
         **{field_id: pk}, author_user_id_id=author.pk)
+    if created == False:
+        Like.objects.filter(
+            **{field_id: pk}, author_user_id_id=author.pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

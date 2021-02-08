@@ -33,4 +33,9 @@ urlpatterns = [
         'delete_moder/<int:pk>/',
         adminapp.delete_moder,
         name='delete_moder'),
+
+    path(
+        'like/<slug:slug>/<str:status>',
+        adminapp.change_status_post,
+        name='change_status_post'),
 ]

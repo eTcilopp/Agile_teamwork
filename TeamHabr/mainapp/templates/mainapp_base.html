@@ -1,4 +1,5 @@
 {% load static %}
+{% load auth_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +40,7 @@
                             <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:login' %}">Вход</a></li>
                             <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:register' %}">Регистрация</a></li>
                         {% endif %}
-                        {% if user.is_superuser %}
+                        {% if user.is_superuser or user|has_group:"Moder"  %}
                             <li class="col-1"><a class="text-secondary h6" href="{% url 'admin:user_list' %}">Админка</a></li>
                         {% endif %}
                             <div class="col-2"></div>
