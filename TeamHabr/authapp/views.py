@@ -5,45 +5,80 @@ from django.contrib import auth
 from django.urls import reverse
 from django.views import View
 from mainapp.models import Post
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 
-class Login(View):
-    """
-    Класс контроллера обрабоки запросов на авторизацию пользователя.
-    """
-    title = 'Авторизация'
+class LoginView(LoginView):
     form = UserLoginForm
-    template_name = 'authapp/login.html'
+    title = 'Авторизация'
+
+    form = UserLoginForm
     content = {
-        "title": title,
-        "login_form": form
+         "title": title,
+         "login_form": form
     }
 
     def get(self, request, *args, **kwargs):
-        """
-        Функция обработки get-запросов на авторизацию пользователя.
-        :param request - фукнция получает объект request, содержажщий параментры запроса
-        :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем с передаваемыми данными;
-        """
-        return render(request, self.template_name, self.content)
+        global redirect_to
+        redirect_to = self.request.GET.get('next')
+
+        # print(redirect_to)
+        return render(request, 'authapp/login.html', self.content)
 
     def post(self, request, *args, **kwargs):
-        """
-        Функция обработки post-запросов на авторизацию пользователя.
-        Функция получает из запроса параметры username и password, после чего определяет,
-        существует ли учетная запись пользователя в базе данных и
-        не является и учетная запись деактивированной.
-        :param request - фукнция получает объект request, содержажщий параментры запроса
-        :return: функция возвращает функцию render, комбинирующую указанный шаблон
-        со словарем с передаваемыми шаблону данными;
-        """
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST['username']
+        password = request.POST['password']
+        # print(redirect_to)
         user = auth.authenticate(username=username, password=password)
-        if user and user.is_active:
+        if user is not None:
             auth.login(request, user)
-            return HttpResponseRedirect(reverse("main:index"))
-        return render(request, self.template_name, self.content)
+            if redirect_to is None:
+                return redirect('/')
+            else:
+                return redirect(redirect_to)
+        else:
+            messages.info(request, "Вход невозможен.\n Введите корректные логин/пароль")
+            return redirect('auth:login')
+
+# class Login(View):
+#     """
+#     Класс контроллера обрабоки запросов на авторизацию пользователя.
+#     """
+#     title = 'Авторизация'
+#     form = UserLoginForm
+#     template_name = 'authapp/login.html'
+#     content = {
+#         "title": title,
+#         "login_form": form
+#     }
+#
+#     def get(self, request, *args, **kwargs):
+#         """
+#         Функция обработки get-запросов на авторизацию пользователя.
+#         :param request - фукнция получает объект request, содержажщий параментры запроса
+#         :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем с передаваемыми данными;
+#         """
+#         return render(request, self.template_name, self.content)
+#
+#     def post(self, request, *args, **kwargs):
+#         """
+#         Функция обработки post-запросов на авторизацию пользователя.
+#         Функция получает из запроса параметры username и password, после чего определяет,
+#         существует ли учетная запись пользователя в базе данных и
+#         не является и учетная запись деактивированной.
+#         :param request - фукнция получает объект request, содержажщий параментры запроса
+#         :return: функция возвращает функцию render, комбинирующую указанный шаблон
+#         со словарем с передаваемыми шаблону данными;
+#         """
+#         username = request.POST["username"]
+#         password = request.POST["password"]
+#         user = auth.authenticate(username=username, password=password)
+#         if user and user.is_active:
+#             auth.login(request, user)
+#             return HttpResponseRedirect(reverse("main:index"))
+#         return render(request, self.template_name, self.content)
 
 
 class Logout(View):
@@ -59,7 +94,7 @@ class Logout(View):
         с передаваемыми шаблону данными;
         """
         auth.logout(request)
-        return HttpResponseRedirect(reverse("main:index"))
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class Register(View):

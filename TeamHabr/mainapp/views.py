@@ -11,6 +11,7 @@ from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 import re
 import datetime
+from django.contrib.auth.decorators import login_required
 
 
 def likes(request, pk, type_likes):
@@ -29,6 +30,7 @@ def likes(request, pk, type_likes):
         Like.objects.filter(
             **{field_id: pk}, author_user_id_id=author.pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # return HttpResponse('<script>history.back();</script>')
 
 
 class Index(ListView):
