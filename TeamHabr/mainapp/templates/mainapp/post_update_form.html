@@ -12,6 +12,7 @@
         <div class="col text-justify">
             <p class="h2 text-center">Редактирование статьи</p>
             <hr>
+            <a href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
             <form method=post>
                 {% csrf_token %}
 

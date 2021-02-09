@@ -43,6 +43,11 @@ urlpatterns = [
         name='article_edit'),
 
     path(
+        'post/delete/<slug:slug>/',
+        login_required(mainapp.ArticleDelete.as_view()),
+        name='article_delete'),
+
+    path(
         'like/<int:pk>/<str:type_likes>',
         mainapp.likes,
         name='like'),

@@ -1,9 +1,9 @@
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostCreationForm, CommentForm
 from django.views import View
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
@@ -25,7 +25,7 @@ def likes(request, pk, type_likes):
     author = request.user
     obj, created = Like.objects.update_or_create(
         **{field_id: pk}, author_user_id_id=author.pk)
-    if created == False:
+    if not created:
         Like.objects.filter(
             **{field_id: pk}, author_user_id_id=author.pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -164,12 +164,19 @@ class ArticleUpdate(UpdateView):
         # Получаем ID автора статьи
         author_id = str(self.object.user_id)
         # В случае, если автор и пользователь, запросивший возможность редактирования, имеют разные ID, пользователь
-        # отправляется на страницу-уведомление о необходимости авторизоваться как автор статьи
+        # отправляется на страницу-уведомление о необходимости авторизоваться
+        # как автор статьи
         if editor_id == author_id:
             return super(ArticleUpdate, self).get(request, *args, **kwargs)
         else:
             return HttpResponse(
                 f'<h2>Для редактирования статьи авторизуйтесь как {author_id}.</h2>')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['slug'] = self.get_object().slug
+
+        return context
 
     def form_valid(self, form):
 
@@ -181,7 +188,8 @@ class ArticleUpdate(UpdateView):
         slug = slugify(title)
         # получаем id редактируемого поста
         post_id = form.instance.id
-        # ополучаем количество аналогичных слагов в базе - исключая редактируему статью
+        # ополучаем количество аналогичных слагов в базе - исключая
+        # редактируему статью
         slug_count = self.model.objects.filter(
             slug=slug).exclude(
             id=post_id).values_list(
@@ -196,9 +204,40 @@ class ArticleUpdate(UpdateView):
         form.instance.slug = slug
         # заносим в форму текущую дату/время: дата обновления статьи
         form.instance.date_update = datetime.datetime.today()
-        # если произошло изменение статьи, ее статус следует изменить на Неутверждено
-        # form.instance.post_status = 'Drf'
+        # если произошло изменение статьи, ее статус следует изменить на
+        # Неутверждено
+        form.instance.post_status = 'Drf'
         return super(ArticleUpdate, self).form_valid(form)
+
+
+class ArticleDelete(DeleteView):
+    model = Post
+    success_url = reverse_lazy('authapp:account')
+
+    def get(self, request, *args, **kwargs):
+        # TODO: вынести функцию проверки авторства для ArticleDelete и ArticleEdit в отдельный MixIn
+        # Выполняем проверку авторства. Если этого не сделать,
+        # авторизованный пользователь может удаляьб чужие статьи
+
+        self.object = self.get_object()
+        # Получаем ID пользователя, запрашивающего вожможность удаления
+        editor_id = self.request.user.username
+        # Получаем ID автора статьи
+        author_id = str(self.object.user_id)
+        # В случае, если автор и пользователь, запросивший возможность удаления, имеют разные ID, пользователь
+        # отправляется на страницу-уведомление о необходимости авторизоваться
+        # как автор статьи
+        if editor_id == author_id:
+            return super(ArticleDelete, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Для удаления статьи авторизуйтесь как {author_id}.</h2>')
+
+    def delete(self, request, slug):
+        article_to_delete = self.get_object()
+        article_to_delete.post_status = 'Del'
+        article_to_delete.save()
+        return redirect(self.success_url)
 
 
 class PostRead(DetailView):
