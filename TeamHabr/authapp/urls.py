@@ -16,8 +16,7 @@ account - Вывод страницы личного кабинета
 urlpatterns = [
     path(
         'login/',
-        authapp.Login.as_view(),
-        name='login'),
+        authapp.LoginView.as_view(), name='login'),
     path(
         'logout/',
         authapp.Logout.as_view(),

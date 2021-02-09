@@ -17,7 +17,7 @@
                     <a {% if user.is_authenticated %}
                         href="{% url 'main:like' article.pk 'post' %}"
                        {% else %}
-                        href="{% url 'auth:login' %}"
+                        href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}"
                        {% endif %}>
                         <i class="bi bi-heart-fill"></i>
                     </a> {{article.get_count_post}}
