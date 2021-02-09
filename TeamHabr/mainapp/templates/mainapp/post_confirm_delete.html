@@ -1,0 +1,16 @@
+{% extends 'mainapp_base.html' %}
+{% load static %}
+
+{% block users %}
+{% endblock %}
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+    <p class="h2 text-center">Вы уверены, что хотите удалить статью "{{ object.title }}"?</p>
+    <div class="col text-center">
+        <input type="submit" class="btn btn-outline-danger text-center" value="Удалить">
+    </div>
+</form>
+
+{% endblock %}
