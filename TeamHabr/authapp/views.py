@@ -17,8 +17,8 @@ class LoginView(LoginView):
 
     form = UserLoginForm
     content = {
-         "title": title,
-         "login_form": form
+        "title": title,
+        "login_form": form
     }
 
     def get(self, request, *args, **kwargs):
@@ -40,7 +40,9 @@ class LoginView(LoginView):
             else:
                 return redirect(redirect_to)
         else:
-            messages.info(request, "Вход невозможен.\n Введите корректные логин/пароль")
+            messages.info(
+                request,
+                "Вход невозможен.\n Введите корректные логин/пароль")
             return redirect('auth:login')
 
 # class Login(View):
@@ -161,6 +163,7 @@ class Account(View):
         }
         return render(request, self.template_name, self.context)
 
+
 class Edit(View):
     """
     Класс контроллера обработки запросов на изменение данных пользователя
@@ -191,14 +194,18 @@ class Edit(View):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
-        edit_form = self.form(request.POST, request.FILES, instance=request.user)
+        edit_form = self.form(
+            request.POST,
+            request.FILES,
+            instance=request.user)
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
 
         return render(request, self.template_name, self.content)
 
-#TODO: проверить PermissionsMixin
+# TODO: проверить PermissionsMixin
+
 
 class UserUpdate(UpdateView):
     """
