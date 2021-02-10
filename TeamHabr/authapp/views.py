@@ -1,8 +1,9 @@
 from django.shortcuts import HttpResponseRedirect, render
 from .models import User
 from .forms import UserLoginForm, UserRegisterForm, UserEditForm
+from django.views.generic import UpdateView
 from django.contrib import auth
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from mainapp.models import Post
 from django.contrib.auth.views import LoginView
@@ -196,3 +197,18 @@ class Edit(View):
             return HttpResponseRedirect(reverse('auth:edit'))
 
         return render(request, self.template_name, self.content)
+
+#TODO: проверить PermissionsMixin
+
+class UserUpdate(UpdateView):
+    """
+    Класс контроллера обработки запросов на изменение данных пользователя
+
+    """
+    model = User
+    fields = ['username', 'name', 'surname', 'email']
+    template_name_suffix = '_update_form'
+    success_url = reverse_lazy("authapp:account")
+
+    def get_object(self):
+        return self.request.user

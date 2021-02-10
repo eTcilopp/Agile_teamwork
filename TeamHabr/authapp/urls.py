@@ -33,6 +33,8 @@ urlpatterns = [
     path(
         'edit/',
         authapp.Edit.as_view(),
-        name='edit',
-    )
+        name='edit',),
+    path('update/',
+         authapp.UserUpdate.as_view(),
+         name='edit')
 ]

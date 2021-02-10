@@ -208,7 +208,7 @@ class ArticleUpdate(UpdateView):
         form.instance.date_update = datetime.datetime.today()
         # если произошло изменение статьи, ее статус следует изменить на
         # Неутверждено
-        form.instance.post_status = 'Drf'
+        form.instance.post_status = 'Pub'
         return super(ArticleUpdate, self).form_valid(form)
 
 
