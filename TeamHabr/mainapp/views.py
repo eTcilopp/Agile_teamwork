@@ -33,6 +33,26 @@ def likes(request, pk, type_likes):
     # return HttpResponse('<script>history.back();</script>')
 
 
+class FunctionsMixin:
+    def verify_author(self, request):
+        editor_id = request.user.username
+        author_id = str(self.get_object().user_id)
+        return editor_id == author_id
+
+    def generate_unique_slag(self, form):
+        title = form.cleaned_data.get("title")
+        slug = slugify(title)
+        post_id = form.instance.id
+        slug_count = self.model.objects.filter(
+            slug=slug).exclude(
+            id=post_id).values_list(
+            'slug',
+            flat=True).count()
+        if slug_count > 0:
+            slug = str(post_id) + '_' + slug
+        return slug
+
+
 class Index(ListView):
     """
     Класс контроллера обрабоки запросов на просмотр главной станицы.
@@ -72,7 +92,7 @@ class Index(ListView):
         return context
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(FunctionsMixin, CreateView):
     """
     Класс контроллера обрабоки запросов на создание новой статьи.
     Класс наследуется от встроенного класса CreateView
@@ -136,7 +156,7 @@ class ArticleCreate(CreateView):
         postitems = context["postitems"]
         with transaction.atomic():
             form.instance.user_id = self.request.user
-            slug = form.cleaned_data.get("title")
+            slug = self.generate_unique_slag(form)
             form.instance.slug = slugify(slug)
             self.object = form.save()
             if postitems.is_valid():
@@ -146,7 +166,7 @@ class ArticleCreate(CreateView):
         return super(ArticleCreate, self).form_valid(form)
 
 
-class ArticleUpdate(UpdateView):
+class ArticleUpdate(FunctionsMixin, UpdateView):
     """
     Контроллер редактирования статьи, использует встроенный контроллер Django UpdateView
     """
@@ -157,22 +177,11 @@ class ArticleUpdate(UpdateView):
     success_url = reverse_lazy("authapp:account")
 
     def get(self, request, *args, **kwargs):
-        # Выполняем проверку авторства. Если этого не сделать,
-        # авторизованный пользователь может редактировать чужие статьи
-
-        self.object = self.get_object()
-        # Получаем ID пользователя, запрашивающего вожможность редактирования
-        editor_id = self.request.user.username
-        # Получаем ID автора статьи
-        author_id = str(self.object.user_id)
-        # В случае, если автор и пользователь, запросивший возможность редактирования, имеют разные ID, пользователь
-        # отправляется на страницу-уведомление о необходимости авторизоваться
-        # как автор статьи
-        if editor_id == author_id:
+        if self.verify_author(request):
             return super(ArticleUpdate, self).get(request, *args, **kwargs)
         else:
             return HttpResponse(
-                f'<h2>Для редактирования статьи авторизуйтесь как {author_id}.</h2>')
+                f'<h2>Вы не имеете прав для редактирования данной статьи.</h2>')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -182,64 +191,33 @@ class ArticleUpdate(UpdateView):
 
     def form_valid(self, form):
 
-        # При редактировании статьи вожможно создание дубликатов слагов. Чтобы этого не происходило,
-        # выполняем проверку на наличие дубликата слага в базе
-
-        # получаем слаг из обновленного заглавия статьи
-        title = form.cleaned_data.get("title")
-        slug = slugify(title)
-        # получаем id редактируемого поста
-        post_id = form.instance.id
-        # ополучаем количество аналогичных слагов в базе - исключая
-        # редактируему статью
-        slug_count = self.model.objects.filter(
-            slug=slug).exclude(
-            id=post_id).values_list(
-            'slug',
-            flat=True).count()
-        # если такие статьи найдены, к слагу статьи добавляется ее уникальный ID.
-        # Пара ID+слаг обеспечивает уникальность слага
-        if slug_count > 0:
-            slug = str(post_id) + '_' + slug
-
-        # заносим одновленный слаг в форму
+        slug = self.generate_unique_slag(form)
         form.instance.slug = slug
-        # заносим в форму текущую дату/время: дата обновления статьи
-        form.instance.date_update = datetime.datetime.today()
-        # если произошло изменение статьи, ее статус следует изменить на
-        # Неутверждено
-        form.instance.post_status = 'Drf'
+        if form.instance.post_status != 'Drf':
+            form.instance.date_update = datetime.datetime.today()
+            form.instance.post_status = 'Pub'
         return super(ArticleUpdate, self).form_valid(form)
 
 
-class ArticleDelete(DeleteView):
+class ArticleDelete(FunctionsMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('authapp:account')
 
     def get(self, request, *args, **kwargs):
-        # TODO: вынести функцию проверки авторства для ArticleDelete и ArticleEdit в отдельный MixIn
-        # Выполняем проверку авторства. Если этого не сделать,
-        # авторизованный пользователь может удаляьб чужие статьи
-
-        self.object = self.get_object()
-        # Получаем ID пользователя, запрашивающего вожможность удаления
-        editor_id = self.request.user.username
-        # Получаем ID автора статьи
-        author_id = str(self.object.user_id)
-        # В случае, если автор и пользователь, запросивший возможность удаления, имеют разные ID, пользователь
-        # отправляется на страницу-уведомление о необходимости авторизоваться
-        # как автор статьи
-        if editor_id == author_id:
+        if self.verify_author(request):
             return super(ArticleDelete, self).get(request, *args, **kwargs)
         else:
             return HttpResponse(
-                f'<h2>Для удаления статьи авторизуйтесь как {author_id}.</h2>')
+                f'<h2>Вы не имеете прав для удаления данной статьи.</h2>')
 
     def delete(self, request, slug):
         article_to_delete = self.get_object()
-        article_to_delete.post_status = 'Del'
-        article_to_delete.save()
-        return redirect(self.success_url)
+        if article_to_delete.post_status != 'Drf':
+            article_to_delete.post_status = 'Del'
+            article_to_delete.save()
+            return redirect(self.success_url)
+        else:
+            return super(ArticleDelete, self).delete(request, slug)
 
 
 class PostRead(DetailView):

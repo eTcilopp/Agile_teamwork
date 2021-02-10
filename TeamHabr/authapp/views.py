@@ -1,8 +1,9 @@
 from django.shortcuts import HttpResponseRedirect, render
 from .models import User
 from .forms import UserLoginForm, UserRegisterForm, UserEditForm
+from django.views.generic import UpdateView
 from django.contrib import auth
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from mainapp.models import Post
 from django.contrib.auth.views import LoginView
@@ -16,8 +17,8 @@ class LoginView(LoginView):
 
     form = UserLoginForm
     content = {
-         "title": title,
-         "login_form": form
+        "title": title,
+        "login_form": form
     }
 
     def get(self, request, *args, **kwargs):
@@ -39,7 +40,9 @@ class LoginView(LoginView):
             else:
                 return redirect(redirect_to)
         else:
-            messages.info(request, "Вход невозможен.\n Введите корректные логин/пароль")
+            messages.info(
+                request,
+                "Вход невозможен.\n Введите корректные логин/пароль")
             return redirect('auth:login')
 
 # class Login(View):
@@ -160,6 +163,7 @@ class Account(View):
         }
         return render(request, self.template_name, self.context)
 
+
 class Edit(View):
     """
     Класс контроллера обработки запросов на изменение данных пользователя
@@ -190,9 +194,28 @@ class Edit(View):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
-        edit_form = self.form(request.POST, request.FILES, instance=request.user)
+        edit_form = self.form(
+            request.POST,
+            request.FILES,
+            instance=request.user)
         if edit_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
 
         return render(request, self.template_name, self.content)
+
+# TODO: проверить PermissionsMixin
+
+
+class UserUpdate(UpdateView):
+    """
+    Класс контроллера обработки запросов на изменение данных пользователя
+
+    """
+    model = User
+    fields = ['username', 'name', 'surname', 'email']
+    template_name_suffix = '_update_form'
+    success_url = reverse_lazy("authapp:account")
+
+    def get_object(self):
+        return self.request.user
