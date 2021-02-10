@@ -212,9 +212,12 @@ class ArticleDelete(FunctionsMixin, DeleteView):
 
     def delete(self, request, slug):
         article_to_delete = self.get_object()
-        article_to_delete.post_status = 'Del'
-        article_to_delete.save()
-        return redirect(self.success_url)
+        if article_to_delete.post_status != 'Drf':
+            article_to_delete.post_status = 'Del'
+            article_to_delete.save()
+            return redirect(self.success_url)
+        else:
+            return super(ArticleDelete, self).delete(request, slug)
 
 
 class PostRead(DetailView):
