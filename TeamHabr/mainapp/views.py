@@ -1,5 +1,6 @@
 from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostCreationForm, CommentForm
 from django.views import View
@@ -12,6 +13,8 @@ from slugify import slugify
 import re
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.template import RequestContext
 
 
 def likes(request, pk, type_likes):
@@ -301,3 +304,43 @@ class HelpPage(View):
         и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
+
+# from django.views.generic import TemplateView
+#
+#
+# class CommonViewMixin:
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         return context
+#
+#
+# class Handler404(CommonViewMixin, TemplateView):
+#     template_name = '123'
+#
+#     def get(self, request, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         return self.render_to_response(context, status=404)
+#
+#
+# class Handler500(CommonViewMixin, TemplateView):
+#     template_name = '50x.html'
+#
+#     def get(self, request, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         return self.render_to_response(context, status=500)
+
+
+def handler404(request, *args, **argv):
+
+    response = render(request, template_name='mainapp/404.html')
+    print(request, response)
+    response.status_code = 404
+    return response
+
+
+# def handler500(request, *args, **argv):
+#     response = render(request, template_name='mainapp/post_list.html')
+#     print(request, response)
+#     response.status_code = 500
+#     return response

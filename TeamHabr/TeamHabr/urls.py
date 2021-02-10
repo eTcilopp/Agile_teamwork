@@ -19,6 +19,7 @@ from django.urls import path, include
 """
 Ссылки на основные приложения проекта
 """
+
 urlpatterns = [
     path('',
          include('mainapp.urls',
@@ -34,4 +35,11 @@ urlpatterns = [
 
     # path('admin/',
     #      admin.site.urls),
+
+
 ]
+import mainapp.views as mainapp
+
+handler404 = mainapp.handler404
+
+# handler500 = mainapp.handler500

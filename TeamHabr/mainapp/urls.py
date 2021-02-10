@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path
 import mainapp.views as mainapp
 
+
 app_name = 'mainapp'
 
 """
