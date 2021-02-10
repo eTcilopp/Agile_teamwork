@@ -77,7 +77,7 @@ class Post(models.Model):
     date_create - дата и время создания статьи
     date_update - дата и встемя любого последнего изменения статьи
     """
-    CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Опубликовано'),
+    CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Ждет одобрения'),
                       ('Del', 'Удалено'), ('Drf', 'Черновик')]
     category_id = models.ForeignKey(
         CategoryPost,

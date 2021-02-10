@@ -32,7 +32,8 @@ def likes(request, pk, type_likes):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     # return HttpResponse('<script>history.back();</script>')
 
-class FunctionsMixin():
+
+class FunctionsMixin:
     def verify_author(self, request):
         editor_id = request.user.username
         author_id = str(self.get_object().user_id)
@@ -50,7 +51,6 @@ class FunctionsMixin():
         if slug_count > 0:
             slug = str(post_id) + '_' + slug
         return slug
-
 
 
 class Index(ListView):
@@ -193,8 +193,9 @@ class ArticleUpdate(FunctionsMixin, UpdateView):
 
         slug = self.generate_unique_slag(form)
         form.instance.slug = slug
-        form.instance.date_update = datetime.datetime.today()
-        form.instance.post_status = 'Pub'
+        if form.instance.post_status != 'Drf':
+            form.instance.date_update = datetime.datetime.today()
+            form.instance.post_status = 'Pub'
         return super(ArticleUpdate, self).form_valid(form)
 
 
@@ -214,9 +215,6 @@ class ArticleDelete(FunctionsMixin, DeleteView):
         article_to_delete.post_status = 'Del'
         article_to_delete.save()
         return redirect(self.success_url)
-
-
-
 
 
 class PostRead(DetailView):
