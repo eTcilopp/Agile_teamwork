@@ -130,11 +130,17 @@ class Register(View):
         со словарем с передаваемыми шаблону данными;
         """
         register_form = self.form(request.POST)
-        if register_form.is_valid():
-            register_form.save()
-            return HttpResponseRedirect(reverse("auth:login"))
 
-        return render(request, self.template_name, self.content)
+        if register_form.is_valid():
+            username = register_form.cleaned_data.get('username')
+            password = register_form.cleaned_data.get('password1')
+            register_form.save()
+            new_user = auth.authenticate(username=username, password=password)
+            auth.login(request, new_user)
+            return HttpResponseRedirect(reverse("main:index"))
+        else:
+            messages.info(request, "Регистрация невозможна.\n Введите корректные данные")
+            return redirect('auth:register')
 
 
 class Account(View):
