@@ -331,16 +331,15 @@ class HelpPage(View):
 #         return self.render_to_response(context, status=500)
 
 
-def handler404(request, *args, **argv):
-
+def handler(request, *args, **argv):
     response = render(request, template_name='mainapp/404.html')
-    print(request, response)
     response.status_code = 404
     return response
 
 
 # def handler500(request, *args, **argv):
-#     response = render(request, template_name='mainapp/post_list.html')
-#     print(request, response)
+#     print(request, *args, **argv)
+#     response = render(request, template_name='mainapp/404.html')
+#     # print(request, response)
 #     response.status_code = 500
 #     return response

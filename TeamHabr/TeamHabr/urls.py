@@ -15,6 +15,7 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 """
 Ссылки на основные приложения проекта
@@ -38,8 +39,8 @@ urlpatterns = [
 
 
 ]
+urlpatterns += staticfiles_urlpatterns()
 import mainapp.views as mainapp
 
-handler404 = mainapp.handler404
-
-# handler500 = mainapp.handler500
+handler404 = mainapp.handler
+handler500 = mainapp.handler
