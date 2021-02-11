@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify bg-white">
-            <p class="h2 text-center">{{object.title}} <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_post}}</span></p>
+            <p class="h2 text-center">{{object.title}} <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_post}}</span></p>
             <hr>
             <p class="text-justify">{{object.text}}</p>
         </div>
@@ -18,7 +18,7 @@
         <div class="col-2"></div>
         <div class="col text-justify text-primary text-right">
             <p class="text-center">Автор: {{object.user_id.username}} <span id="like_user" style="font-size: 14px">
-                    <a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_user}}</span></p>
+                    <a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_user}}</span></p>
         </div>
         <div class="col text-justify text-primary text-right" id="formReview">
             <p class="text-center">Дата создания: {{object.date_create}}</p>
@@ -54,7 +54,7 @@
                         <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>
                         {% else %}
                         <button type="submit" value="отправить" name="save-article" class="btn btn-primary">
-                            <a href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" style="color: white;">Отправить</a>
+                            <a href="#myModal" data-toggle="modal" style="color: white;">Отправить</a>
                             <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>
                         </button>
                         {% endif %}
@@ -82,7 +82,7 @@
                     <div class="col shadow-sm p-3 mb-5 bg-light rounded">
                         <p style="text-align: left">{{comment.text}}</p>
                         <span id="like_comment" style="font-size: 14px">
-                            <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" {% endif %}>
+                            <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                 <i class="bi bi-heart-fill"></i>
                             </a>{{comment.get_count_comment}}</span>
                         <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
@@ -101,7 +101,7 @@
                     <div class="col shadow-sm p-3 mb-5 bg-light rounded">
                         <p style="text-align: left">{{answer.text}}</p>
                         <span style="font-size: 14px">
-                            <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" {% endif %}>
+                            <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                 <i class="bi bi-heart-fill"></i>
                             </a>{{answer.get_count_comment}}</span>
                         <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
