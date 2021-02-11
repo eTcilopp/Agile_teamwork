@@ -11,6 +11,8 @@ from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 import re
 import datetime
+import string
+import random
 from django.contrib.auth.decorators import login_required
 
 
@@ -42,15 +44,25 @@ class FunctionsMixin:
     def generate_unique_slag(self, form):
         title = form.cleaned_data.get("title")
         slug = slugify(title)
+
         post_id = form.instance.id
-        slug_count = self.model.objects.filter(
-            slug=slug).exclude(
-            id=post_id).values_list(
-            'slug',
-            flat=True).count()
-        if slug_count > 0:
-            slug = str(post_id) + '_' + slug
-        return slug
+
+        def make_unique(slug):
+            slug_count = self.model.objects.filter(
+                slug=slug).exclude(
+                id=post_id).values_list(
+                'slug',
+                flat=True).count()
+
+            if slug_count > 0:
+                symbols = string.ascii_lowercase
+                random_symbol = random.choice(symbols)
+                slug = random_symbol + slug
+                slug = make_unique(slug)
+
+            return slug
+
+        return make_unique(slug)
 
 
 class Index(ListView):
