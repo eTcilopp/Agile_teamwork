@@ -22,12 +22,16 @@ class LoginView(LoginView):
     }
 
     def get(self, request, *args, **kwargs):
+        global redirect_to
+        redirect_to = self.request.GET.get('next')
+
+        # print(redirect_to)
         return render(request, 'authapp/login.html', self.content)
 
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
         password = request.POST['password']
-        redirect_to = self.request.GET.get('next')
+        # print(redirect_to)
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
@@ -39,7 +43,7 @@ class LoginView(LoginView):
             messages.info(
                 request,
                 "Вход невозможен.\n Введите корректные логин/пароль")
-            return redirect(redirect_to+"#myModal")
+            return redirect('auth:login')
 
 # class Login(View):
 #     """
@@ -93,7 +97,7 @@ class Logout(View):
         с передаваемыми шаблону данными;
         """
         auth.logout(request)
-        return HttpResponseRedirect(reverse('main:index'))
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class Register(View):
