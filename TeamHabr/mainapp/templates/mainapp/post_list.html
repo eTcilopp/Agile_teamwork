@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify">
-            <a class="text-info" href="{% url 'main:article_create' %}">Создать новую статью</a>
+            <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:article_create' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>Создать новую статью</a>
             {% for article in object_list %}
             <p class="h2 text-center">
                 <a href="{% url 'main:post' article.slug %}">
@@ -17,7 +17,8 @@
                     <a {% if user.is_authenticated %}
                         href="{% url 'main:like' article.pk 'post' %}"
                        {% else %}
-                        href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}"
+                        href="#myModal" data-toggle="modal"
+
                        {% endif %}>
                         <i class="bi bi-heart-fill"></i>
                     </a> {{article.get_count_post}}

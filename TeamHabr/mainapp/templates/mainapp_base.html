@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         $('a').click(function(e) {
 
@@ -64,7 +66,8 @@
                     <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:account' %}">{{ user.name }}</a></li>
                     <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:logout' %}">Выход</a></li>
                     {% else %}
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}">Вход</a></li>
+                    <li class="col-1"><a class="text-secondary h6" href="#myModal" data-toggle="modal">Вход</a></li>
+                    {% include "authapp/login.html" %}
                     <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:register' %}">Регистрация</a></li>
                     {% endif %}
                     {% if user.is_superuser or user|has_group:"Moder"  %}

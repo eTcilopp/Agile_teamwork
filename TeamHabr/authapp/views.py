@@ -22,16 +22,12 @@ class LoginView(LoginView):
     }
 
     def get(self, request, *args, **kwargs):
-        global redirect_to
-        redirect_to = self.request.GET.get('next')
-
-        # print(redirect_to)
         return render(request, 'authapp/login.html', self.content)
 
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
         password = request.POST['password']
-        # print(redirect_to)
+        redirect_to = self.request.GET.get('next')
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)

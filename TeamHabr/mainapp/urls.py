@@ -30,7 +30,7 @@ urlpatterns = [
 
     path(
         'post/create/',
-        login_required(mainapp.ArticleCreate.as_view()),
+        mainapp.ArticleCreate.as_view(),
         name='article_create'),
 
     path(
@@ -40,12 +40,12 @@ urlpatterns = [
 
     path(
         'post/edit/<slug:slug>/',
-        login_required(mainapp.ArticleUpdate.as_view()),
+        mainapp.ArticleUpdate.as_view(),
         name='article_edit'),
 
     path(
         'post/delete/<slug:slug>/',
-        login_required(mainapp.ArticleDelete.as_view()),
+        mainapp.ArticleDelete.as_view(),
         name='article_delete'),
 
     path(
