@@ -15,10 +15,12 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 """
 Ссылки на основные приложения проекта
 """
+
 urlpatterns = [
     path('',
          include('mainapp.urls',
@@ -34,4 +36,11 @@ urlpatterns = [
 
     # path('admin/',
     #      admin.site.urls),
+
+
 ]
+urlpatterns += staticfiles_urlpatterns()
+import mainapp.views as mainapp
+
+handler404 = mainapp.handler
+handler500 = mainapp.handler

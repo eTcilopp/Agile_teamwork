@@ -1,5 +1,6 @@
 from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostCreationForm, CommentForm
 from django.views import View
@@ -11,7 +12,11 @@ from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 import re
 import datetime
+import string
+import random
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.template import RequestContext
 
 
 def likes(request, pk, type_likes):
@@ -42,15 +47,25 @@ class FunctionsMixin:
     def generate_unique_slag(self, form):
         title = form.cleaned_data.get("title")
         slug = slugify(title)
+
         post_id = form.instance.id
-        slug_count = self.model.objects.filter(
-            slug=slug).exclude(
-            id=post_id).values_list(
-            'slug',
-            flat=True).count()
-        if slug_count > 0:
-            slug = str(post_id) + '_' + slug
-        return slug
+
+        def make_unique(slug):
+            slug_count = self.model.objects.filter(
+                slug=slug).exclude(
+                id=post_id).values_list(
+                'slug',
+                flat=True).count()
+
+            if slug_count > 0:
+                symbols = string.ascii_lowercase
+                random_symbol = random.choice(symbols)
+                slug = random_symbol + slug
+                slug = make_unique(slug)
+
+            return slug
+
+        return make_unique(slug)
 
 
 class Index(ListView):
@@ -301,3 +316,42 @@ class HelpPage(View):
         и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
+
+# from django.views.generic import TemplateView
+#
+#
+# class CommonViewMixin:
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         return context
+#
+#
+# class Handler404(CommonViewMixin, TemplateView):
+#     template_name = '123'
+#
+#     def get(self, request, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         return self.render_to_response(context, status=404)
+#
+#
+# class Handler500(CommonViewMixin, TemplateView):
+#     template_name = '50x.html'
+#
+#     def get(self, request, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         return self.render_to_response(context, status=500)
+
+
+def handler(request, *args, **argv):
+    response = render(request, template_name='mainapp/404.html')
+    response.status_code = 404
+    return response
+
+
+# def handler500(request, *args, **argv):
+#     print(request, *args, **argv)
+#     response = render(request, template_name='mainapp/404.html')
+#     # print(request, response)
+#     response.status_code = 500
+#     return response
