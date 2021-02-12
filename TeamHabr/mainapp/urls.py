@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path
 import mainapp.views as mainapp
 
+
 app_name = 'mainapp'
 
 """
@@ -29,13 +30,23 @@ urlpatterns = [
 
     path(
         'post/create/',
-        login_required(mainapp.ArticleCreate.as_view()),
+        mainapp.ArticleCreate.as_view(),
         name='article_create'),
 
     path(
         'post/<slug:slug>/',
         mainapp.PostRead.as_view(),
         name='post'),
+
+    path(
+        'post/edit/<slug:slug>/',
+        mainapp.ArticleUpdate.as_view(),
+        name='article_edit'),
+
+    path(
+        'post/delete/<slug:slug>/',
+        mainapp.ArticleDelete.as_view(),
+        name='article_delete'),
 
     path(
         'like/<int:pk>/<str:type_likes>',
