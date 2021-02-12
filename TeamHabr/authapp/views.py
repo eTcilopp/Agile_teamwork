@@ -39,7 +39,7 @@ class LoginView(LoginView):
             messages.info(
                 request,
                 "Вход невозможен.\n Введите корректные логин/пароль")
-            return redirect('auth:login')
+            return redirect(redirect_to)
 
 # class Login(View):
 #     """
@@ -93,7 +93,8 @@ class Logout(View):
         с передаваемыми шаблону данными;
         """
         auth.logout(request)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return HttpResponseRedirect(reverse("main:index"))
+        # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class Register(View):
