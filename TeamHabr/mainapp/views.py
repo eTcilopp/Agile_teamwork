@@ -48,9 +48,8 @@ class FunctionsMixin:
         title = form.cleaned_data.get("title")
         slug = slugify(title)
 
-        post_id = form.instance.id
-
         def make_unique(slug):
+            post_id = form.instance.id
             slug_count = self.model.objects.filter(
                 slug=slug).exclude(
                 id=post_id).values_list(
