@@ -303,7 +303,7 @@ class HelpPage(View):
     Для формирования словаря context задается заголовок, имя шаблона, контекст.
     """
     title = 'Помощь'
-    template_name = 'mainapp/index.html'
+    template_name = 'mainapp/help.html'
     context = {
         'title': title,
     }

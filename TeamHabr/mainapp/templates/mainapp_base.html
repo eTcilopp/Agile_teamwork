@@ -62,6 +62,7 @@
                     {% for category in categories %}
                     <li class="col"><a class="text-secondary h6" href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
                     {% endfor %}
+                    <li class="col-1"><a href="{% url 'main:help' %}" class="text-secondary h6">Помощь</a></li>
                     {% if user.is_authenticated %}
                     <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:account' %}">{{ user.name }}</a></li>
                     <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:logout' %}">Выход</a></li>
