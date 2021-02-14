@@ -1,4 +1,11 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect, render
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
 from .models import User
 from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 from django.views.generic import UpdateView
@@ -8,7 +15,9 @@ from django.views import View
 from mainapp.models import Post
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
+from django.core.mail import EmailMessage
 
 
 class LoginView(LoginView):
@@ -40,6 +49,7 @@ class LoginView(LoginView):
                 request,
                 "Вход невозможен.\n Введите корректные логин/пароль")
             return redirect(redirect_to)
+
 
 # class Login(View):
 #     """
@@ -129,15 +139,47 @@ class Register(View):
         register_form = self.form(request.POST)
 
         if register_form.is_valid():
-            username = register_form.cleaned_data.get('username')
-            password = register_form.cleaned_data.get('password1')
-            register_form.save()
-            new_user = auth.authenticate(username=username, password=password)
-            auth.login(request, new_user)
-            return HttpResponseRedirect(reverse("main:index"))
+            new_user = register_form.save(commit=False)
+            new_user.is_active = False
+            new_user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account.'
+            message = render_to_string('authapp/acc_active_email.html', {
+                'user': new_user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(new_user.pk)),
+                'token': default_token_generator.make_token(new_user),
+            })
+            to_email = register_form.cleaned_data.get('email')
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            return HttpResponse('Please confirm your email address to complete the registration')
+            # username = register_form.cleaned_data.get('username')
+            # password = register_form.cleaned_data.get('password1')
+            # register_form.save()
+            # new_user = auth.authenticate(username=username, password=password)
+            # auth.login(request, new_user)
+            # return HttpResponseRedirect(reverse("main:index"))
         else:
             messages.info(request, "Регистрация невозможна.\n Введите корректные данные")
             return redirect('auth:register')
+
+
+class Activate(View):
+
+    def get(self, request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = get_user_model()._default_manager.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        else:
+            return HttpResponse('Activation link is invalid!')
 
 
 class Account(View):
@@ -206,6 +248,7 @@ class Edit(View):
             return HttpResponseRedirect(reverse('auth:edit'))
 
         return render(request, self.template_name, self.content)
+
 
 # TODO: проверить PermissionsMixin
 

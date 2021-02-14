@@ -25,6 +25,9 @@ urlpatterns = [
         'register/',
         authapp.Register.as_view(),
         name='register'),
+    path('activate/<uidb64>/<token>/',
+         authapp.Activate.as_view(),
+         name='activate'),
     path(
         'account/',
         login_required(

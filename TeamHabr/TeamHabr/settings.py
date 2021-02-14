@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'g36+w+!7k1)kggph6#_9b@)y226gknpo(vfuv^d=x@bl@&!1o!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -162,3 +162,13 @@ STATICFILES_DIRS = (
 AUTH_USER_MODEL = 'authapp.User'
 
 LOGIN_URL = '/login/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_PASSWORD = 'PEE1GAH6'
+EMAIL_HOST_USER = 'kirikeza@mail.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
