@@ -63,7 +63,8 @@
                     <li class="col"><a class="text-secondary h6" href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
                     {% endfor %}
                     {% if user.is_authenticated %}
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:account' %}">{{ user.name }}</a></li>
+                    <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:account' %}">
+                        {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} {{ user.name }}</a></li>
                     <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:logout' %}">Выход</a></li>
                     {% else %}
                     <li class="col-1"><a class="text-secondary h6" href="#myModal" data-toggle="modal">Вход</a></li>
