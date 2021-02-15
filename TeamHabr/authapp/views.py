@@ -153,7 +153,7 @@ class Register(View):
             to_email = register_form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return HttpResponse('Для активации Вашего профиля перейдите по ссылке, отправленной Вам по электронной почте')
             # username = register_form.cleaned_data.get('username')
             # password = register_form.cleaned_data.get('password1')
             # register_form.save()
@@ -177,9 +177,9 @@ class Activate(View):
         if user is not None and default_token_generator.check_token(user, token):
             user.is_active = True
             user.save()
-            return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+            return HttpResponse('Благодарим Вас за подтверждение электронной почты. Вы можете авторизоваться.')
         else:
-            return HttpResponse('Activation link is invalid!')
+            return HttpResponse('Ссылка недействительна!')
 
 
 class Account(View):
