@@ -1,14 +1,22 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django import forms
+from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostCreationForm, CommentForm
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
 from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
 import re
+import datetime
+import string
+import random
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.template import RequestContext
 
 
 def likes(request, pk, type_likes):
@@ -21,8 +29,42 @@ def likes(request, pk, type_likes):
     """
     field_id = f"{type_likes}_id_id"
     author = request.user
-    obj, created = Like.objects.update_or_create(**{field_id: pk}, author_user_id_id=author.pk)
+    obj, created = Like.objects.update_or_create(
+        **{field_id: pk}, author_user_id_id=author.pk)
+    if not created:
+        Like.objects.filter(
+            **{field_id: pk}, author_user_id_id=author.pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # return HttpResponse('<script>history.back();</script>')
+
+
+class FunctionsMixin:
+    def verify_author(self, request):
+        editor_id = request.user.username
+        author_id = str(self.get_object().user_id)
+        return editor_id == author_id
+
+    def generate_unique_slag(self, form):
+        title = form.cleaned_data.get("title")
+        slug = slugify(title)
+
+        def make_unique(slug):
+            post_id = form.instance.id
+            slug_count = self.model.objects.filter(
+                slug=slug).exclude(
+                id=post_id).values_list(
+                'slug',
+                flat=True).count()
+
+            if slug_count > 0:
+                symbols = string.ascii_lowercase
+                random_symbol = random.choice(symbols)
+                slug = random_symbol + slug
+                slug = make_unique(slug)
+
+            return slug
+
+        return make_unique(slug)
 
 
 class Index(ListView):
@@ -64,7 +106,7 @@ class Index(ListView):
         return context
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(FunctionsMixin, CreateView):
     """
     Класс контроллера обрабоки запросов на создание новой статьи.
     Класс наследуется от встроенного класса CreateView
@@ -86,12 +128,15 @@ class ArticleCreate(CreateView):
         initial = super(ArticleCreate, self).get_initial()
         # опделеляем url страницы, с которой осуществлен переход
         source_page = self.request.META["HTTP_REFERER"]
-        # с помощью регулярного выражения определен слаг страницы, с которой выполнен переход
+        # с помощью регулярного выражения определен слаг страницы, с которой
+        # выполнен переход
         result = re.search('.*/(.*)/', source_page).group(1)
-        # выполняется запрос в базу данных - по слагу определяется id категории из модели CategoryPost
+        # выполняется запрос в базу данных - по слагу определяется id категории
+        # из модели CategoryPost
         category_id = self.category_post_model.objects.filter(
             slug=result).values_list('id', flat=True).first()
-        # в случае, если категория найдена, ее значение добавляется в словарь itinial для передачи в форму
+        # в случае, если категория найдена, ее значение добавляется в словарь
+        # itinial для передачи в форму
         if category_id:
             initial['category_id'] = category_id
         return initial
@@ -125,7 +170,7 @@ class ArticleCreate(CreateView):
         postitems = context["postitems"]
         with transaction.atomic():
             form.instance.user_id = self.request.user
-            slug = form.cleaned_data.get("title")
+            slug = self.generate_unique_slag(form)
             form.instance.slug = slugify(slug)
             self.object = form.save()
             if postitems.is_valid():
@@ -133,6 +178,60 @@ class ArticleCreate(CreateView):
                 postitems.save()
 
         return super(ArticleCreate, self).form_valid(form)
+
+
+class ArticleUpdate(FunctionsMixin, UpdateView):
+    """
+    Контроллер редактирования статьи, использует встроенный контроллер Django UpdateView
+    """
+
+    model = Post
+    fields = ['title', 'text', 'category_id']
+    template_name_suffix = '_update_form'
+    success_url = reverse_lazy("authapp:account")
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_author(request):
+            return super(ArticleUpdate, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для редактирования данной статьи.</h2>')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['slug'] = self.get_object().slug
+
+        return context
+
+    def form_valid(self, form):
+
+        slug = self.generate_unique_slag(form)
+        form.instance.slug = slug
+        if form.instance.post_status != 'Drf':
+            form.instance.date_update = datetime.datetime.today()
+            form.instance.post_status = 'Pub'
+        return super(ArticleUpdate, self).form_valid(form)
+
+
+class ArticleDelete(FunctionsMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('authapp:account')
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_author(request):
+            return super(ArticleDelete, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для удаления данной статьи.</h2>')
+
+    def delete(self, request, slug):
+        article_to_delete = self.get_object()
+        if article_to_delete.post_status != 'Drf':
+            article_to_delete.post_status = 'Del'
+            article_to_delete.save()
+            return redirect(self.success_url)
+        else:
+            return super(ArticleDelete, self).delete(request, slug)
 
 
 class PostRead(DetailView):
@@ -153,7 +252,8 @@ class PostRead(DetailView):
         """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
-        context["comments"] = Comment.objects.filter(post_id=self.get_object().id, parent_comment=None)
+        context["comments"] = Comment.objects.filter(
+            post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
         return context
 
@@ -166,7 +266,8 @@ class PostRead(DetailView):
         form.instance.post_id = self.object
         form.instance.user_id = self.request.user
         if self.request.POST.get("parent", None):
-            form.instance.parent_comment_id = int(self.request.POST.get("parent"))
+            form.instance.parent_comment_id = int(
+                self.request.POST.get("parent"))
         form.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -202,7 +303,7 @@ class HelpPage(View):
     Для формирования словаря context задается заголовок, имя шаблона, контекст.
     """
     title = 'Помощь'
-    template_name = 'mainapp/index.html'
+    template_name = 'mainapp/help.html'
     context = {
         'title': title,
     }
@@ -214,3 +315,42 @@ class HelpPage(View):
         и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
+
+# from django.views.generic import TemplateView
+#
+#
+# class CommonViewMixin:
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         return context
+#
+#
+# class Handler404(CommonViewMixin, TemplateView):
+#     template_name = '123'
+#
+#     def get(self, request, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         return self.render_to_response(context, status=404)
+#
+#
+# class Handler500(CommonViewMixin, TemplateView):
+#     template_name = '50x.html'
+#
+#     def get(self, request, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         return self.render_to_response(context, status=500)
+
+
+def handler(request, *args, **argv):
+    response = render(request, template_name='mainapp/404.html')
+    response.status_code = 404
+    return response
+
+
+# def handler500(request, *args, **argv):
+#     print(request, *args, **argv)
+#     response = render(request, template_name='mainapp/404.html')
+#     # print(request, response)
+#     response.status_code = 500
+#     return response

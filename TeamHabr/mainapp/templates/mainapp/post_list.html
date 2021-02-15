@@ -7,9 +7,23 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify">
-            <a class="text-info" href="{% url 'main:article_create' %}">Создать новую статью</a>
+            <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:article_create' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>Создать новую статью</a>
             {% for article in object_list %}
-            <p class="h2 text-center">{{article.title}} <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' article.pk 'post' %}" {% else %} href="{% url 'auth:login' %}" {% endif %}><i class="bi bi-heart-fill"></i></a> {{article.get_count_post}}</span></p>
+            <p class="h2 text-center">
+                <a href="{% url 'main:post' article.slug %}">
+                {{article.title}}
+                </a>
+                <span id="like_post" style="font-size: 14px">
+                    <a {% if user.is_authenticated %}
+                        href="{% url 'main:like' article.pk 'post' %}"
+                       {% else %}
+                        href="#myModal" data-toggle="modal"
+
+                       {% endif %}>
+                        <i class="bi bi-heart-fill"></i>
+                    </a> {{article.get_count_post}}
+                </span>
+            </p>
             <p>{{article.text| truncatewords:50}}</p>
             <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
             {% endfor %}

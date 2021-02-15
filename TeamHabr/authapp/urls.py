@@ -16,8 +16,7 @@ account - Вывод страницы личного кабинета
 urlpatterns = [
     path(
         'login/',
-        authapp.Login.as_view(),
-        name='login'),
+        authapp.LoginView.as_view(), name='login'),
     path(
         'logout/',
         authapp.Logout.as_view(),
@@ -31,4 +30,11 @@ urlpatterns = [
         login_required(
             authapp.Account.as_view()),
         name='account'),
+    path(
+        'edit/',
+        authapp.Edit.as_view(),
+        name='edit',),
+    path('update/',
+         authapp.UserUpdate.as_view(),
+         name='edit')
 ]

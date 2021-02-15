@@ -77,9 +77,12 @@ class Post(models.Model):
     date_create - дата и время создания статьи
     date_update - дата и встемя любого последнего изменения статьи
     """
-    CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Опубликовано'),
+    CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Ждет одобрения'),
                       ('Del', 'Удалено'), ('Drf', 'Черновик')]
-    category_id = models.ForeignKey(CategoryPost, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(
+        CategoryPost,
+        on_delete=models.CASCADE,
+        verbose_name='Категория')
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
@@ -103,6 +106,15 @@ class Post(models.Model):
     date_update = models.DateTimeField(
         verbose_name='Дата изменения статьи',
         default=datetime.datetime.today)
+
+    @property
+    def post_updated(self):
+        """
+        Свойство для определения, был ли обновлен пост. Если сравнивать date_update и date_create,
+        получается разница  8e-06 секунд - и Django фиксирует обновление.
+        В данном методе, передаваемом в шаблон, пост считается обновленным, если date_update > date_create на 10 сек
+        """
+        return (self.date_update - self.date_create).total_seconds() > 10
 
     def __str__(self):
         """
@@ -129,6 +141,7 @@ class Post(models.Model):
         verbose_name_plural = 'Статьи'
         verbose_name = 'Статья'
         ordering = ['-date_create']
+
 
 
     def get_absolute_url(self):

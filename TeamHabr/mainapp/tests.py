@@ -1,20 +1,31 @@
 from django.test import TestCase
-from .models import CategoryPost
+from .models import CategoryPost, Post
+
+from django.test.client import Client
 
 
 class BasicTest(TestCase):
+    fixtures = ['authapp.json', 'adminapp.json', 'mainapp.json', 'auth.json']
 
     def test_fields(self):
-        comment = CategoryPost()
-        comment.name = 'TestCategory'
-        comment.save()
+        category = CategoryPost()
+        category.name = 'TestCategory1'
+        category.save()
 
-        read_record = CategoryPost.objects.get(pk=1)
-        self.assertEqual(read_record, comment)
+        read_record = CategoryPost.objects.latest('id')
+        self.assertEqual(read_record, category)
 
     def test_mainapp_common_urls(self):
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
 
-        response = self.client.get('/post/create/')
-        self.assertEqual(response.status_code, 302)
+        # Тестируем существование всех страниц статей по категориям
+        for category in CategoryPost.objects.all():
+            response = self.client.get(f'/category/{category.slug}/')
+            self.assertEqual(response.status_code, 200)
+
+        # Тестируем существование всех индивидуальный страниц статей
+        for article in Post.objects.all():
+            response = self.client.get(f'/post/{article.slug}/')
+            self.assertEqual(response.status_code, 200)
+
+
+

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import datetime
 from django.views.generic import CreateView, ListView
 from authapp.models import User
 from mainapp.models import Post, CategoryPost
@@ -10,6 +11,11 @@ from django.db import transaction
 from slugify import slugify
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import Group
+
+
+def change_status_post(request, slug, status):
+    Post.objects.filter(slug=slug).update(post_status=status, status_update=datetime.datetime.now())
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -62,6 +68,31 @@ class AdminPostList(LoginRequiredMixin, ListView):
     template_name = "adminapp/post_list.html"
     model = Post
     paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        """
+        Функция получения набора данных со статьями из базы данных. Выдираются только статьи со статусом 'Утверждено'
+        В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
+        Функция возвращает queryset, используемой родительским классом ListView
+        """
+        queryset = self.model.objects.exclude(
+            post_status='Drf')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенной функция получения информации из базы данных,
+        передаваемой шаблону для формирования главной старицы.
+        В словарь context добавляются значения заголовка и списка категорий для формирования меню.
+        """
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Список статей'
+        return context
+
+    def post(self, request):
+        print(self.request.POST['status_list'])
+        print(self.request)
+
 
 
 class AdminCategoryList(LoginRequiredMixin, ListView):
