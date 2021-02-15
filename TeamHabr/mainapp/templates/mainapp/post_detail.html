@@ -1,5 +1,6 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
+{% load auth_extras %}
 
 {% block content %}
 
@@ -8,7 +9,22 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify bg-white">
-            <p class="h2 text-center">{{object.title}} <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_post}}</span></p>
+            <p class="h2 text-center">{{object.title}}
+                <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_post}}</span>
+                <span style="font-size: 14px">{% if user.is_superuser or user|has_group:"Moder"  %}
+                    {{object.get_post_status_display}}
+                    {% if object.post_status != 'Apr' %}
+                <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}">
+                    <i class="bi bi-check2-square"></i></a>
+                {% endif %}
+                {% if object.post_status != 'Del' %}
+                <a href="{% url 'admin:change_status_post' object.slug 'Del'%}">
+                    <i class="bi bi-trash"></i></a>
+                {% endif %}
+                    {% if object.post_status != 'Can' %}
+                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}">
+                        <i class="bi bi-x-octagon"></i></a>
+                    {% endif %}{% endif %} </span> </p>
             <hr>
             <p class="text-justify">{{object.text}}</p>
         </div>

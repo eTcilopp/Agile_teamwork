@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         {% for object in object_list %}
-        <tr class="text-center"  {% if object.post_status == 'Del' %} style="opacity: 0.5" {% endif %}>
+        <tr class="text-center {% if object.post_status == 'Aip' %} table-warning {% endif %}"  {% if object.post_status == 'Del' or object.post_status == 'Can' %} style="opacity: 0.5" {% endif %}>
 
             <td>
                 {{object.get_post_status_display}}
@@ -28,6 +28,10 @@
                 {% if object.post_status != 'Del' %}
                 <a href="{% url 'admin:change_status_post' object.slug 'Del'%}">
                     <i class="bi bi-trash"></i></a>
+                {% endif %}
+                {% if object.post_status != 'Can' %}
+                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}">
+                        <i class="bi bi-x-octagon"></i></a>
                 {% endif %}
 
 

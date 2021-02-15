@@ -76,7 +76,7 @@ class AdminPostList(LoginRequiredMixin, ListView):
         Функция возвращает queryset, используемой родительским классом ListView
         """
         queryset = self.model.objects.exclude(
-            post_status='Drf')
+            post_status='Drf').order_by('post_status')
         return queryset
 
     def get_context_data(self, **kwargs):

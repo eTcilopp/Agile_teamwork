@@ -209,7 +209,7 @@ class ArticleUpdate(FunctionsMixin, UpdateView):
         form.instance.slug = slug
         if form.instance.post_status != 'Drf':
             form.instance.date_update = datetime.datetime.today()
-            form.instance.post_status = 'Pub'
+            form.instance.post_status = 'Aip'
         return super(ArticleUpdate, self).form_valid(form)
 
 

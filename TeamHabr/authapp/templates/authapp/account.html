@@ -1,5 +1,6 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
+{% load auth_extras %}
 
 {% block users %}
 {% endblock %}
@@ -9,6 +10,9 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-center">
+            {% if user.is_superuser or user|has_group:"Moder"  %}
+            <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="150px" height="100px">
+            {% endif %}
             {% if user.avatar %}
             <img src="{{ user.avatar }}" alt="" width="40px" height="40px">
             {% else %}
@@ -44,7 +48,7 @@
             {% if articles %}
             {% for article in articles %}
             <p class="h2 text-center">{{ article.title }} {% if article.post_status == 'Drf' %}
-                <a href="{% url 'admin:change_status_post' article.slug 'Pub'%}">
+                <a href="{% url 'admin:change_status_post' article.slug 'Aip'%}">
                     <i class="bi bi-truck"></i></a>
                 {% endif %}</p>
             <p>Статус: {{ article.get_post_status_display }}</p>
