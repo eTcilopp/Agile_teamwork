@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 import authapp.views as authapp
 
 app_name = 'authapp'
@@ -39,5 +40,19 @@ urlpatterns = [
         name='edit',),
     path('update/',
          authapp.UserUpdate.as_view(),
-         name='edit')
+         name='edit'),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(
+        template_name="authapp/reset_password.html",
+        email_template_name="authapp/password_reset_html_email.html",
+        success_url = reverse_lazy('authapp:password_reset_done')),
+         name='reset_password'),
+    path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name="authapp/password_reset_sent.html"),
+         name='password_reset_done'),
+    path('accounts/reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name="authapp/password_reset_form.html", success_url = reverse_lazy("authapp:password_reset_complete")),
+         name='password_reset_confirm'),
+    path('accounts/reset/done/',
+         auth_views.PasswordResetCompleteView.as_view(template_name="authapp/password_reset_done.html"),
+         name='password_reset_complete')
 ]
