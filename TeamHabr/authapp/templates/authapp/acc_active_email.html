@@ -1,4 +1,14 @@
-{% autoescape off %}  
+{% autoescape off %}
+
+
+Здравствуйте, {{ user.username }}!
+Пожалуйста, перейдите по ссылке, чтобы подтвердить Вашу регистрацию.
+Please click on the link to confirm your registration,
+http://{{ domain }}{% url 'auth:activate' uidb64=uid token=token %}
+Если Вы не регистрировались на сайте {{ domain }},
+пожалуйста, проигнорируйте данное письмо.
+
+
 Hi {{ user.username }},  
 Please click on the link to confirm your registration,
 http://{{ domain }}{% url 'auth:activate' uidb64=uid token=token %}
