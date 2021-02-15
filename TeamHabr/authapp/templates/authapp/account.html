@@ -44,7 +44,7 @@
             {% if articles %}
             {% for article in articles %}
             <p class="h2 text-center">{{ article.title }} {% if article.post_status == 'Drf' %}
-                <a href="{% url 'admin:change_status_post' article.slug 'Pub'%}">
+                <a href="{% url 'admin:change_status_post' article.slug 'Aip'%}">
                     <i class="bi bi-truck"></i></a>
                 {% endif %}</p>
             <p>Статус: {{ article.get_post_status_display }}</p>
