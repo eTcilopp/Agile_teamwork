@@ -2,7 +2,8 @@ from django.shortcuts import render
 import datetime
 from django.views.generic import CreateView, ListView
 from authapp.models import User
-from mainapp.models import Post, CategoryPost
+from mainapp.models import Post, CategoryPost, Reason
+from mainapp.forms import ReasonCreateForm
 from adminapp.forms import CategoryCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,10 +12,71 @@ from django.db import transaction
 from slugify import slugify
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import Group
+from django.views.generic.edit import CreateView
+from django.shortcuts import redirect
+
+
+class ReasonCreate(CreateView):
+    model = Reason
+    fields = ['text']
+    form = ReasonCreateForm
+    template_name = 'adminapp/create.html'
+
+    def get_success_url(self):
+        """
+        url для перехода в случае успешного создания статьи
+        """
+        return reverse_lazy('admin:post_list')
+
+    def get_context_data(self, **kwargs):
+        """
+        В словарь контекста data добавляется заголовок страницы
+        """
+        data = super(ReasonCreate, self).get_context_data(**kwargs)
+
+        if self.request.POST:
+            print(self.request)
+            form = ReasonCreateForm(self.request.POST)
+        else:
+            form = ReasonCreateForm
+        data["title"] = "Создание причины отказа"
+        data["postitems"] = form
+
+        return data
+
+    def form_valid(self, form, **kwargs):
+        """
+        Метод выполняет проверку правильности заполнения формы данными,
+        осуществляет дозаполнение поля сгенерируемым автоматически слагом,
+        сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
+        """
+        context = self.get_context_data()
+        postitems = context["postitems"]
+        with transaction.atomic():
+            post = Post.objects.get(slug=self.kwargs['slug'])
+            form.instance.post_id_id = post.pk
+            form.instance.user_id_id = self.request.user.pk
+            self.object = form.save()
+            if postitems.is_valid():
+                postitems.instance = self.object
+                postitems.save()
+                Post.objects.filter(
+                    slug=self.kwargs['slug']).update(
+                    post_status=self.kwargs['status'],
+                    status_update=datetime.datetime.now())
+
+        return super(ReasonCreate, self).form_valid(form)
 
 
 def change_status_post(request, slug, status):
-    Post.objects.filter(slug=slug).update(post_status=status, status_update=datetime.datetime.now())
+    if status == "Can":
+        return redirect('admin:create_reason', slug=slug, status=status)
+    else:
+        if status == "Apr":
+            post = Post.objects.get(slug=slug)
+            if Reason.objects.filter(post_id_id=post.pk).exists():
+                Reason.objects.filter(post_id_id=post.pk).delete()
+        Post.objects.filter(slug=slug).update(post_status=status, status_update=datetime.datetime.now())
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -94,7 +156,6 @@ class AdminPostList(LoginRequiredMixin, ListView):
         print(self.request)
 
 
-
 class AdminCategoryList(LoginRequiredMixin, ListView):
     """
         Класс контроллера обрабоки запросов на просмотр станицы
@@ -140,6 +201,7 @@ class AdminCreateCategory(CreateView):
             form = CategoryCreationForm(self.request.POST)
         else:
             form = CategoryCreationForm
+        data["title"] = "Создание новой категории"
         data["postitems"] = form
 
         return data

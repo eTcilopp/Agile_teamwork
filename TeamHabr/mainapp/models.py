@@ -142,8 +142,6 @@ class Post(models.Model):
         verbose_name = 'Статья'
         ordering = ['-date_create']
 
-
-
     def get_absolute_url(self):
         """
         Метод генерирует абсолютный путь для получения url через слаги.
@@ -162,6 +160,9 @@ class Post(models.Model):
 
     def count_all_comment(self):
         return Comment.objects.filter(post_id_id=self.pk).count()
+
+    def get_reason(self):
+        return Reason.objects.filter(post_id_id=self.pk)
 
 
 class Comment(models.Model):
@@ -241,3 +242,15 @@ class Like(models.Model):
     #     При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
     #     """
     #     return f'{self.post_id.name} ({self.user_id.name})'
+
+
+class Reason(models.Model):
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(
+        Post, on_delete=models.CASCADE)
+    text = models.TextField(
+        verbose_name="причина отклонения",
+        max_length=512, blank=False)
+    date_create = models.DateTimeField(
+        default=datetime.datetime.today)
