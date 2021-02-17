@@ -2,6 +2,7 @@
 {% load static %}
 {% load auth_extras %}
 
+
 {% block content %}
 
 
@@ -48,8 +49,9 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col">
-
-            <button class="open-button" id="open-button" onclick="openForm()">Комментировать</button>
+            {% if user.is_authenticated %}
+                <button class="open-button" id="open-button" onclick="openForm()">Комментировать</button>
+            {% endif %}
         </div>
         <div class="col-2"></div>
     </div>
@@ -105,7 +107,9 @@
                             <br>
                             {{comment.date_create}}
                         </p>
-                        <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                        {% if user.is_authenticated %}
+                            <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                        {% endif %}
                     </div>
                     <div class="col-2"></div>
                 </div>

@@ -14,3 +14,7 @@ function addReview(name, id) {
         document.getElementById("commentsForm").style.display = "block";
         document.getElementById("open-button").style.display = "none";
     }
+
+function goBack() {
+  window.history.back();
+}

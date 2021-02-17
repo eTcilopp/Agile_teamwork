@@ -24,6 +24,7 @@
                     </a> {{article.get_count_post}}
                 </span>
             </p>
+            <p class="text-center text-info">Дата написания: {{article.date_create}}</p>
             <p>{{article.text| truncatewords:50}}</p>
             <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
             {% endfor %}
