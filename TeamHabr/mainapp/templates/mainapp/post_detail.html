@@ -27,6 +27,18 @@
                         <i class="bi bi-x-octagon"></i></a>
                     {% endif %}{% endif %} </span> </p>
             <hr>
+            {% if object.get_reason %}
+            <h3 class="text-center">Причина отклонения статьи</h3>
+            {% for i in object.get_reason %}
+            <div class="alert alert-danger text-center" role="alert">
+            <strong>От {{i.user_id.username}}</strong> {{i.text}}
+                <br>
+                {{i.date_create}}
+            </div>
+
+            <hr>
+            {% endfor %}
+            {% endif %}
             <p class="text-justify">{{object.text}}</p>
         </div>
         <div class="col-2"></div>
