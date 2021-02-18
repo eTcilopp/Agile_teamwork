@@ -14,6 +14,14 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import Group
 from django.views.generic.edit import CreateView
 from django.shortcuts import redirect
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
 
 
 class ReasonCreate(CreateView):
@@ -64,6 +72,17 @@ class ReasonCreate(CreateView):
                     slug=self.kwargs['slug']).update(
                     post_status=self.kwargs['status'],
                     status_update=datetime.datetime.now())
+
+                current_site = get_current_site(self.request)
+                mail_subject = 'Отклонение вашей статьи.'
+                message = render_to_string('adminapp/cancel_email.html', {
+                    'domain': current_site.domain,
+                    'post': post,
+                    'moder': self.request.user.username
+                })
+                to_email = post.user_id.email
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
 
         return super(ReasonCreate, self).form_valid(form)
 

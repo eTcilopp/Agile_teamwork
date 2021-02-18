@@ -17,6 +17,7 @@ import random
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.template import RequestContext
+from django.db.models import Count
 
 
 def likes(request, pk, type_likes):
@@ -83,11 +84,21 @@ class Index(ListView):
         В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
         Функция возвращает queryset, используемой родительским классом ListView
         """
-        queryset = self.model.objects.filter(
-            post_status='Apr')
+
         if self.kwargs.get('slug'):
-            queryset = self.model.objects.filter(
-                category_id__slug=self.kwargs['slug'], post_status='Apr')
+            if self.kwargs.get('str'):
+                queryset = self.model.objects.filter(
+                    post_status='Apr').order_by('like')
+            else:
+                queryset = self.model.objects.filter(
+                    category_id__slug=self.kwargs['slug'], post_status='Apr')
+        else:
+            if self.kwargs.get('str'):
+                queryset = self.model.objects.filter(
+                    post_status='Apr').annotate(like_count=Count('like')).order_by('-like_count')
+            else:
+                queryset = self.model.objects.filter(
+                    post_status='Apr')
         return queryset
 
     def get_context_data(self, **kwargs):

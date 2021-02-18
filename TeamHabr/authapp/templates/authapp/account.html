@@ -50,12 +50,13 @@
             {% if articles %}
             {% for article in articles %}
             <p class="h2 text-center">{{ article.title }} {% if article.post_status == 'Drf' %}
-                <a href="{% url 'admin:change_status_post' article.slug 'Aip'%}">
-                    <i class="bi bi-truck"></i></a>
+                <a href="{% url 'admin:change_status_post' article.slug 'Aip'%}"><br>
+                    <i class="bi bi-truck"> На одобрение</i></a>
                 {% endif %}</p>
             <p>Статус: {{ article.get_post_status_display }}</p>
             <a href="{% url 'main:article_edit' slug=article.slug %}">Редактировать статью</a>
             <p>{{ article.text| truncatewords:200 }}</p>
+            <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
             {% endfor %}
             {% else %}
             <p class="h2 text-center">У вас ещё нет статей</p>

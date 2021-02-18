@@ -23,6 +23,11 @@ urlpatterns = [
         name='index'),
 
     path(
+        '<str:str>/',
+        mainapp.Index.as_view(),
+        name='popular'),
+
+    path(
         'category/<slug:slug>/',
         mainapp.Index.as_view(),
         name='category'),
