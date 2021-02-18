@@ -14,7 +14,7 @@
             <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="150px" height="100px">
             {% endif %}
             {% if user.avatar %}
-            <img src="{{ user.avatar }}" alt="" width="40px" height="40px">
+            <img src="{{ user.avatar.url }}" alt="{{ user.name }} {{ user.surname }}" height="100px">
             {% else %}
             <img class="img-thumbnail" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" alt="" width="100px" height="100px">
             {% endif %}
@@ -25,6 +25,8 @@
             <p>Имя: {{ user.name }}</p>
             <p>Фамилия: {{ user.surname }}</p>
             <p>e-mail: {{ user.email }}</p>
+            <p>Возраст: {{ user.age }}</p>
+            <p>О себе:  {{ user.aboutMe }}</p>
             <div class="text-center">
                 <a class="text-info" href="{% url 'authapp:edit' %}">Редактировать</a>
             </div>
