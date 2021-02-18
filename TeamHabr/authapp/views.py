@@ -136,8 +136,8 @@ class Register(View):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
-        register_form = self.form(request.POST)
 
+        register_form = self.form(request.POST)
         if register_form.is_valid():
             new_user = register_form.save(commit=False)
             new_user.is_active = False
@@ -161,8 +161,8 @@ class Register(View):
             # auth.login(request, new_user)
             # return HttpResponseRedirect(reverse("main:index"))
         else:
-            messages.info(request, "Регистрация невозможна.\n Введите корректные данные")
-            return redirect('auth:register')
+            self.content["register_form"] = register_form
+            return render(request, self.template_name, self.content)
 
 
 class Activate(View):
