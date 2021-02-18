@@ -209,45 +209,45 @@ class Account(View):
         return render(request, self.template_name, self.context)
 
 
-class Edit(View):
-    """
-    Класс контроллера обработки запросов на изменение данных пользователя
-
-    """
-    title = 'Редактирование'
-    form = UserEditForm
-    template_name = 'authapp/edit.html'
-    content = {
-        'title': title,
-        'edit_form': form
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        Функция обработки get-запросов на редактирование информации о пользователе
-        :param request - функция получает объект request, содержащий параметры запроса
-        :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
-        со славарём с передаваемыми шаблону данными;
-        """
-        return render(request, self.template_name, self.content)
-
-    def post(self, request):
-        """
-        Функция обработки post-запросов на редактиирвание данных пользователя
-        Функция определяет валидность введенных в форму данных и выполняет запись данных в базу данных.
-        :param request - фукнция получает объект request, содержажщий параментры запроса
-        :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
-        со словарем с передаваемыми шаблону данными;
-        """
-        edit_form = self.form(
-            request.POST,
-            request.FILES,
-            instance=request.user)
-        if edit_form.is_valid():
-            edit_form.save()
-            return HttpResponseRedirect(reverse('auth:edit'))
-
-        return render(request, self.template_name, self.content)
+# class Edit(View):
+#     """
+#     Класс контроллера обработки запросов на изменение данных пользователя
+#
+#     """
+#     title = 'Редактирование'
+#     form = UserEditForm
+#     template_name = 'authapp/edit.html'
+#     content = {
+#         'title': title,
+#         'form': form
+#     }
+#
+#     def get(self, request, *args, **kwargs):
+#         """
+#         Функция обработки get-запросов на редактирование информации о пользователе
+#         :param request - функция получает объект request, содержащий параметры запроса
+#         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
+#         со славарём с передаваемыми шаблону данными;
+#         """
+#         return render(request, self.template_name, self.content)
+#
+#     def post(self, request):
+#         """
+#         Функция обработки post-запросов на редактиирвание данных пользователя
+#         Функция определяет валидность введенных в форму данных и выполняет запись данных в базу данных.
+#         :param request - фукнция получает объект request, содержажщий параментры запроса
+#         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
+#         со словарем с передаваемыми шаблону данными;
+#         """
+#         edit_form = self.form(
+#             request.POST,
+#             request.FILES,
+#             instance=request.user)
+#         if edit_form.is_valid():
+#             edit_form.save()
+#             return HttpResponseRedirect(reverse('auth:edit'))
+#
+#         return render(request, self.template_name, self.content)
 
 
 # TODO: проверить PermissionsMixin
@@ -259,7 +259,7 @@ class UserUpdate(UpdateView):
 
     """
     model = User
-    fields = ['username', 'name', 'surname', 'email']
+    fields = ['username', 'name', 'surname', 'email', 'age', 'aboutMe', 'avatar']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 
