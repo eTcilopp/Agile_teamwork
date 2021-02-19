@@ -22,9 +22,18 @@ urlpatterns = [
         mainapp.Index.as_view(),
         name='index'),
     path(
+        'search_results',
+        mainapp.Index.as_view(),
+        name='search_results'),
+
+    path(
         'category/<slug:slug>/',
         mainapp.Index.as_view(),
         name='category'),
+    path(
+        'search_results/<slug:slug>/',
+        mainapp.Index.as_view(),
+        name='search_results'),
 
     path(
         'main/<str:data_type>/',

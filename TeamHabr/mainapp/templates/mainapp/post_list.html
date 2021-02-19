@@ -14,13 +14,21 @@
                     <a class="text-info"
                        {% if category %} href=" {% url  'main:category_popular' slug=category data_type='popular'  %}"
                        {% else %} href=" {% url  'main:popular' data_type='popular'  %}"
-                       {% endif %} >Показать самые популярные статьи</a></div>
+                       {% endif %} >Самые популярные статьи</a></div>
                 <div class="col">
                     <a {% if category %} href=" {% url  'main:category' slug=category   %}"
                     {% else %} href=" {% url 'main:index'  %}"
-                    {% endif %} >Показать самые свежие статьи на сайте</a></div></div>
-
-
+                    {% endif %} >Самые свежие статьи {% if category %}в "{{title}}"{% else %}на сайте{% endif %}</a></div>
+            <div class="col"><form
+                    {% if category %} action=" {% url  'main:search_results' slug=category   %}"
+                    {% else %} action="{% url 'main:search_results' %}"
+                    {% endif %} method="get">
+    <input name="q" type="text" placeholder="Search...">
+        </form></div>
+            </div>
+{% if query%}
+<div class="text-center text-secondary h4">Результаты поиска по запросу "{{query}}" {% if category %}в категории "{{title}}"{% endif %}</div>
+            {% endif %}
 
             {% for article in object_list %}
             <p class="h2 text-center">
