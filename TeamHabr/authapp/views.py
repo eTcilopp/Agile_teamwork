@@ -153,13 +153,12 @@ class Register(View):
             to_email = register_form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-            return HttpResponse('Для активации Вашего профиля перейдите по ссылке, отправленной Вам по электронной почте')
-            # username = register_form.cleaned_data.get('username')
-            # password = register_form.cleaned_data.get('password1')
-            # register_form.save()
-            # new_user = auth.authenticate(username=username, password=password)
-            # auth.login(request, new_user)
-            # return HttpResponseRedirect(reverse("main:index"))
+
+            template_name = 'authapp/service_messages.html'
+            service_message = 'Для активации Вашего профиля перейдите по ссылке, отправленной Вам по электронной почте.'
+            content = {"service_message": service_message}
+            return render(request, template_name, content)
+
         else:
             self.content["register_form"] = register_form
             return render(request, self.template_name, self.content)
@@ -174,12 +173,22 @@ class Activate(View):
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
 
-        if user is not None and default_token_generator.check_token(user, token):
+        template_name = 'authapp/service_messages.html'
+        content = {}
+        if user is not None and default_token_generator.check_token(
+                user, token):
             user.is_active = True
             user.save()
-            return HttpResponse('Благодарим Вас за подтверждение электронной почты. Вы можете авторизоваться.')
+
+            service_message = 'Благодарим Вас за подтверждение электронной почты. Вы можете авторизоваться.'
+            content['login_allowed'] = True
+            #TODO: при авторизации по ссылке из письма нужно уходить с этой страницы. Спросить МИхаила.
+
         else:
-            return HttpResponse('Ссылка недействительна!')
+            service_message = 'Ссылка устарела или недействительна.'
+
+        content["service_message"]= service_message
+        return render(request, template_name, content)
 
 
 class Account(View):
@@ -259,7 +268,14 @@ class UserUpdate(UpdateView):
 
     """
     model = User
-    fields = ['username', 'name', 'surname', 'email', 'age', 'aboutMe', 'avatar']
+    fields = [
+        'username',
+        'name',
+        'surname',
+        'email',
+        'age',
+        'aboutMe',
+        'avatar']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 

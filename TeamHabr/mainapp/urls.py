@@ -23,7 +23,7 @@ urlpatterns = [
         name='index'),
 
     path(
-        '<str:str>/',
+        'sorted/<str:str>/',
         mainapp.Index.as_view(),
         name='popular'),
 
