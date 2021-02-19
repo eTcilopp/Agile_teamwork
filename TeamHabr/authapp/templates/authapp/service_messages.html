@@ -1,0 +1,22 @@
+{% extends 'mainapp_base.html' %}
+{% load static %}
+
+{% block users %}
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center font-weight-bold" style="width: 80%; margin: 0 auto">
+
+    {{ service_message }}
+
+    {% if login_allowed %}
+        <br>
+        <br>
+        <a class="text-secondary h6" href="#myModal" data-toggle="modal">Вход</a>
+        {% include "authapp/login.html" %}
+    {% endif %}
+
+</div>
+
+{% endblock%}
