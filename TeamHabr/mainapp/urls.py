@@ -21,18 +21,19 @@ urlpatterns = [
         '',
         mainapp.Index.as_view(),
         name='index'),
-
-    path(
-        'sorted/<str:str>/',
-        mainapp.Index.as_view(),
-        name='popular'),
-
     path(
         'category/<slug:slug>/',
         mainapp.Index.as_view(),
         name='category'),
 
-
+    path(
+        'main/<str:data_type>/',
+        mainapp.Index.as_view(),
+        name='popular'),
+    path(
+        'category/<slug:slug>/<str:data_type>/',
+        mainapp.Index.as_view(),
+        name='category_popular'),
     path(
         'post/create/',
         mainapp.ArticleCreate.as_view(),

@@ -19,6 +19,9 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.db.models import Count
 
+def source_page(request):
+    source_page = request.META["HTTP_REFERER"]
+    return re.search('.*/(.*)/', source_page).group(1)
 
 def likes(request, pk, type_likes):
     """
@@ -86,16 +89,21 @@ class Index(ListView):
         """
 
         if self.kwargs.get('slug'):
-            if self.kwargs.get('str'):
+            if self.kwargs.get('data_type'):
+                result = source_page(self.request)
                 queryset = self.model.objects.filter(
-                    post_status='Apr').order_by('like')
+                    post_status='Apr', category_id_id__slug=result).annotate(
+                    like_count=Count('like')).order_by(
+                    '-like_count')
             else:
                 queryset = self.model.objects.filter(
                     category_id__slug=self.kwargs['slug'], post_status='Apr')
         else:
-            if self.kwargs.get('str'):
+            if self.kwargs.get('data_type'):
                 queryset = self.model.objects.filter(
-                    post_status='Apr').annotate(like_count=Count('like')).order_by('-like_count')
+                    post_status='Apr').annotate(
+                    like_count=Count('like')).order_by(
+                    '-like_count')
             else:
                 queryset = self.model.objects.filter(
                     post_status='Apr')
@@ -111,6 +119,7 @@ class Index(ListView):
         if self.kwargs.get('slug'):
             category = CategoryPost.objects.filter(slug=self.kwargs['slug'])
             context['title'] = category[0].name
+            context['category'] = category[0].slug
         else:
             context['title'] = 'Главная'
         context['categories'] = CategoryPost.objects.all()
@@ -138,10 +147,11 @@ class ArticleCreate(FunctionsMixin, CreateView):
         """
         initial = super(ArticleCreate, self).get_initial()
         # опделеляем url страницы, с которой осуществлен переход
-        source_page = self.request.META["HTTP_REFERER"]
-        # с помощью регулярного выражения определен слаг страницы, с которой
-        # выполнен переход
-        result = re.search('.*/(.*)/', source_page).group(1)
+        # source_page = self.request.META["HTTP_REFERER"]
+        # # с помощью регулярного выражения определен слаг страницы, с которой
+        # # выполнен переход
+        # result = re.search('.*/(.*)/', source_page).group(1)
+        result = source_page(self.request)
         # выполняется запрос в базу данных - по слагу определяется id категории
         # из модели CategoryPost
         category_id = self.category_post_model.objects.filter(
