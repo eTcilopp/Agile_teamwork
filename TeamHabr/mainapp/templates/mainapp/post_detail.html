@@ -39,7 +39,9 @@
             <hr>
             {% endfor %}
             {% endif %}
-            <p class="text-justify">{{object.text}}</p>
+            {% autoescape on %}
+            <p class="text-justify">{{object.text| linebreaks}}</p>
+            {% endautoescape %}
         </div>
         <div class="col-2"></div>
     </div>
