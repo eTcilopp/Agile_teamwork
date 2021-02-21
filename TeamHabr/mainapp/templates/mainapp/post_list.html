@@ -29,8 +29,19 @@
 {% if query%}
 <div class="text-center text-secondary h4">Результаты поиска по запросу "{{query}}" {% if category %}в категории "{{title}}"{% endif %}</div>
             {% endif %}
-
+            <hr>
             {% for article in object_list %}
+            <div class="row">
+                {% if article.user_id.avatar %}
+                    <div class="col-md-auto text-uppercase">
+                        <img src="{{ article.user_id.avatar.url }}"
+                             alt="{{ article.user_id.name }} {{ article.user_id.surname }}"
+                             height="50px">
+                    </div>
+                {% endif %}
+                <div class="col-md-auto text-uppercase font-weight-bold">{{article.user_id}} </div>
+                <div class="col text-black-50">&middot; {{article.date_create}}</div>
+            </div>
             <p class="h2 text-center">
                 <a href="{% url 'main:post' article.slug %}">
                 {{article.title}}
@@ -46,9 +57,9 @@
                     </a> {{article.get_count_post}}
                 </span>
             </p>
-            <p class="text-center text-info">Дата написания: {{article.date_create}}</p>
             <p>{{article.text| truncatewords:50}}</p>
             <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
+            <hr>
             {% endfor %}
         </div>
         <div class="col-2"></div>

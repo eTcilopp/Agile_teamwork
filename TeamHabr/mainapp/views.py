@@ -120,6 +120,7 @@ class Index(ListView):
             else:
                 queryset = self.model.objects.filter(
                     post_status='Apr')
+        queryset = queryset.select_related('user_id')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -288,10 +289,11 @@ class PostRead(DetailView):
         """
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
-        context['categories'] = CategoryPost.objects.all()
+        context["categories"] = CategoryPost.objects.all()
         context["comments"] = Comment.objects.filter(
             post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
+        # context['avatar'] =
         return context
 
     def form_valid(self, form):
