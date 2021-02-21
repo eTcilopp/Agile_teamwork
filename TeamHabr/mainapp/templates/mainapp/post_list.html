@@ -10,16 +10,19 @@
             <div class="row">
                 <div class="col">
                     <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:article_create' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>Создать новую статью</a></div>
-                <div class="col">
+                <div class="col-md-auto">
                     <a class="text-info"
                        {% if category %} href=" {% url  'main:category_popular' slug=category data_type='popular'  %}"
                        {% else %} href=" {% url  'main:popular' data_type='popular'  %}"
-                       {% endif %} >Самые популярные статьи</a></div>
-                <div class="col">
-                    <a {% if category %} href=" {% url  'main:category' slug=category   %}"
-                    {% else %} href=" {% url 'main:index'  %}"
-                    {% endif %} >Самые свежие статьи {% if category %}в "{{title}}"{% else %}на сайте{% endif %}</a></div>
-            <div class="col"><form
+                       {% endif %} >По популярности</a>
+                </div>
+                <div class="col text-info">
+                    <a class="text-info"
+                       {% if category %} href=" {% url  'main:category' slug=category   %}"
+                       {% else %} href=" {% url 'main:index'  %}"
+                       {% endif %} >Сначала свежие {% if category %}в разделе "{{title}}"{% endif %}</a>
+                </div>
+            <div class="col text-right"><form
                     {% if category %} action=" {% url  'main:search_results' slug=category   %}"
                     {% else %} action="{% url 'main:search_results' %}"
                     {% endif %} method="get">
@@ -31,6 +34,7 @@
             {% endif %}
             <hr>
             {% for article in object_list %}
+
             <div class="row">
                 {% if article.user_id.avatar %}
                     <div class="col-md-auto text-uppercase">
