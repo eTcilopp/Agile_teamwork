@@ -1,1 +1,184 @@
-<mxfile host="app.diagrams.net" modified="2021-02-22T15:46:57.783Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" version="14.3.1" etag="Av29dY9bye-9XX07IxU9" type="github"><diagram id="LhFNjCYBHNHHC1sIQ_Ic">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-02-22T16:49:19.282Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36" etag="5hpRlfNCehMn4pDdIhbx" version="14.3.1" type="github">
+  <diagram id="LhFNjCYBHNHHC1sIQ_Ic" name="Page-1">
+    <mxGraphModel dx="2062" dy="1154" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="y23oUhqLGTGxBFof_gOB-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-1" target="y23oUhqLGTGxBFof_gOB-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-1" target="y23oUhqLGTGxBFof_gOB-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-1" target="y23oUhqLGTGxBFof_gOB-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-1" value="Основная часть сайта" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-2" target="y23oUhqLGTGxBFof_gOB-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-2" target="y23oUhqLGTGxBFof_gOB-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-2" value="Личный кабинет" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.463;entryY=0.025;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-3" target="y23oUhqLGTGxBFof_gOB-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-3" target="y23oUhqLGTGxBFof_gOB-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-3" value="Страница админки" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1590" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-4" target="y23oUhqLGTGxBFof_gOB-35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-4" target="y23oUhqLGTGxBFof_gOB-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-4" value="Страница помощи" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1940" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-9" target="y23oUhqLGTGxBFof_gOB-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-9" value="Не авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-13" value="&amp;nbsp;&lt;b&gt;Может:&lt;/b&gt;&lt;br&gt;- Просматривать название, превью, дату написания, автора, количество лайков и комментариев статей&lt;br&gt;- Переходить в разделы (Главная, Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)&lt;br&gt;- Переходить на страницы авторизации (если еще не авторизован), регистрации&lt;br&gt;- Переходить на страницу помощи&lt;br&gt;- Открывать статью для получения подробной информации о ней&lt;br&gt;- Переходить на страницы статей (при достаточном количестве)&lt;br&gt;- Сортировать статьи по популярности/актуальности&lt;br&gt;- Производить поиск по всем статьям или статьям в определенном разделе, в зависимости от нахождения&lt;br&gt;- Попытаться создать статью, в результате попасть на окно авторизации" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="15" y="380" width="150" height="520" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-14" target="y23oUhqLGTGxBFof_gOB-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-14" target="y23oUhqLGTGxBFof_gOB-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-14" target="y23oUhqLGTGxBFof_gOB-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-14" value="Страница статьи" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="770" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-15" target="y23oUhqLGTGxBFof_gOB-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-15" value="Страница регистрации" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2220" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-16" target="y23oUhqLGTGxBFof_gOB-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-16" value="Авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-18" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- создавать статьи&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="185" y="380" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-19" target="y23oUhqLGTGxBFof_gOB-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-19" value="Не авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-20" value="&amp;nbsp;&lt;b&gt;Может:&lt;br&gt;&lt;/b&gt;&amp;nbsp;- Просматривать название, полное содержание, автора, дату создания, количество лайков и комментариев выбранной статьи&lt;br&gt;&amp;nbsp;- Просматривать комментарии к статье и ответы к ним с указанием автора, лайков и даты создания каждого комментария&lt;br&gt;&amp;nbsp;- Попытаться поставить лайк автору, статье или комментарию, в результате попать на окно авторизации&lt;br&gt;- Переходить на страницы авторизации (если еще не авторизован), регистрации&lt;br&gt;- Переходить на страницу помощи&lt;br&gt;- Переходить в разделы (Главная,&amp;nbsp;&lt;br&gt;Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="575" y="380" width="150" height="440" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-21" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- Оставлять лайки статье, автору или комментарию&lt;br&gt;&amp;nbsp;- Оставлять новый комментарий&lt;br&gt;- Отвечать на комментарий&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="755" y="380" width="150" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-22" target="y23oUhqLGTGxBFof_gOB-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-22" value="Авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-23" target="y23oUhqLGTGxBFof_gOB-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-23" value="Модератор/ Администратор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-24" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- Перейти в админку&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="380" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-25" target="y23oUhqLGTGxBFof_gOB-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-25" value="Модератор/ Администратор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="920" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-26" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- Перейти в админку&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="925" y="380" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-27" target="y23oUhqLGTGxBFof_gOB-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-27" value="Авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-28" value="&amp;nbsp;&lt;b&gt;Может:&lt;br&gt;&lt;/b&gt;&amp;nbsp;- Просматривать свою аватарку, личные данные, свои статьи&lt;br&gt;&amp;nbsp;- Редактировать свои личные данные&lt;br&gt;- Создавать статьи&lt;br&gt;- Редактировать статьи&lt;br&gt;- Переходить на страницу помощи&lt;br&gt;- Переходить в разделы (Главная,&amp;nbsp;&lt;br&gt;Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="380" width="150" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-29" target="y23oUhqLGTGxBFof_gOB-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-29" value="Модератор/ Администратор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-30" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- Перейти в админку&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1305" y="380" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-31" target="y23oUhqLGTGxBFof_gOB-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-31" value="Модератор/ Администратор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1490" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-32" value="&amp;nbsp;&lt;b&gt;Может:&lt;/b&gt;&lt;br&gt;- В разделе юзер: просматривать юзеров и информацию о них&lt;br&gt;&amp;nbsp;- В разделе посты: просматривать посты и информацию о них, также одобрять, удалять и возврашать на доработку&lt;br&gt;- В разделе категории: простатривать и добавлять категории&lt;br&gt;- Переходить в разделы (Главная,&amp;nbsp;&lt;br&gt;Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1495" y="380" width="150" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-33" target="y23oUhqLGTGxBFof_gOB-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-33" value="Администратор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1660" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-34" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- Назначать и увольнять модераторов&lt;br&gt;- Переходить в разделы (Главная,&amp;nbsp;&lt;br&gt;Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1665" y="380" width="150" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-35" target="y23oUhqLGTGxBFof_gOB-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-35" value="Не авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1840" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-36" value="&amp;nbsp;&lt;b&gt;Может:&lt;br&gt;&lt;/b&gt;- Прочесть справочную информацию&lt;br&gt;- Переходить в разделы (Главная,&amp;nbsp;&lt;br&gt;Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)&lt;br&gt;- Переходить на страницы авторизации (если еще не авторизован), регистрации" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1845" y="380" width="150" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-37" target="y23oUhqLGTGxBFof_gOB-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-37" value="Модератор/ Администратор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2010" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-38" value="&lt;b&gt;Дополнительно может:&lt;/b&gt;&lt;br&gt;&amp;nbsp;- Перейти в админку&lt;br&gt;- стать неавторизованным пользователем, нажав на кнопку выход" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2015" y="380" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="y23oUhqLGTGxBFof_gOB-39" target="y23oUhqLGTGxBFof_gOB-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-39" value="Не авторизованный пользователь" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="270" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y23oUhqLGTGxBFof_gOB-40" value="&amp;nbsp;&lt;b&gt;Может:&lt;br&gt;&lt;/b&gt;- Пройти процедуру регистрации&lt;br&gt;- Переходить в разделы (Главная,&amp;nbsp;&lt;br&gt;Веб-разработка, Дизайн, Маркетинг, Мобильная разработка)&lt;br&gt;- Переходить на страницы авторизации" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="2205" y="380" width="150" height="180" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
