@@ -87,7 +87,7 @@ class Index(ListView):
     if screen_width > screen_height:
         paginate_by = (screen_height - 125) / 150
     else:
-        paginate_by = (screen_width - 125) / 200
+        paginate_by = (screen_width - 125) / 150
 
     # paginate_by = 4
 
