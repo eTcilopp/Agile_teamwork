@@ -43,20 +43,46 @@
         </div>
         <div class="col-2"></div>
     </div>
+    <br>
     <div class="row">
+
         <div class="col-2"></div>
-        <div class="col text-justify text-primary text-right">
-            <p class="text-center">Автор: {{object.user_id.username}} <span id="like_user" style="font-size: 14px">
-                    <a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-heart-fill"></i></a> {{object.get_count_user}}</span></p>
+        <div class="col-md-auto">
+
+            {% if object.user_id.avatar %}
+                <div class="">
+                    <img src="{{ object.user_id.avatar.url }}"
+                         alt="{{ object.user_id.name }} {{ object.user_id.surname }}"
+                         height="50px">
+                </div>
+            {% endif %}
         </div>
-        <div class="col text-justify text-primary text-right" id="formReview">
-            <p class="text-center">Дата создания: {{object.date_create}}</p>
+        <div class="col">
+            <p class="">Автор: {{object.user_id.username}}
+                <span id="like_user" style="font-size: 14px">
+                    <a
+                            {% if user.is_authenticated %}
+                                href="{% url 'main:like' object.user_id.pk 'user' %}"
+                            {% else %}
+                                href="#myModal" data-toggle="modal"
+                            {% endif %}>
+                        <i class="bi bi-heart-fill"></i>
+                    </a>
+                    {{object.get_count_user}}
+                </span>
+            </p>
+        </div>
+        <div class="col text-justify text-primary" id="formReview">
+            <p class="">Дата создания: {{object.date_create}}</p>
                 {%  if object.post_updated %}
-                    <p class="text-center">Дата обновления: {{object.date_update}}</p>
+                    <p>Дата обновления: {{object.date_update}}</p>
                 {% endif %}
         </div>
         <div class="col-2"></div>
+
     </div>
+
+    <br>
 
     <div class="row">
         <div class="col-2"></div>
