@@ -22,12 +22,24 @@
                        {% else %} href=" {% url 'main:index'  %}"
                        {% endif %} >Сначала свежие {% if category %}в разделе "{{title}}"{% endif %}</a>
                 </div>
-            <div class="col text-right"><form
-                    {% if category %} action=" {% url  'main:search_results' slug=category   %}"
-                    {% else %} action="{% url 'main:search_results' %}"
-                    {% endif %} method="get">
-    <input name="q" type="text" placeholder="Поиск...">
-        </form></div>
+            <div class="col form-control input-group" >
+                <div class="form-outline">
+                <form
+                    {% if category %}
+                        action=" {% url  'main:search_results' slug=category   %}"
+                    {% else %}
+                        action="{% url 'main:search_results' %}"
+                    {% endif %}
+                    method="get">
+                    <input name="q" type="text" placeholder="Поиск...">
+
+                </form>
+                    </div>
+                  <button id="search-button" type="button" class="btn btn-primary">
+                    <i class="fa fa-search"></i>
+                  </button>
+
+            </div>
             </div>
 {% if query%}
 <div class="text-center text-secondary h4">Результаты поиска по запросу "{{query}}" {% if category %}в категории "{{title}}"{% endif %}</div>
