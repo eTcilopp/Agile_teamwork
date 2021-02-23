@@ -3,18 +3,18 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <p class="h2 text-center">Авторизация {{ request.get_full_path }}</p>
+                <p class="h2 text-center">Авторизация</p>
             </div>
             <div class="modal-body">
                 {% for message in messages %}
                 {{ message }}
                 {% endfor %}
 
-                {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
-                    <form action="{% url 'auth:login' %}?next={% url 'main:index' %}" method="post">
-               {% else %}
-                    <form action="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" method="post">
-                {% endif %}
+                   {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
+                        <form action="{% url 'auth:login' %}?next={% url 'main:index' %}" method="post">
+                   {% else %}
+                        <form action="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" method="post">
+                   {% endif %}
 
 
                     {% csrf_token %}
