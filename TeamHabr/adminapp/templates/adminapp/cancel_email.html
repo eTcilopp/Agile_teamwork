@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+Здравствуйте, {{ post.user_id.username }}!
+Вашу статью "{{ post.title }}" отклонил модератор {{ moder }},
+по причине
+{% for i in post.get_reason %}
+{{ i.text }}
+
+{% endfor %}
+Вы можете исправить свои ошибки и отправить на рассмотрению Вашу статью повторно
+Ссылка на вашу статью : http://{{ domain }}/post/{{post.slug}}/
+{% endautoescape %}

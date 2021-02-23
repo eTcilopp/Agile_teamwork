@@ -21,3 +21,4 @@ class CategoryCreationForm(forms.ModelForm):
         model = CategoryPost
         fields = ('name',
                   'description')
+

@@ -42,7 +42,17 @@ class User(AbstractUser):
     date_update = models.DateTimeField(
         verbose_name="Дата редактирования",
         default=datetime.datetime.today)
-
+    email = models.EmailField(
+        blank=True,
+        unique=True,
+        max_length=254,
+        verbose_name="Адрес электронной почты")
+    avatar = models.ImageField(
+        blank=True,
+        upload_to="users_avatars/",
+        verbose_name="Аватар")
+    age = models.PositiveIntegerField(verbose_name="Возраст", default=0)
+    aboutMe = models.TextField(verbose_name="О себе", max_length=512, blank=True)
     class Meta:
         verbose_name_plural = 'Пользователи'
         verbose_name = 'Пользователь'

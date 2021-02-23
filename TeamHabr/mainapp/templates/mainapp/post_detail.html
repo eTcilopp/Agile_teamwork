@@ -2,6 +2,7 @@
 {% load static %}
 {% load auth_extras %}
 
+
 {% block content %}
 
 
@@ -26,30 +27,69 @@
                         <i class="bi bi-x-octagon"></i></a>
                     {% endif %}{% endif %} </span> </p>
             <hr>
+            {% if object.get_reason %}
+            <h3 class="text-center">Причина отклонения статьи</h3>
+            {% for i in object.get_reason %}
+            <div class="alert alert-danger text-center" role="alert">
+            <strong>От {{i.user_id.username}}</strong> {{i.text}}
+                <br>
+                {{i.date_create}}
+            </div>
+
+            <hr>
+            {% endfor %}
+            {% endif %}
             <p class="text-justify">{{object.text}}</p>
         </div>
         <div class="col-2"></div>
     </div>
+    <br>
     <div class="row">
+
         <div class="col-2"></div>
-        <div class="col text-justify text-primary text-right">
-            <p class="text-center">Автор: {{object.user_id.username}} <span id="like_user" style="font-size: 14px">
-                    <a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-hand-thumbs-up"></i></a> {{object.get_count_user}}</span></p>
+        <div class="col-md-auto">
+
+            {% if object.user_id.avatar %}
+                <div class="">
+                    <img src="{{ object.user_id.avatar.url }}"
+                         alt="{{ object.user_id.name }} {{ object.user_id.surname }}"
+                         height="50px">
+                </div>
+            {% endif %}
         </div>
-        <div class="col text-justify text-primary text-right" id="formReview">
-            <p class="text-center">Дата создания: {{object.date_create}}</p>
+        <div class="col">
+            <p class="">Автор: {{object.user_id.username}}
+                <span id="like_user" style="font-size: 14px">
+                    <a
+                            {% if user.is_authenticated %}
+                                href="{% url 'main:like' object.user_id.pk 'user' %}"
+                            {% else %}
+                                href="#myModal" data-toggle="modal"
+                            {% endif %}>
+                        <i class="bi bi-heart-fill"></i>
+                    </a>
+                    {{object.get_count_user}}
+                </span>
+            </p>
+        </div>
+        <div class="col text-justify text-primary" id="formReview">
+            <p class="">Дата создания: {{object.date_create}}</p>
                 {%  if object.post_updated %}
-                    <p class="text-center">Дата обновления: {{object.date_update}}</p>
+                    <p>Дата обновления: {{object.date_update}}</p>
                 {% endif %}
         </div>
         <div class="col-2"></div>
+
     </div>
+
+    <br>
 
     <div class="row">
         <div class="col-2"></div>
         <div class="col">
-
-            <button class="open-button" id="open-button" onclick="openForm()">Комментировать</button>
+            {% if user.is_authenticated %}
+                <button class="open-button" id="open-button" onclick="openForm()">Комментировать</button>
+            {% endif %}
         </div>
         <div class="col-2"></div>
     </div>
@@ -105,7 +145,9 @@
                             <br>
                             {{comment.date_create}}
                         </p>
-                        <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                        {% if user.is_authenticated %}
+                            <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                        {% endif %}
                     </div>
                     <div class="col-2"></div>
                 </div>

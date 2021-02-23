@@ -3,6 +3,8 @@ from django.urls import path, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
 import authapp.views as authapp
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'authapp'
 
@@ -34,10 +36,10 @@ urlpatterns = [
         login_required(
             authapp.Account.as_view()),
         name='account'),
-    path(
-        'edit/',
-        authapp.Edit.as_view(),
-        name='edit', ),
+    # path(
+    #     'edit/',
+    #     authapp.Edit.as_view(),
+    #     name='edit', ),
     path('update/',
          authapp.UserUpdate.as_view(),
          name='edit'),
@@ -64,8 +66,8 @@ urlpatterns = [
          name='password_reset_complete'),
     path('account/password_change/',
          auth_views.PasswordChangeView.as_view(
-            template_name="authapp/password_change_form.html",
-            success_url=reverse_lazy("authapp:password_change_done")
+             template_name="authapp/password_change_form.html",
+             success_url=reverse_lazy("authapp:password_change_done")
          ),
          name='password_change'),
     path('account/password_change/done/',
@@ -75,3 +77,6 @@ urlpatterns = [
          name='password_change_done'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
