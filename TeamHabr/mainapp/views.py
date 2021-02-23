@@ -81,15 +81,14 @@ class Index(ListView):
     Задается количество статей, выводимых на одном экране одновременно (пагинация)
     """
     model = Post
-    user_windows = ctypes.windll.user32
-    screen_width = user_windows.GetSystemMetrics(0)
-    screen_height = user_windows.GetSystemMetrics(1)
-    if screen_width > screen_height:
-        paginate_by = (screen_height - 125) / 150
-    else:
-        paginate_by = (screen_width - 125) / 150
-
-    # paginate_by = 4
+    # user_windows = ctypes.windll.user32
+    # screen_width = user_windows.GetSystemMetrics(0)
+    # screen_height = user_windows.GetSystemMetrics(1)
+    # if screen_width > screen_height:
+    #     paginate_by = (screen_height - 125) / 150
+    # else:
+    #     paginate_by = (screen_width - 125) / 150
+    paginate_by = 4
 
     def get_queryset(self, *args, **kwargs):
         """
