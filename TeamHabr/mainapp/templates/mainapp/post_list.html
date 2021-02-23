@@ -20,8 +20,18 @@
                         href="#myModal" data-toggle="modal"
 
                        {% endif %}>
-                        <i class="bi bi-heart-fill"></i>
+                        <i class="bi bi-hand-thumbs-up"></i>
                     </a> {{article.get_count_post}}
+                </span>
+                <span style="font-size: 14px">
+                    <a {% if user.is_authenticated %}
+                       href="{% url 'main:like' article.pk 'post' %}"
+                       {% else %}
+                       href="#myModal" data-toggle="modal"
+
+                       {% endif %}>
+                        <i class="bi bi-chat-left"></i>
+                    </a> {{article.count_all_comment}}
                 </span>
             </p>
             <p>{{article.text| truncatewords:50}}</p>
