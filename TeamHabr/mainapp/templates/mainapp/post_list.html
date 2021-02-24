@@ -67,7 +67,7 @@
             <div class="row">
                 {% if article.user_id.avatar %}
                     <div class="col-md-auto text-uppercase">
-                        <img src="{{ article.user_id.avatar.url }}"
+                        <img class="rounded-circle" src="{{ article.user_id.avatar.url }}"
                              alt="{{ article.user_id.name }} {{ article.user_id.surname }}"
                              height="50px">
                     </div>

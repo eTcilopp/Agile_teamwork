@@ -10,15 +10,16 @@ from django.urls import reverse_lazy
 from django.db import transaction
 from .models import Post, CategoryPost, Comment, Like
 from slugify import slugify
-import re
-import datetime
-import string
-import random
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.template import RequestContext
 from django.db.models import Count
 from django.db.models import Q
+import re
+import datetime
+import string
+import random
+import ctypes
 
 def source_page(request):
     source_page = request.META["HTTP_REFERER"]
@@ -80,6 +81,13 @@ class Index(ListView):
     Задается количество статей, выводимых на одном экране одновременно (пагинация)
     """
     model = Post
+    # user_windows = ctypes.windll.user32
+    # screen_width = user_windows.GetSystemMetrics(0)
+    # screen_height = user_windows.GetSystemMetrics(1)
+    # if screen_width > screen_height:
+    #     paginate_by = (screen_height - 125) / 150
+    # else:
+    #     paginate_by = (screen_width - 125) / 150
     paginate_by = 4
 
     def get_queryset(self, *args, **kwargs):
