@@ -10,27 +10,71 @@
             <div class="row">
                 <div class="col">
                     <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:article_create' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>Создать новую статью</a></div>
-                <div class="col">
+                <div class="col-md-auto">
                     <a class="text-info"
                        {% if category %} href=" {% url  'main:category_popular' slug=category data_type='popular'  %}"
                        {% else %} href=" {% url  'main:popular' data_type='popular'  %}"
-                       {% endif %} >Самые популярные статьи</a></div>
-                <div class="col">
-                    <a {% if category %} href=" {% url  'main:category' slug=category   %}"
-                    {% else %} href=" {% url 'main:index'  %}"
-                    {% endif %} >Самые свежие статьи {% if category %}в "{{title}}"{% else %}на сайте{% endif %}</a></div>
-            <div class="col"><form
-                    {% if category %} action=" {% url  'main:search_results' slug=category   %}"
-                    {% else %} action="{% url 'main:search_results' %}"
-                    {% endif %} method="get">
-    <input name="q" type="text" placeholder="Search...">
-        </form></div>
-            </div>
+                       {% endif %} >По популярности</a>
+                </div>
+                <div class="col text-info">
+                    <a class="text-info"
+                       {% if category %} href=" {% url  'main:category' slug=category   %}"
+                       {% else %} href=" {% url 'main:index'  %}"
+                       {% endif %} >Сначала свежие {% if category %}в разделе "{{title}}"{% endif %}</a>
+                </div>
+
+                <div class="col form-control border-0 input-group no-border" >
+                    <div class="form-outline">
+                        <form
+                            {% if category %}
+                                action=" {% url  'main:search_results' slug=category   %}"
+                            {% else %}
+                                action="{% url 'main:search_results' %}"
+                            {% endif %}
+                            method="get"
+                            class="form-inline"
+                            id="main_page_search">
+                            <div class="input-group mb-2">
+
+                                <input name="q"
+                                       placeholder="Поиск..."
+                                       class="form-control"
+                                       type="text"
+                                       aria-label="Поиск"
+                                       aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="input-group-text"
+                                          id="main_page_search_button"
+                                          type="submit"
+                                          value="submit">
+                                        <i class="fa fa-search fa-2x"></i>
+                                    </button>
+                                </div> <!-- closing lass="input-group-append" -->
+                            </div> <!-- closing div class="input-group" -->
+
+                        </form>
+                    </div> <!-- closing div class="form-outline" -->
+                </div> <!-- closing div class="col form-control input-group" -->
+
+
+
 {% if query%}
 <div class="text-center text-secondary h4">Результаты поиска по запросу "{{query}}" {% if category %}в категории "{{title}}"{% endif %}</div>
             {% endif %}
-
+            <hr>
             {% for article in object_list %}
+
+            <div class="row">
+                {% if article.user_id.avatar %}
+                    <div class="col-md-auto text-uppercase">
+                        <img class="rounded-circle" src="{{ article.user_id.avatar.url }}"
+                             alt="{{ article.user_id.name }} {{ article.user_id.surname }}"
+                             height="50px">
+                    </div>
+                {% endif %}
+                <div class="col-md-auto text-uppercase font-weight-bold">{{article.user_id}} </div>
+                <div class="col text-black-50">&middot; {{article.date_create}}</div>
+            </div>
             <p class="h2 text-center">
                 <a href="{% url 'main:post' article.slug %}">
                 {{article.title}}
@@ -42,13 +86,23 @@
                         href="#myModal" data-toggle="modal"
 
                        {% endif %}>
-                        <i class="bi bi-heart-fill"></i>
+                        <i class="bi bi-hand-thumbs-up"></i>
                     </a> {{article.get_count_post}}
                 </span>
+                <span style="font-size: 14px">
+                    <a {% if user.is_authenticated %}
+                       href="{% url 'main:like' article.pk 'post' %}"
+                       {% else %}
+                       href="#myModal" data-toggle="modal"
+
+                       {% endif %}>
+                        <i class="bi bi-chat-left"></i>
+                    </a> {{article.count_all_comment}}
+                </span>
             </p>
-            <p class="text-center text-info">Дата написания: {{article.date_create}}</p>
             <p>{{article.text| truncatewords:50}}</p>
             <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
+            <hr>
             {% endfor %}
         </div>
         <div class="col-2"></div>
