@@ -5,25 +5,25 @@ from django.shortcuts import HttpResponseRedirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
-from .models import User
-from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 from django.views.generic import UpdateView
 from django.contrib import auth
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from mainapp.models import Post
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.core.mail import EmailMessage
+from django.views.generic.detail import DetailView
+
+from .models import User
+from mainapp.models import Post, CategoryPost
+from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 
 
 class LoginView(LoginView):
     form = UserLoginForm
     title = 'Авторизация'
-
     form = UserLoginForm
     content = {
         "title": title,
@@ -102,6 +102,7 @@ class Logout(View):
         :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем
         с передаваемыми шаблону данными;
         """
+
         auth.logout(request)
         return HttpResponseRedirect(reverse("main:index"))
         # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -111,12 +112,14 @@ class Register(View):
     """
     Класс контроллера обрабоки запросов на регистрацию нового пользователя.
     """
+
     title = 'Регистрация'
     form = UserRegisterForm
     template_name = 'authapp/register.html'
     content = {
         "title": title,
-        "register_form": form
+        "register_form": form,
+        'categories': CategoryPost.objects.all(),
     }
 
     def get(self, request, *args, **kwargs):
@@ -126,6 +129,7 @@ class Register(View):
         :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем
         с передаваемыми шаблону данными;
         """
+
         return render(request, self.template_name, self.content)
 
     def post(self, request):
@@ -153,18 +157,24 @@ class Register(View):
             to_email = register_form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
-
             template_name = 'authapp/service_messages.html'
             service_message = 'Для активации Вашего профиля перейдите по ссылке, отправленной Вам по электронной почте.'
             content = {"service_message": service_message}
             return render(request, template_name, content)
-
         else:
             self.content["register_form"] = register_form
             return render(request, self.template_name, self.content)
 
 
 class Activate(View):
+    title = 'Страница подтверждения'
+    template_name = 'authapp/service_messages.html'
+    service_message = 'Благодарим Вас за подтверждение электронной почты. Вы можете авторизоваться.'
+    context = {
+        'title': title,
+        'service_message': service_message,
+        'categories': CategoryPost.objects.all(),
+    }
 
     def get(self, request, uidb64, token):
         try:
@@ -172,34 +182,27 @@ class Activate(View):
             user = get_user_model()._default_manager.get(pk=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-
-        template_name = 'authapp/service_messages.html'
-        content = {}
         if user is not None and default_token_generator.check_token(
                 user, token):
             user.is_active = True
             user.save()
-
-            service_message = 'Благодарим Вас за подтверждение электронной почты. Вы можете авторизоваться.'
-            content['login_allowed'] = True
+            self.context['login_allowed'] = True
             #TODO: при авторизации по ссылке из письма нужно уходить с этой страницы. Спросить МИхаила.
-
         else:
-            service_message = 'Ссылка устарела или недействительна.'
-
-        content["service_message"]= service_message
-        return render(request, template_name, content)
+            self.context['service_message'] = 'Ссылка устарела или недействительна.'
+        return render(request, self.template_name, self.context)
 
 
-class Account(View):
+class Account(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр личного кабинета пользователя.
     """
+
     title = 'Личный кабинет пользователя'
     template_name = 'authapp/account.html'
-
     context = {
-        'title': title
+        'title': title,
+        'categories': CategoryPost.objects.all(),
     }
 
     def get(self, request, *args, **kwargs):
@@ -212,9 +215,7 @@ class Account(View):
         articles = Post.objects.filter(
             user_id=self.request.user.id).exclude(
             post_status='Del')
-        self.context = {
-            'articles': articles
-        }
+        self.context['articles'] = articles
         return render(request, self.template_name, self.context)
 
 
@@ -258,15 +259,14 @@ class Account(View):
 #
 #         return render(request, self.template_name, self.content)
 
-
 # TODO: проверить PermissionsMixin
 
 
 class UserUpdate(UpdateView):
     """
     Класс контроллера обработки запросов на изменение данных пользователя
-
     """
+
     model = User
     fields = [
         'username',
@@ -281,3 +281,9 @@ class UserUpdate(UpdateView):
 
     def get_object(self):
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(UserUpdate, self).get_context_data(**kwargs)
+        context['title'] = 'Редактирование данных пользователя'
+        context['categories'] = CategoryPost.objects.all()
+        return context
