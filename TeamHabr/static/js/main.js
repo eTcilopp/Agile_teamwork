@@ -18,7 +18,3 @@ function addReview(name, id) {
 function goBack() {
   window.history.back();
 }
-
-function searchSubmit() {
-    document.getElementById("main_page_search").submit();
-}
