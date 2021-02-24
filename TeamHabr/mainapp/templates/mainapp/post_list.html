@@ -22,25 +22,42 @@
                        {% else %} href=" {% url 'main:index'  %}"
                        {% endif %} >Сначала свежие {% if category %}в разделе "{{title}}"{% endif %}</a>
                 </div>
-            <div class="col form-control input-group" >
-                <div class="form-outline">
-                <form
-                    {% if category %}
-                        action=" {% url  'main:search_results' slug=category   %}"
-                    {% else %}
-                        action="{% url 'main:search_results' %}"
-                    {% endif %}
-                    method="get">
-                    <input name="q" type="text" placeholder="Поиск...">
 
-                </form>
-                    </div>
-                  <button id="search-button" type="button" class="btn btn-primary">
-                    <i class="fa fa-search"></i>
-                  </button>
+                <div class="col form-control border-0 input-group no-border" >
+                    <div class="form-outline">
+                        <form
+                            {% if category %}
+                                action=" {% url  'main:search_results' slug=category   %}"
+                            {% else %}
+                                action="{% url 'main:search_results' %}"
+                            {% endif %}
+                            method="get"
+                            class="form-inline"
+                            id="main_page_search">
+                            <div class="input-group mb-2">
 
-            </div>
-            </div>
+                                <input name="q"
+                                       placeholder="Поиск..."
+                                       class="form-control"
+                                       type="text"
+                                       aria-label="Поиск"
+                                       aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="input-group-text"
+                                          id="main_page_search_button"
+                                          type="submit"
+                                          value="submit">
+                                        <i class="fa fa-search fa-2x"></i>
+                                    </button>
+                                </div> <!-- closing lass="input-group-append" -->
+                            </div> <!-- closing div class="input-group" -->
+
+                        </form>
+                    </div> <!-- closing div class="form-outline" -->
+                </div> <!-- closing div class="col form-control input-group" -->
+
+
+
 {% if query%}
 <div class="text-center text-secondary h4">Результаты поиска по запросу "{{query}}" {% if category %}в категории "{{title}}"{% endif %}</div>
             {% endif %}
