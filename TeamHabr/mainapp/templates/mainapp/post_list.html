@@ -47,7 +47,7 @@
                                           id="main_page_search_button"
                                           type="submit"
                                           value="submit">
-                                        <i class="fa fa-search fa-2x"></i>
+                                        <i class="fa fa-search fa-2x" title="Нажмите для поиска"></i>
                                     </button>
                                 </div> <!-- closing lass="input-group-append" -->
                             </div> <!-- closing div class="input-group" -->
@@ -68,15 +68,15 @@
                 {% if article.user_id.avatar %}
                     <div class="col-md-auto text-uppercase">
                         <img class="rounded-circle" src="{{ article.user_id.avatar.url }}"
-                             alt="{{ article.user_id.name }} {{ article.user_id.surname }}"
+                             title="{{ article.user_id.name }} {{ article.user_id.surname }}"
                              height="50px">
                     </div>
                 {% endif %}
-                <div class="col-md-auto text-uppercase font-weight-bold">{{article.user_id}} </div>
+                <div class="col-md-auto text-uppercase font-weight-bold" title="Автор статьи">{{article.user_id}} </div>
                 <div class="col text-black-50">&middot; {{article.date_create}}</div>
             </div>
             <p class="h2 text-center">
-                <a href="{% url 'main:post' article.slug %}">
+                <a href="{% url 'main:post' article.slug %}" title="Заголовок статьи">
                 {{article.title}}
                 </a>
                 <span id="like_post" style="font-size: 14px">
@@ -86,16 +86,16 @@
                         href="#myModal" data-toggle="modal"
 
                        {% endif %}>
-                        <i class="bi bi-hand-thumbs-up"></i>
+                        <i class="bi bi-hand-thumbs-up" title="Лайки"></i>
                     </a> {{article.get_count_post}}
                 </span>
                 <span style="font-size: 14px">
                     <a href="{% url 'main:post' article.slug  %}#comment_block">
-                        <i class="bi bi-chat-left"></i>
+                        <i class="bi bi-chat-left" title="Комментарии"></i>
                     </a> {{article.count_all_comment}}
                 </span>
             </p>
-            <p>{{article.text| truncatewords:50}}</p>
+            <p title="Содержание статьи">{{article.text| truncatewords:50}}</p>
             <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
             <hr>
             {% endfor %}
