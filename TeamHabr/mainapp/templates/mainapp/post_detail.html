@@ -10,8 +10,8 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify bg-white">
-            <p class="h2 text-center">{{object.title}}
-                <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-hand-thumbs-up"></i></a> {{object.get_count_post}}</span>
+            <p class="h2 text-center" title="Заголовок статьи">{{object.title}}
+                <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i></a> {{object.get_count_post}}</span>
                 <span style="font-size: 14px">{% if user.is_superuser or user|has_group:"Moder"  %}
                     {{object.get_post_status_display}}
                     {% if object.post_status != 'Apr' %}
@@ -40,7 +40,7 @@
             {% endfor %}
             {% endif %}
             {% autoescape on %}
-            <p class="text-justify">{{object.text| linebreaks}}</p>
+            <p class="text-justify" title="Содержание">{{object.text| linebreaks}}</p>
             {% endautoescape %}
         </div>
         <div class="col-2"></div>
@@ -54,7 +54,7 @@
             {% if object.user_id.avatar %}
                 <div class="">
                     <img class="rounded-circle" src="{{ object.user_id.avatar.url }}"
-                         alt="{{ object.user_id.name }} {{ object.user_id.surname }}"
+                         title="{{ object.user_id.name }} {{ object.user_id.surname }}"
                          height="50px">
                 </div>
             {% endif %}
@@ -68,7 +68,7 @@
                             {% else %}
                                 href="#myModal" data-toggle="modal"
                             {% endif %}>
-                        <i class="bi bi-hand-thumbs-up"></i>
+                        <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                     </a>
                     {{object.get_count_user}}
                 </span>
@@ -138,12 +138,12 @@
                 {% for comment in comments %}
                 <div class="row">
                     <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                        <p style="text-align: left">{{comment.text}}</p>
+                        <p style="text-align: left" title="Содержание комментария">{{comment.text}}</p>
                         <span id="like_comment" style="font-size: 14px">
                             <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                                <i class="bi bi-hand-thumbs-up"></i>
+                                <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                             </a>{{comment.get_count_comment}}</span>
-                        <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
+                        <p style="text-align: right" class="text-primary" title="Автор комментария">Автор: {{comment.user_id.username}}
                             <br>
                             {{comment.date_create}}
                         </p>
@@ -159,10 +159,10 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                        <p style="text-align: left">{{answer.text}}</p>
+                        <p style="text-align: left" title="Ответ на комменатрий">{{answer.text}}</p>
                         <span style="font-size: 14px">
                             <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                                <i class="bi bi-hand-thumbs-up"></i>
+                                <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                             </a>{{answer.get_count_comment}}</span>
                         <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
                             <br>
