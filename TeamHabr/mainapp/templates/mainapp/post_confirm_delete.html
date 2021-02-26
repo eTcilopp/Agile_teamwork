@@ -5,13 +5,24 @@
 {% endblock %}
 
 {% block content %}
-
-<form method="post">{% csrf_token %}
+<div class="row">
     <p class="h2 text-center">Вы уверены, что хотите удалить статью "{{ object.title }}"?</p>
-    <div class="col text-center">
-        <input type="submit" class="btn btn-outline-danger text-center" value="Удалить">
-        <button class="btn btn-outline-success" onclick="goBack()">Назад</button>
-    </div>
-</form>
+</div> <!-- closing div class="row" -->
+<div class="row">
+    <br>
+</div>
 
+<div class="row">
+    <div class="col-sm justify-content-end">
+        <form method="post">{% csrf_token %}
+            <div class="col d-flex justify-content-end">
+                <input type="submit" class="btn btn-outline-danger text-center" value="Удалить">
+
+            </div>
+        </form>
+    </div> <!-- closing <div class="col-sm justify-content-end"> -->
+    <div class="col-sm">
+        <button class="btn btn-outline-success" onclick="goBack()">Назад</button>
+    </div> <!-- closing <div class="col-sm"> -->
+</div> <!-- closing div class="row" -->
 {% endblock %}
