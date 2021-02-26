@@ -146,6 +146,16 @@
                         <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
                             <br>
                             {{comment.date_create}}
+                            {% if comment.date_update|date:"Y,m,d,h,i" > comment.date_create|date:"Y,m,d,h,i" %}
+                            <br>
+                            Обновлен {{comment.date_update}}
+                            {% endif %}
+                            {% if comment.user_id_id == user.id %}
+                            <br>
+                            <a href="{% url 'main:comment_delete' comment.pk%}">Удалить коментарий</a>
+                            <br>
+                            <a href="{% url 'main:comment_update' comment.pk%}">Редактировать коментарий</a>
+                            {% endif %}
                         </p>
                         {% if user.is_authenticated %}
                             <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
@@ -167,6 +177,16 @@
                         <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
                             <br>
                             {{answer.date_create}}
+                            {% if answer.date_update|date:"Y,m,d,h,i" > answer.date_create|date:"Y,m,d,h,i" %}
+                            <br>
+                            Обновлен {{answer.date_update}}
+                            {% endif %}
+                            {% if answer.user_id_id == user.id %}
+                            <br>
+                            <a href="{% url 'main:comment_delete' answer.pk%}">Удалить коментарий</a>
+                            <br>
+                            <a href="{% url 'main:comment_update' answer.pk%}">Редактировать коментарий</a>
+                            {% endif %}
                         </p>
                         <!--                        <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>  # Может позже другие уровни ответов-->
                     </div>

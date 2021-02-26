@@ -325,6 +325,65 @@ class PostRead(DetailView):
             return self.form_invalid(form)
 
 
+class CommentDelete(FunctionsMixin, DeleteView):
+    model = Comment
+    template_name = 'mainapp/post_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy('main:post', kwargs={'slug': self.object.post_id.slug})
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_author(request):
+            return super(CommentDelete, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для удаления данного коментария.</h2>')
+
+    def get_object(self, queryset=None):
+        """
+        Функция возвращает объект с коментарием и базы данных, найденный по полю pk
+        """
+        return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+
+
+class CommentUpdate(FunctionsMixin, UpdateView):
+    """
+    Контроллер редактирования коментариев, использует встроенный контроллер Django UpdateView
+    """
+
+    model = Comment
+    fields = ['text', ]
+    template_name = 'mainapp/post_update_form.html'
+    # template_name_suffix = '_update_form'
+    # success_url = reverse_lazy("authapp:account")
+
+    def get_success_url(self):
+        return reverse_lazy('main:post', kwargs={'slug': self.object.post_id.slug})
+
+    # def get_object(self, queryset=None):
+    #     """
+    #     Функция возвращает объект с коментарием и базы данных, найденный по полю pk
+    #     """
+    #     return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_author(request):
+            return super(CommentUpdate, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для редактирования данной статьи.</h2>')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pk'] = self.get_object().pk
+        context['title'] = 'Редактирование коментария'
+        return context
+
+    def form_valid(self, form):
+        form.instance.date_update = datetime.datetime.today()
+        return super(CommentUpdate, self).form_valid(form)
+
+
 class HelpPage(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр станицы помощи.

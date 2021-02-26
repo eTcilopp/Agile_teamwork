@@ -7,7 +7,7 @@
 {% block content %}
 
 <div class="row">
-    <p class="h2 text-center">Вы уверены, что хотите удалить статью "{{ object.title }}"?</p>
+    <p class="h2 text-center">Вы уверены, что хотите удалить {% if object.title %}статью "{{ object.title }} {% elif object.text %} коментарий {{object.text}} {% endif %}"?</p>
 </div>
 
 <div class="row">
