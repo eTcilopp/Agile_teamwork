@@ -196,6 +196,7 @@ class Comment(models.Model):
     comment_status = models.CharField(
         verbose_name='Статус комментария',
         max_length=3,
+        null=True,
         blank=True
     )
 
