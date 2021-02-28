@@ -96,24 +96,25 @@ if 'test' in sys.argv:
         }
     }
 else:
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #     }
-    # }
     DATABASES = {
-       'default': {
-
-           'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'postgres',
-           'USER': 'postgres',
-           'PASSWORD': '2Be-U>Zq2h[!',
-           'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
-           'PORT': '5432',
-
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    # https://drive.google.com/drive/folders/1A_EWTFU8UMjBz2YEiCp54JG4xjaK5076?usp=sharing
+    # DATABASES = {
+    #    'default': {
+    #
+    #        'ENGINE': 'django.db.backends.postgresql',
+    #        'NAME': 'postgres',
+    #        'USER': 'postgres',
+    #        'PASSWORD': '2Be-U>Zq2h[!',
+    #        'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
+    #        'PORT': '5432',
+    #
+    #     }
+    # }
 
 
 # Password validation

@@ -193,6 +193,12 @@ class Comment(models.Model):
     date_update = models.DateTimeField(
         verbose_name='Дата изменения комментария',
         default=datetime.datetime.today)
+    comment_status = models.CharField(
+        verbose_name='Статус комментария',
+        max_length=3,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         """
