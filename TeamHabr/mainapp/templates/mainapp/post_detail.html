@@ -141,7 +141,7 @@
                             <div class="col shadow-sm p-3 mb-5 bg-light rounded">
                                 <p style="text-align: left" title="Содержание комментария">
                                     {% if 'Del' in comment.comment_status %}
-                                        <p class="alert alert-warning text-center">Комментарий удален модератором</p>
+                                        <p class="alert alert-warning text-center">Комментарий удален</p>
                                         {% if user|has_group:"Moder" %}
                                         <p class="text-muted">  {{comment.text}} </p>
                                             <p class="bg-danger text-white text-center">Комментарий виден только модератору</p>
@@ -191,7 +191,7 @@
                             <div class="col shadow-sm p-3 mb-5 bg-light rounded">
                                 <p style="text-align: left" title="Ответ на комменатрий">
                                     {% if 'Del' in answer.comment_status %}
-                                        <p class="alert alert-warning text-center">Ответ удален модератором</p>
+                                        <p class="alert alert-warning text-center">Ответ удален</p>
                                         {% if user|has_group:"Moder" %}
                                             <p class="text-muted"> {{answer.text}} </p>
                                             <p class="bg-danger text-white text-center">Ответ виден только модератору</p>

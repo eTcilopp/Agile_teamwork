@@ -368,6 +368,7 @@ class CommentUpdate(FunctionsMixin, UpdateView):
     fields = ['text', ]
     template_name = 'mainapp/post_update_form.html'
 
+
     # template_name_suffix = '_update_form'
     # success_url = reverse_lazy("authapp:account")
 
@@ -383,11 +384,12 @@ class CommentUpdate(FunctionsMixin, UpdateView):
     #     return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
 
     def get(self, request, *args, **kwargs):
-        if self.verify_author(request):
+        self.object = self.get_object()
+        if self.verify_author(request) and self.object.comment_status != 'Del':
             return super(CommentUpdate, self).get(request, *args, **kwargs)
         else:
             return HttpResponse(
-                f'<h2>Вы не имеете прав для редактирования данной статьи.</h2>')
+                f'<h2>Вы не имеете прав для редактирования данного комментария или ответа.</h2>')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
