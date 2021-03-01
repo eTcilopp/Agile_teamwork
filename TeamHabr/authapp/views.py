@@ -145,6 +145,7 @@ class Register(View):
         if register_form.is_valid():
             new_user = register_form.save(commit=False)
             new_user.is_active = False
+            new_user.avatar = 'users_avatars/00_default_avatar.png'
             new_user.save()
             current_site = get_current_site(request)
             mail_subject = 'Activate your account.'
