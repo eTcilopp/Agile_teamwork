@@ -20,6 +20,10 @@ urlpatterns = [
         adminapp.AdminPostList.as_view(),
         name='post_list'),
     path(
+        'post_list/<str:status>/',
+        adminapp.AdminPostList.as_view(),
+        name='post_status_list'),
+    path(
         'create_category/',
         adminapp.AdminCreateCategory.as_view(),
         name='create_category'),

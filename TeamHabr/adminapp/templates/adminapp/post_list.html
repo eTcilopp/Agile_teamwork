@@ -1,7 +1,17 @@
 {% extends 'adminapp/admin_base.html' %}
 {% block admin_content %}
-
-
+{{categories2}}
+<div class="row text-center">
+    {% if Aip != 0%}
+    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Aip'%}">Ожидающие одобрения ({{Aip}})</a></div>
+    {% endif %}
+    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Apr'%}">Одобреные ({{Apr}})</a></div>
+    {% if Can != 0%}
+    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Can'%}">Отклоненые ({{Can}})</a></div>
+    {% endif %}
+    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Del'%}">Удаленые статьи ({{Del}})</a></div>
+</div>
+{% if object_list %}
 <table class="table">
     <thead class="thead-dark">
         <tr class="text-center">
@@ -22,15 +32,15 @@
                 {{object.get_post_status_display}}
                 <br>
                 {% if object.post_status != 'Apr' %}
-                <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
+                <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
                     <i class="bi bi-check2-square"></i></a>
                 {% endif %}
                 {% if object.post_status != 'Del' %}
-                <a href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
+                <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
                     <i class="bi bi-trash"></i></a>
                 {% endif %}
                 {% if object.post_status != 'Can' %}
-                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отправить на доработку">
+                    <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отправить на доработку">
                         <i class="bi bi-x-octagon"></i></a>
                 {% endif %}
 
@@ -46,10 +56,13 @@
                 {{object.title}}
             </td>
             <td>
-                <a href="{% url 'main:post' object.slug %}">читать статью</a>
+                <a class="text-info" href="{% url 'main:post' object.slug %}">читать статью</a>
             </td>
             <td>
-                {{object.date_create}} <br> {{object.date_update}}
+                {{object.date_create}}
+                {% if object.date_update|date:"Y,m,d,h,i" > object.date_create|date:"Y,m,d,h,i" %}
+                <br> {{object.date_update}}
+                {% endif %}
             </td>
             <td>
                 {{object.status_update}}
@@ -63,6 +76,8 @@
 
     </tbody>
 </table>
-
+{% else %}
+<h2 class="text-center">С данным статусом нет статей</h2>
+{% endif %}
 
 {% endblock %}

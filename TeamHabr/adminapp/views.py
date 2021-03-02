@@ -128,8 +128,13 @@ class AdminPostList(LoginRequiredMixin, ListView):
         Функция возвращает queryset, используемой родительским классом ListView
         """
 
-        queryset = self.model.objects.exclude(
-            post_status='Drf').order_by('post_status')
+
+        if self.kwargs.get('status'):
+            # print(self.kwargs['status'])
+            queryset = self.model.objects.filter(post_status=self.kwargs['status'])
+        else:
+            queryset = self.model.objects.exclude(
+                post_status='Drf').order_by('post_status')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -142,6 +147,10 @@ class AdminPostList(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Список статей'
         context['categories'] = CategoryPost.objects.all()
+        context['Aip'] = Post.objects.filter(post_status='Aip').count
+        context['Apr'] = Post.objects.filter(post_status='Apr').count
+        context['Can'] = Post.objects.filter(post_status='Can').count
+        context['Del'] = Post.objects.filter(post_status='Del').count
         return context
 
     def post(self, request):

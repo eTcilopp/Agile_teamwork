@@ -16,7 +16,7 @@
         {% for object in object_list %}
         <tr class="text-center">
             <td>{% if object.is_superuser %}Админ всея Хабра{% elif object|has_group:"Moder" %}Модератор{% else %}Юзверь{% endif %}
-                {% if user.is_superuser %}{% if object.is_superuser %}{% elif object|has_group:"Moder" %}<a href="{% url 'admin:delete_moder' object.pk %}">Разжаловать</a>{% else %}<a href="{% url 'admin:create_moder' object.pk %}">Назначить модером</a>{% endif %}{% endif %}
+                {% if user.is_superuser %}{% if object.is_superuser %}{% elif object|has_group:"Moder" %}<a class="text-info" href="{% url 'admin:delete_moder' object.pk %}">Разжаловать</a>{% else %}<a class="text-info" href="{% url 'admin:create_moder' object.pk %}">Назначить модером</a>{% endif %}{% endif %}
 
             </td>
 
