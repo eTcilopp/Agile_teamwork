@@ -45,6 +45,14 @@
             console.log(123)
         })
 
+
+
+        var url = window.location.href;
+        var last = url.slice(-6);
+        if(last == '#valid')
+            $(document).ready(function(){
+                $("#myModal").modal('show');
+                });
     </script>
     {% endblock %}
 </head>
@@ -84,14 +92,14 @@
 
             <hr>
         </div>
+            <script>
 
-
+            </script>
         {% endblock %}
 
         {% block content %}
 
         {% endblock %}
-
     </div>
 </body>
 
