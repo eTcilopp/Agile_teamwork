@@ -22,16 +22,8 @@ from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 
 
 class LoginView(LoginView):
-    form = UserLoginForm
-    title = 'Авторизация'
-    form = UserLoginForm
-    content = {
-        "title": title,
-        "login_form": form
-    }
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'authapp/login.html', self.content)
+    # def get(self, request, *args, **kwargs):
+    #     return render(request, 'authapp/login.html', self.content)
 
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
@@ -48,7 +40,7 @@ class LoginView(LoginView):
             messages.info(
                 request,
                 "Вход невозможен.\n Введите корректные логин/пароль")
-            return redirect(redirect_to)
+            return redirect(redirect_to+"#valid")
 
 
 # class Login(View):
