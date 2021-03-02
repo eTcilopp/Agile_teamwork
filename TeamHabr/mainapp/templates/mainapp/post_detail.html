@@ -10,20 +10,21 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify bg-white">
-            <p class="h2 text-center" title="Заголовок статьи">{{object.title}}
+            <p class="h2 text-center">{{object.title}}
+                <h6>Раздел: {{ object.category_id.name }}</h6>
                 <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i></a> {{object.get_count_post}}</span>
                 <span style="font-size: 14px">{% if user.is_superuser or user|has_group:"Moder"  %}
                     {{object.get_post_status_display}}
                     {% if object.post_status != 'Apr' %}
-                <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрено">
+                <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
                     <i class="bi bi-check2-square"></i></a>
                 {% endif %}
                 {% if object.post_status != 'Del' %}
-                <a href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалено">
+                <a href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
                     <i class="bi bi-trash"></i></a>
                 {% endif %}
                     {% if object.post_status != 'Can' %}
-                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отклоненная">
+                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отклонить">
                         <i class="bi bi-x-octagon"></i></a>
                     {% endif %}{% endif %} </span> </p>
             <hr>
@@ -35,12 +36,11 @@
                 <br>
                 {{i.date_create}}
             </div>
-
             <hr>
             {% endfor %}
             {% endif %}
             {% autoescape on %}
-            <p class="text-justify" title="Содержание">{{object.text| linebreaks}}</p>
+            <p class="text-justify">{{object.text| linebreaks}}</p>
             {% endautoescape %}
         </div>
         <div class="col-2"></div>
@@ -138,12 +138,12 @@
                 {% for comment in comments %}
                 <div class="row">
                     <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                        <p style="text-align: left" title="Содержание комментария">{{comment.text}}</p>
+                        <p style="text-align: left">{{comment.text}}</p>
                         <span id="like_comment" style="font-size: 14px">
                             <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                 <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                             </a>{{comment.get_count_comment}}</span>
-                        <p style="text-align: right" class="text-primary" title="Автор комментария">Автор: {{comment.user_id.username}}
+                        <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
                             <br>
                             {{comment.date_create}}
                         </p>
@@ -159,7 +159,7 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                        <p style="text-align: left" title="Ответ на комменатрий">{{answer.text}}</p>
+                        <p style="text-align: left">{{answer.text}}</p>
                         <span style="font-size: 14px">
                             <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                 <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
