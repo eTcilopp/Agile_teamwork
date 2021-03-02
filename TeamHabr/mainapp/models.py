@@ -62,6 +62,10 @@ class CategoryPost(models.Model):
         return Post.objects.filter(category_id_id=self.pk).count()
 
 
+# def count_status_posts(status):
+#     return Post.objects.filter(post_status=status).count()
+
+
 class Post(models.Model):
     """
     Класс модели статей.

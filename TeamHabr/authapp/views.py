@@ -213,9 +213,18 @@ class Account(DetailView):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
-        articles = Post.objects.filter(
-            user_id=self.request.user.id).exclude(
-            post_status='Del')
+        if self.kwargs.get('status'):
+            articles = Post.objects.filter(
+                user_id=self.request.user.id, post_status=self.kwargs['status'])
+        else:
+            articles = Post.objects.filter(
+                user_id=self.request.user.id).exclude(
+                post_status='Del')
+
+        self.context['Aip'] = Post.objects.filter(user_id=self.request.user.id, post_status='Aip').count
+        self.context['Apr'] = Post.objects.filter(user_id=self.request.user.id, post_status='Apr').count
+        self.context['Can'] = Post.objects.filter(user_id=self.request.user.id, post_status='Can').count
+        self.context['Drf'] = Post.objects.filter(user_id=self.request.user.id, post_status='Drf').count
         self.context['articles'] = articles
         return render(request, self.template_name, self.context)
 
