@@ -356,6 +356,9 @@ class CommentDelete(FunctionsMixin, DeleteView):
         comment_to_delete = self.get_object()
         comment_to_delete.comment_status = 'Del'
         comment_to_delete.save()
+        if self.verify_moderator(request) == True:
+            pass
+            # Сюда поместить функционал блокировки юзера
         return redirect(self.get_success_url())
 
 
