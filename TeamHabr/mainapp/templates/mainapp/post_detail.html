@@ -139,7 +139,7 @@
 
                         <div class="row">
                             <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                                <p style="text-align: left" title="Содержание комментария">
+                                <p style="text-align: left">
                                     {% if 'Del' in comment.comment_status %}
                                         <p class="alert alert-warning text-center">Комментарий удален</p>
                                         {% if user|has_group:"Moder" %}
@@ -154,7 +154,7 @@
                                     <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                         <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                                     </a>{{comment.get_count_comment}}</span>
-                                <p style="text-align: right" class="text-primary" title="Автор комментария">Автор: {{comment.user_id.username}}
+                                <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
                                     <br>
                                     {{comment.date_create}}
                                     {% if comment.date_update|date:"Y,m,d,h,i" > comment.date_create|date:"Y,m,d,h,i" %}
@@ -189,7 +189,7 @@
                             <div class="row">
                             <div class="col-1"></div>
                             <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                                <p style="text-align: left" title="Ответ на комменатрий">
+                                <p style="text-align: left">
                                     {% if 'Del' in answer.comment_status %}
                                         <p class="alert alert-warning text-center">Ответ удален</p>
                                         {% if user|has_group:"Moder" %}

@@ -100,6 +100,18 @@
         {% block content %}
 
         {% endblock %}
+
+        {% block footer %}
+        <div class="row" style="margin-top: 130px">
+            <div class="col-2"></div>
+            <div class="col text-center fixed-bottom" style="background-color: white">
+                <hr>
+                <p><a href="{% url 'main:help' %}" class="text-secondary h6">Помощь</a></p>
+                <p style="color: grey">&copy; Команда 2</p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        {% endblock %}
     </div>
 </body>
 

@@ -91,7 +91,7 @@
                 </span>
                 <span style="font-size: 14px">
                     <a href="{% url 'main:post' article.slug  %}#comment_block">
-                        <i class="bi bi-chat-left" title="Написат комментарий"></i>
+                        <i class="bi bi-chat-left" title="Написать комментарий"></i>
                     </a> {{article.count_all_comment}}
                 </span>
             </p>
@@ -114,7 +114,7 @@
             <span class="current">{% trans "Cтраница " %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
             </span>
             {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
+            <a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt</a>
             {% endif %}
             {% endif %}
         </div>
