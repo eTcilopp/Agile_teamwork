@@ -150,6 +150,7 @@
                                         {{comment.text | linebreaks}}
                                     {% endif %}
                                 </p>
+                                {% if comment.comment_status != 'Del' or user|has_group:"Moder" %}
                                 <span id="like_comment" style="font-size: 14px">
                                     <a  class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                         <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
@@ -168,9 +169,10 @@
                                         <a  class="text-info" href="{% url 'main:comment_update' comment.pk%}">Редактировать коментарий</a>
                                     {% endif %}
                                 </p>
+
                                 {% if user.is_authenticated %}
                                     <a  class="text-info" href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
-
+                                    {% endif %}
                                     <!-- Удаление комментария модератором -->
                                     {% if user|has_group:"Moder" and 'Del' != comment.comment_status %}
                                         <div class="row justify-content-md-end">
@@ -193,18 +195,19 @@
                                     {% if 'Del' in answer.comment_status %}
                                         <p class="alert alert-warning text-center">Ответ удален</p>
                                         {% if user|has_group:"Moder" %}
-                                            <p class="text-muted"> {{answer.text}} </p>
+                                            <p class="text-muted"> {{answer.text|linebreaks}} </p>
                                             <p class="bg-danger text-white text-center">Ответ виден только модератору</p>
                                         {% endif %}
                                     {% else %}
                                         {{answer.text | linebreaks}}
                                     {% endif %}
                                 </p>
+                                {% if 'Del' not in answer.comment_status or user|has_group:"Moder" %}
                                 <span style="font-size: 14px">
-                                    <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
+                                    <a  class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                         <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                                     </a>{{answer.get_count_comment}}</span>
-                                <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
+                                <p style="text-align: right"  class="text-info">Автор: {{answer.user_id.username}}
                                     <br>
                                     {{answer.date_create}}
                                     {% if answer.date_update|date:"Y,m,d,h,i" > answer.date_create|date:"Y,m,d,h,i" %}
@@ -218,6 +221,7 @@
                                     <a href="{% url 'main:comment_update' answer.pk%}">Редактировать ответ</a>
                                     {% endif %}
                                 </p>
+                                {% endif %}
 
                                     <!-- Удаление ответа на комментарий модератором -->
                                     {% if user|has_group:"Moder" and 'Del' != answer.comment_status %}
