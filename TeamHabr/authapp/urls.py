@@ -37,7 +37,7 @@ urlpatterns = [
             authapp.Account.as_view()),
         name='account'),
     path(
-        'account/<str:status>/',
+        'accountstatus/<str:status>/',
         login_required(
             authapp.Account.as_view()),
         name='account_post_status'),
@@ -49,13 +49,13 @@ urlpatterns = [
          authapp.UserUpdate.as_view(),
          name='edit'),
     path('account/password_reset/', auth_views.PasswordResetView.as_view(
-        template_name="authapp/reset_password.html",
+        template_name="authapp/service_messages.html",
         email_template_name="authapp/password_reset_html_email.html",
         success_url=reverse_lazy('authapp:password_reset_done')),
          name='reset_password'),
     path('account/password_reset/done/',
          auth_views.PasswordResetDoneView.as_view(
-             template_name="authapp/password_reset_sent.html"
+             template_name="authapp/service_messages.html"
          ),
          name='password_reset_done'),
     path('account/reset/<uidb64>/<token>/',
@@ -66,7 +66,7 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('account/reset/done/',
          auth_views.PasswordResetCompleteView.as_view(
-             template_name="authapp/password_reset_done.html"
+             template_name="authapp/service_messages.html"
          ),
          name='password_reset_complete'),
     path('account/password_change/',
@@ -77,7 +77,7 @@ urlpatterns = [
          name='password_change'),
     path('account/password_change/done/',
          auth_views.PasswordResetCompleteView.as_view(
-             template_name="authapp/password_change_done.html"
+             template_name="authapp/service_messages.html"
          ),
          name='password_change_done'),
 
