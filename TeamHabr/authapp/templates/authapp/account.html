@@ -47,16 +47,30 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify">
+            <div class="row text-center" style="font-size: 24px">
+    {% if Aip != 0%}
+    <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Aip'%}">Ожидающие одобрения ({{Aip}})</a></div>
+    {% endif %}
+                {% if Apr != 0%}
+    <div class="col  text-info"><a class="text-info" href="{% url 'auth:account_post_status' 'Apr'%}">Одобреные ({{Apr}})</a></div>
+    {% endif %}
+                {% if Can != 0%}
+    <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Can'%}">Отклоненые ({{Can}})</a></div>
+    {% endif %}
+                {% if Drf != 0%}
+    <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Drf'%}">Черновики ({{Drf}})</a></div>
+{% endif %}
+            </div>
             {% if articles %}
             {% for article in articles %}
             <p class="h2 text-center">{{ article.title }} {% if article.post_status == 'Drf' %}
-                <a href="{% url 'admin:change_status_post' article.slug 'Aip'%}"><br>
+                <a class="text-info" href="{% url 'admin:change_status_post' article.slug 'Aip'%}"><br>
                     <i class="bi bi-truck"> На одобрение</i></a>
                 {% endif %}</p>
             <p>Статус: {{ article.get_post_status_display }}</p>
-            <a href="{% url 'main:article_edit' slug=article.slug %}">Редактировать статью</a>
+            <a class="text-info" href="{% url 'main:article_edit' slug=article.slug %}">Редактировать статью</a>
             <p>{{ article.text| truncatewords:200 }}</p>
-            <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
+            <a class="text-info" class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
             {% endfor %}
             {% else %}
             <p class="h2 text-center">У вас ещё нет статей</p>

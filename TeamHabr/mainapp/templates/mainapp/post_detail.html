@@ -10,21 +10,20 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify bg-white">
-            <p class="h2 text-center">{{object.title}}
-                <h6>Раздел: {{ object.category_id.name }}</h6>
+            <p class="h2 text-center" title="Заголовок статьи">{{object.title}}
                 <span id="like_post" style="font-size: 14px"><a {% if user.is_authenticated %} href="{% url 'main:like' object.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}><i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i></a> {{object.get_count_post}}</span>
                 <span style="font-size: 14px">{% if user.is_superuser or user|has_group:"Moder"  %}
                     {{object.get_post_status_display}}
                     {% if object.post_status != 'Apr' %}
-                <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
+                <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрено">
                     <i class="bi bi-check2-square"></i></a>
                 {% endif %}
                 {% if object.post_status != 'Del' %}
-                <a href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
+                <a href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалено">
                     <i class="bi bi-trash"></i></a>
                 {% endif %}
                     {% if object.post_status != 'Can' %}
-                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отклонить">
+                    <a href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отклоненная">
                         <i class="bi bi-x-octagon"></i></a>
                     {% endif %}{% endif %} </span> </p>
             <hr>
@@ -36,11 +35,12 @@
                 <br>
                 {{i.date_create}}
             </div>
+
             <hr>
             {% endfor %}
             {% endif %}
             {% autoescape on %}
-            <p class="text-justify">{{object.text| linebreaks}}</p>
+            <p class="text-justify" title="Содержание">{{object.text| linebreaks}}</p>
             {% endautoescape %}
         </div>
         <div class="col-2"></div>
@@ -108,8 +108,8 @@
                     {% endfor %}
                     <div class="">
                         {% if user.is_authenticated %}
-                        <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>
-                        <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>
+                            <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>
+                            <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>
                         {% else %}
                         <button type="submit" value="отправить" name="save-article" class="btn btn-primary">
                             <a href="#myModal" data-toggle="modal" style="color: white;">Отправить</a>
@@ -136,43 +136,103 @@
             <div class="text-center" role="alert">
 
                 {% for comment in comments %}
-                <div class="row">
-                    <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                        <p style="text-align: left">{{comment.text}}</p>
-                        <span id="like_comment" style="font-size: 14px">
-                            <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                                <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
-                            </a>{{comment.get_count_comment}}</span>
-                        <p style="text-align: right" class="text-primary">Автор: {{comment.user_id.username}}
-                            <br>
-                            {{comment.date_create}}
-                        </p>
-                        {% if user.is_authenticated %}
-                            <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
-                        {% endif %}
-                    </div>
-                    <div class="col-2"></div>
-                </div>
 
-                {% for answer in comment.get_review %}
+                        <div class="row">
+                            <div class="col shadow-sm p-3 mb-5 bg-light rounded">
+                                <p style="text-align: left" title="Содержание комментария">
+                                    {% if 'Del' in comment.comment_status %}
+                                        <p class="alert alert-warning text-center">Комментарий удален</p>
+                                        {% if user|has_group:"Moder" %}
+                                        <p class="text-muted">  {{comment.text}} </p>
+                                            <p class="bg-danger text-white text-center">Комментарий виден только модератору</p>
+                                        {% endif %}
+                                    {% else %}
+                                        {{comment.text | linebreaks}}
+                                    {% endif %}
+                                </p>
+                                <span id="like_comment" style="font-size: 14px">
+                                    <a {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
+                                        <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
+                                    </a>{{comment.get_count_comment}}</span>
+                                <p style="text-align: right" class="text-primary" title="Автор комментария">Автор: {{comment.user_id.username}}
+                                    <br>
+                                    {{comment.date_create}}
+                                    {% if comment.date_update|date:"Y,m,d,h,i" > comment.date_create|date:"Y,m,d,h,i" %}
+                                        <br>
+                                        Обновлен {{comment.date_update}}
+                                    {% endif %}
+                                    {% if comment.user_id_id == user.id and 'Del' != comment.comment_status %}
+                                        <br>
+                                        <a href="{% url 'main:comment_delete' comment.pk%}">Удалить коментарий</a>
+                                        <br>
+                                        <a href="{% url 'main:comment_update' comment.pk%}">Редактировать коментарий</a>
+                                    {% endif %}
+                                </p>
+                                {% if user.is_authenticated %}
+                                    <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
 
-                <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col shadow-sm p-3 mb-5 bg-light rounded">
-                        <p style="text-align: left">{{answer.text}}</p>
-                        <span style="font-size: 14px">
-                            <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                                <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
-                            </a>{{answer.get_count_comment}}</span>
-                        <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
-                            <br>
-                            {{answer.date_create}}
-                        </p>
-                        <!--                        <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>  # Может позже другие уровни ответов-->
-                    </div>
-                    <div class="col-2"></div>
-                </div>
-                {% endfor %}
+                                    <!-- Удаление комментария модератором -->
+                                    {% if user|has_group:"Moder" and 'Del' != comment.comment_status %}
+                                        <div class="row justify-content-md-end">
+                                            <form  action="{% url 'main:comment_delete' comment.pk%}">
+                                                 <input class="btn btn-outline-warning" type="submit" value="Модератор: Удалить коментарий" />
+                                            </form>
+                                        </div>
+                                    {% endif %}
+
+                                {% endif %}
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+                        {% for answer in comment.get_review %}
+                            <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col shadow-sm p-3 mb-5 bg-light rounded">
+                                <p style="text-align: left" title="Ответ на комменатрий">
+                                    {% if 'Del' in answer.comment_status %}
+                                        <p class="alert alert-warning text-center">Ответ удален</p>
+                                        {% if user|has_group:"Moder" %}
+                                            <p class="text-muted"> {{answer.text}} </p>
+                                            <p class="bg-danger text-white text-center">Ответ виден только модератору</p>
+                                        {% endif %}
+                                    {% else %}
+                                        {{answer.text | linebreaks}}
+                                    {% endif %}
+                                </p>
+                                <span style="font-size: 14px">
+                                    <a {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
+                                        <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
+                                    </a>{{answer.get_count_comment}}</span>
+                                <p style="text-align: right" class="text-primary">Автор: {{answer.user_id.username}}
+                                    <br>
+                                    {{answer.date_create}}
+                                    {% if answer.date_update|date:"Y,m,d,h,i" > answer.date_create|date:"Y,m,d,h,i" %}
+                                        <br>
+                                        Обновлен {{answer.date_update}}
+                                    {% endif %}
+                                    {% if answer.user_id_id == user.id and 'Del' != answer.comment_status %}
+                                    <br>
+                                    <a href="{% url 'main:comment_delete' answer.pk%}">Удалить ответ</a>
+                                    <br>
+                                    <a href="{% url 'main:comment_update' answer.pk%}">Редактировать ответ</a>
+                                    {% endif %}
+                                </p>
+
+                                    <!-- Удаление ответа на комментарий модератором -->
+                                    {% if user|has_group:"Moder" and 'Del' != answer.comment_status %}
+                                        <div class="row justify-content-md-end">
+                                            <form  action="{% url 'main:comment_delete' answer.pk%}">
+                                                 <input class="btn btn-outline-warning" type="submit" value="Модератор: Удалить ответ" />
+                                            </form>
+                                        </div>
+                                    {% endif %}
+
+                                <!--                        <a href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>  # Может позже другие уровни ответов-->
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                        {% endfor %}
                 {% endfor %}
             </div>
         </div>

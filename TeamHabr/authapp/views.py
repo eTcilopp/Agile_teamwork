@@ -22,16 +22,8 @@ from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 
 
 class LoginView(LoginView):
-    form = UserLoginForm
-    title = 'Авторизация'
-    form = UserLoginForm
-    content = {
-        "title": title,
-        "login_form": form
-    }
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'authapp/login.html', self.content)
+    # def get(self, request, *args, **kwargs):
+    #     return render(request, 'authapp/login.html', self.content)
 
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
@@ -48,7 +40,7 @@ class LoginView(LoginView):
             messages.info(
                 request,
                 "Вход невозможен.\n Введите корректные логин/пароль")
-            return redirect(redirect_to)
+            return redirect(redirect_to+"#valid")
 
 
 # class Login(View):
@@ -145,6 +137,7 @@ class Register(View):
         if register_form.is_valid():
             new_user = register_form.save(commit=False)
             new_user.is_active = False
+            new_user.avatar = 'users_avatars/00_default_avatar.png'
             new_user.save()
             current_site = get_current_site(request)
             mail_subject = 'Activate your account.'
@@ -212,9 +205,18 @@ class Account(DetailView):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
-        articles = Post.objects.filter(
-            user_id=self.request.user.id).exclude(
-            post_status='Del')
+        if self.kwargs.get('status'):
+            articles = Post.objects.filter(
+                user_id=self.request.user.id, post_status=self.kwargs['status'])
+        else:
+            articles = Post.objects.filter(
+                user_id=self.request.user.id).exclude(
+                post_status='Del')
+
+        self.context['Aip'] = Post.objects.filter(user_id=self.request.user.id, post_status='Aip').count
+        self.context['Apr'] = Post.objects.filter(user_id=self.request.user.id, post_status='Apr').count
+        self.context['Can'] = Post.objects.filter(user_id=self.request.user.id, post_status='Can').count
+        self.context['Drf'] = Post.objects.filter(user_id=self.request.user.id, post_status='Drf').count
         self.context['articles'] = articles
         return render(request, self.template_name, self.context)
 

@@ -102,6 +102,7 @@ else:
     #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     #     }
     # }
+    # https://drive.google.com/drive/folders/1A_EWTFU8UMjBz2YEiCp54JG4xjaK5076?usp=sharing
     DATABASES = {
        'default': {
 

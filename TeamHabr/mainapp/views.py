@@ -46,7 +46,12 @@ class FunctionsMixin:
                 slug = random_symbol + slug
                 slug = make_unique(slug)
             return slug
+
         return make_unique(slug)
+
+    def verify_moderator(self, request):
+        result = request.user.groups.filter(name='Moder').exists()
+        return result
 
 
 class Index(ListView):
@@ -325,6 +330,78 @@ class PostRead(DetailView):
             return self.form_invalid(form)
 
 
+class CommentDelete(FunctionsMixin, DeleteView):
+    model = Comment
+    template_name = 'mainapp/post_confirm_delete.html'
+
+    def get_object(self, queryset=None):
+        """
+        Функция возвращает объект с коментарием и базы данных, найденный по полю pk
+        """
+        return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'main:post', kwargs={
+                'slug': self.get_object().post_id.slug})
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_author(request) or self.verify_moderator(request):
+            return super(CommentDelete, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для удаления данного коментария.</h2>')
+
+    def delete(self, request, pk):
+        comment_to_delete = self.get_object()
+        comment_to_delete.comment_status = 'Del'
+        comment_to_delete.save()
+        return redirect(self.get_success_url())
+
+
+class CommentUpdate(FunctionsMixin, UpdateView):
+    """
+    Контроллер редактирования коментариев, использует встроенный контроллер Django UpdateView
+    """
+
+    model = Comment
+    fields = ['text', ]
+    template_name = 'mainapp/post_update_form.html'
+
+
+    # template_name_suffix = '_update_form'
+    # success_url = reverse_lazy("authapp:account")
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'main:post', kwargs={
+                'slug': self.object.post_id.slug})
+
+    # def get_object(self, queryset=None):
+    #     """
+    #     Функция возвращает объект с коментарием и базы данных, найденный по полю pk
+    #     """
+    #     return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.verify_author(request) and self.object.comment_status != 'Del':
+            return super(CommentUpdate, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для редактирования данного комментария или ответа.</h2>')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pk'] = self.get_object().pk
+        context['title'] = 'Редактирование коментария'
+        return context
+
+    def form_valid(self, form):
+        form.instance.date_update = datetime.datetime.today()
+        return super(CommentUpdate, self).form_valid(form)
+
+
 class HelpPage(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр станицы помощи.
@@ -346,6 +423,7 @@ class HelpPage(DetailView):
         и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
+
 
 # from django.views.generic import TemplateView
 #
@@ -402,7 +480,6 @@ def handler(request, *args, **argv):
     response = render(request, template_name='mainapp/404.html')
     response.status_code = 404
     return response
-
 
 # def handler500(request, *args, **argv):
 #     print(request, *args, **argv)

@@ -62,6 +62,10 @@ class CategoryPost(models.Model):
         return Post.objects.filter(category_id_id=self.pk).count()
 
 
+# def count_status_posts(status):
+#     return Post.objects.filter(post_status=status).count()
+
+
 class Post(models.Model):
     """
     Класс модели статей.
@@ -193,6 +197,12 @@ class Comment(models.Model):
     date_update = models.DateTimeField(
         verbose_name='Дата изменения комментария',
         default=datetime.datetime.today)
+    comment_status = models.CharField(
+        verbose_name='Статус комментария',
+        max_length=3,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         """
