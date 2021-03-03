@@ -72,30 +72,33 @@
                              height="50px">
                     </div>
                 {% endif %}
-                <div class="col-md-auto text-uppercase font-weight-bold" title="Автор статьи">{{article.user_id}} </div>
+                <div class="col-md-auto text-uppercase font-weight-bold">{{article.user_id}} </div>
                 <div class="col text-black-50">&middot; {{article.date_create}}</div>
             </div>
             <p class="h2 text-center">
-                <a href="{% url 'main:post' article.slug %}" title="Заголовок статьи">
+
+                <a class="text-info" href="{% url 'main:post' article.slug %}">
                 {{article.title}}
                 </a>
                 <span id="like_post" style="font-size: 14px">
-                    <a {% if user.is_authenticated %}
+                    <a class="text-info" {% if user.is_authenticated %}
                         href="{% url 'main:like' article.pk 'post' %}"
                        {% else %}
                         href="#myModal" data-toggle="modal"
 
                        {% endif %}>
-                        <i class="bi bi-hand-thumbs-up" title="Лайки"></i>
+                        <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
                     </a> {{article.get_count_post}}
                 </span>
                 <span style="font-size: 14px">
-                    <a href="{% url 'main:post' article.slug  %}#comment_block">
-                        <i class="bi bi-chat-left" title="Комментарии"></i>
+
+                    <a class="text-info" href="{% url 'main:post' article.slug  %}#comment_block">
+                        <i class="bi bi-chat-left" title="Написать комментарий"></i>
                     </a> {{article.count_all_comment}}
                 </span>
             </p>
-            <p title="Содержание статьи">{{article.text| truncatewords:50}}</p>
+            <h6>Раздел: {{ article.category_id.name }}</h6>
+            <p>{{article.text| truncatewords:50}}</p>
             <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
             <hr>
             {% endfor %}
@@ -108,12 +111,13 @@
         <div class="col text-center">
             {% if is_paginated %}
             {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
+            <a class="text-info" href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
             {% endif %}
             <span class="current">{% trans "Cтраница " %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
             </span>
             {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
+
+            <a class="text-info" href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
             {% endif %}
             {% endif %}
         </div>
