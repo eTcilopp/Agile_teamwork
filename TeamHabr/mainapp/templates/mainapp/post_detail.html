@@ -74,11 +74,11 @@
                 </span>
             </p>
         </div>
-        <div class="col text-justify text-primary" id="formReview">
-            <p class="">Дата создания: {{object.date_create}}</p>
-                {%  if object.post_updated %}
-                    <p>Дата обновления: {{object.date_update}}</p>
-                {% endif %}
+        <div class="col text-primary" id="formReview">
+            <p style="text-align: right;">Дата создания: {{object.date_create}}</p>
+            {%  if object.post_updated %}
+                <p style="text-align: right;">Дата обновления: {{object.date_update}}</p>
+            {% endif %}
         </div>
         <div class="col-2"></div>
 
