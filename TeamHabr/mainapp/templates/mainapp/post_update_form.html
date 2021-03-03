@@ -13,9 +13,9 @@
             <p class="h2 text-center">Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}</p>
             <hr>
             {% if slug %}
-            <a href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
+            <a  class="text-info" href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
             {% elif pk %}
-            <a href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
+            <a  class="text-info" href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
             {% endif %}
             <form method=post>
                 {% csrf_token %}
