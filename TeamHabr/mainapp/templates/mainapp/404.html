@@ -3,31 +3,41 @@
 {% block content %}
 
 <style>
-html { height: 100%; }
-body {
-  background: url("https://media.giphy.com/media/qTpK7CsOq6T84/giphy.gif") no-repeat;
-  background-size: cover; /* Масштабирует картинку сохраняя пропорции */
-  }
+    html {
+        height: 100%;
+    }
 
-.notfound {
-    margin-top: 100px;
-  text-align: center;
-  color: #fff;
-  font-size: 2em;
-  position: relative; /* Относительное позиционирование */
-  z-index: 2; /* Порядок наложения элемента по слоям в глубину */
-  }
-.notfound a {
-  color: #fff;
-  font-size: 0.8em;
-  }
-.notfound a:hover {
-  color: yellow;
-  text-decoration: none;
-  }
+    body {
+        background: url("https://media.giphy.com/media/qTpK7CsOq6T84/giphy.gif") no-repeat;
+        background-size: cover;
+        /* Масштабирует картинку сохраняя пропорции */
+    }
+
+    .notfound {
+        margin-top: 100px;
+        text-align: center;
+        color: #fff;
+        font-size: 2em;
+        position: relative;
+        /* Относительное позиционирование */
+        z-index: 2;
+        /* Порядок наложения элемента по слоям в глубину */
+    }
+
+    .notfound a {
+        color: #fff;
+        font-size: 0.8em;
+    }
+
+    .notfound a:hover {
+        color: yellow;
+        text-decoration: none;
+    }
+
 </style>
 <div class="over"></div>
-<div class="notfound"><h1>404</h1><br>Вы забрели не туда<br>
-<a href="/"> Вернитесь на сайт..</a>
+<div class="notfound">
+    <h1>404</h1><br>Вы забрели не туда<br>
+    <a href="/"> Вернитесь на сайт..</a>
 </div>
 {% endblock %}

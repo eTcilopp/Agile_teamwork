@@ -17,6 +17,7 @@ class CategoryPost(models.Model):
         True - категория активна
         False - категория не активка
     """
+
     name = models.CharField(
         verbose_name='Категория',
         max_length=30,
@@ -39,6 +40,7 @@ class CategoryPost(models.Model):
         Если не заполнено, из поля "Наименование" категории генерируется slug
         Далее, метод выполяет сохранение данных в базе.
         """
+
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
@@ -48,6 +50,7 @@ class CategoryPost(models.Model):
         Вложенный класс Meta определяет наименование полей формы в разделе администрирования,
         а также принцип сортировки вывода списка категорий (по наименованию, по возрастанию)
         """
+
         verbose_name_plural = 'Категории'
         verbose_name = 'Категория'
         ordering = ['name']
@@ -56,14 +59,11 @@ class CategoryPost(models.Model):
         """
         Метод генерирует абсолютный путь для получения url через слаги.
         """
+
         return reverse("by_category", kwargs={"slug": self.slug})
 
     def count_all_post(self):
         return Post.objects.filter(category_id_id=self.pk).count()
-
-
-# def count_status_posts(status):
-#     return Post.objects.filter(post_status=status).count()
 
 
 class Post(models.Model):
@@ -81,6 +81,7 @@ class Post(models.Model):
     date_create - дата и время создания статьи
     date_update - дата и встемя любого последнего изменения статьи
     """
+
     CHOICES_STATUS = [('Aip', 'Ждет одобрения'), ('Apr', 'Одобрено'),
                       ('Del', 'Удалено'), ('Can', 'Отклоненая'), ('Drf', 'Черновик')]
     category_id = models.ForeignKey(
@@ -182,6 +183,7 @@ class Comment(models.Model):
     date_create - дата и время созадния статьи
     date_update - дата и время последнего изменения статьи
     """
+
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
     parent_comment = models.ForeignKey(
@@ -218,7 +220,6 @@ class Comment(models.Model):
         return Like.objects.filter(comment_id_id=self.pk).count()
 
 
-
 class Like(models.Model):
     """
     Класс модели Лайков.
@@ -231,6 +232,7 @@ class Like(models.Model):
     date_create - дата создания лайка
     date_update - дата последнего изменения лайка
     """
+
     author_user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Author_like')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None,
@@ -245,13 +247,6 @@ class Like(models.Model):
         blank=True)
     date_create = models.DateTimeField(default=datetime.datetime.today)
     date_update = models.DateTimeField(default=datetime.datetime.today)
-
-    # def __str__(self):
-    #     """
-    #     Переопределения метода __str__.
-    #     При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
-    #     """
-    #     return f'{self.post_id.name} ({self.user_id.name})'
 
 
 class Reason(models.Model):

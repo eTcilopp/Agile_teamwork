@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
@@ -41,10 +40,6 @@ urlpatterns = [
         login_required(
             authapp.Account.as_view()),
         name='account_post_status'),
-    # path(
-    #     'edit/',
-    #     authapp.Edit.as_view(),
-    #     name='edit', ),
     path('update/',
          authapp.UserUpdate.as_view(),
          name='edit'),

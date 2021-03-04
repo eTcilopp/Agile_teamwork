@@ -1,15 +1,10 @@
-from django import forms
-from django.http import Http404
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views import View
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.template import RequestContext
 from django.db.models import Count
 from django.db.models import Q
 from slugify import slugify
@@ -17,7 +12,6 @@ import re
 import datetime
 import string
 import random
-import ctypes
 
 from .models import Post, CategoryPost, Comment, Like
 from .forms import PostCreationForm, CommentForm
@@ -46,7 +40,6 @@ class FunctionsMixin:
                 slug = random_symbol + slug
                 slug = make_unique(slug)
             return slug
-
         return make_unique(slug)
 
     def verify_moderator(self, request):
@@ -63,13 +56,6 @@ class Index(ListView):
     """
 
     model = Post
-    # user_windows = ctypes.windll.user32
-    # screen_width = user_windows.GetSystemMetrics(0)
-    # screen_height = user_windows.GetSystemMetrics(1)
-    # if screen_width > screen_height:
-    #     paginate_by = (screen_height - 125) / 150
-    # else:
-    #     paginate_by = (screen_width - 125) / 150
     paginate_by = 4
 
     def get_queryset(self, *args, **kwargs):
@@ -150,18 +136,9 @@ class ArticleCreate(FunctionsMixin, CreateView):
         """
 
         initial = super(ArticleCreate, self).get_initial()
-        # опделеляем url страницы, с которой осуществлен переход
-        # source_page = self.request.META["HTTP_REFERER"]
-        # # с помощью регулярного выражения определен слаг страницы, с которой
-        # # выполнен переход
-        # result = re.search('.*/(.*)/', source_page).group(1)
         result = source_page(self.request)
-        # выполняется запрос в базу данных - по слагу определяется id категории
-        # из модели CategoryPost
         category_id = self.category_post_model.objects.filter(
             slug=result).values_list('id', flat=True).first()
-        # в случае, если категория найдена, ее значение добавляется в словарь
-        # itinial для передачи в форму
         if category_id:
             initial['category_id'] = category_id
         return initial
@@ -371,20 +348,10 @@ class CommentUpdate(FunctionsMixin, UpdateView):
     fields = ['text', ]
     template_name = 'mainapp/post_update_form.html'
 
-
-    # template_name_suffix = '_update_form'
-    # success_url = reverse_lazy("authapp:account")
-
     def get_success_url(self):
         return reverse_lazy(
             'main:post', kwargs={
                 'slug': self.object.post_id.slug})
-
-    # def get_object(self, queryset=None):
-    #     """
-    #     Функция возвращает объект с коментарием и базы данных, найденный по полю pk
-    #     """
-    #     return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -428,32 +395,6 @@ class HelpPage(DetailView):
         return render(request, self.template_name, self.context)
 
 
-# from django.views.generic import TemplateView
-#
-#
-# class CommonViewMixin:
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#
-#         return context
-#
-#
-# class Handler404(CommonViewMixin, TemplateView):
-#     template_name = '123'
-#
-#     def get(self, request, *args, **kwargs):
-#         context = self.get_context_data(**kwargs)
-#         return self.render_to_response(context, status=404)
-#
-#
-# class Handler500(CommonViewMixin, TemplateView):
-#     template_name = '50x.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         context = self.get_context_data(**kwargs)
-#         return self.render_to_response(context, status=500)
-
-
 def source_page(request):
     source_page = request.META["HTTP_REFERER"]
     return re.search('.*/(.*)/', source_page).group(1)
@@ -476,17 +417,9 @@ def likes(request, pk, type_likes):
         Like.objects.filter(
             **{field_id: pk}, author_user_id_id=author.pk).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    # return HttpResponse('<script>history.back();</script>')
 
 
 def handler(request, *args, **argv):
     response = render(request, template_name='mainapp/404.html')
     response.status_code = 404
     return response
-
-# def handler500(request, *args, **argv):
-#     print(request, *args, **argv)
-#     response = render(request, template_name='mainapp/404.html')
-#     # print(request, response)
-#     response.status_code = 500
-#     return response

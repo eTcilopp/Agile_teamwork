@@ -11,8 +11,6 @@ class CategoryPostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post, PostAdmin)
-
 admin.site.register(Comment)
-
 admin.site.register(CategoryPost, CategoryPostAdmin)
 admin.site.register(Like)
