@@ -204,7 +204,7 @@
                                         {{answer.text | linebreaks}}
                                     {% endif %}
                                 </p>
-                                {% if 'Del' not in answer.comment_status or user|has_group:"Moder" %}
+                                {% if answer.comment_status != 'Del' or user|has_group:"Moder" %}
                                 <span style="font-size: 14px">
                                     <a  class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
                                         <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
@@ -218,9 +218,9 @@
                                     {% endif %}
                                     {% if answer.user_id_id == user.id and 'Del' != answer.comment_status %}
                                     <br>
-                                    <a href="{% url 'main:comment_delete' answer.pk%}">Удалить ответ</a>
+                                    <a class="text-info" href="{% url 'main:comment_delete' answer.pk%}">Удалить ответ</a>
                                     <br>
-                                    <a href="{% url 'main:comment_update' answer.pk%}">Редактировать ответ</a>
+                                    <a class="text-info" href="{% url 'main:comment_update' answer.pk%}">Редактировать ответ</a>
                                     {% endif %}
                                 </p>
                                 {% endif %}
