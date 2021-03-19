@@ -1,28 +1,29 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect, render
-from .models import User
-from .forms import UserLoginForm, UserRegisterForm, UserEditForm
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import UpdateView
 from django.contrib import auth
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from mainapp.models import Post
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
+from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.views.generic.detail import DetailView
+
+from .models import User
+from mainapp.models import Post, CategoryPost
+from .forms import UserLoginForm, UserRegisterForm, UserEditForm
 
 
 class LoginView(LoginView):
-    form = UserLoginForm
-    title = 'Авторизация'
-
-    form = UserLoginForm
-    content = {
-        "title": title,
-        "login_form": form
-    }
-
-    def get(self, request, *args, **kwargs):
-        return render(request, 'authapp/login.html', self.content)
+    # def get(self, request, *args, **kwargs):
+    #     return render(request, 'authapp/login.html', self.content)
 
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
@@ -39,7 +40,8 @@ class LoginView(LoginView):
             messages.info(
                 request,
                 "Вход невозможен.\n Введите корректные логин/пароль")
-            return redirect(redirect_to)
+            return redirect(redirect_to+"#valid")
+
 
 # class Login(View):
 #     """
@@ -92,6 +94,7 @@ class Logout(View):
         :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем
         с передаваемыми шаблону данными;
         """
+
         auth.logout(request)
         return HttpResponseRedirect(reverse("main:index"))
         # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -101,12 +104,14 @@ class Register(View):
     """
     Класс контроллера обрабоки запросов на регистрацию нового пользователя.
     """
+
     title = 'Регистрация'
     form = UserRegisterForm
     template_name = 'authapp/register.html'
     content = {
         "title": title,
-        "register_form": form
+        "register_form": form,
+        'categories': CategoryPost.objects.all(),
     }
 
     def get(self, request, *args, **kwargs):
@@ -116,6 +121,7 @@ class Register(View):
         :return: функция возвращает функцию render, комбинирующую указанный шаблон со словарем
         с передаваемыми шаблону данными;
         """
+
         return render(request, self.template_name, self.content)
 
     def post(self, request):
@@ -126,29 +132,70 @@ class Register(View):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
+
         register_form = self.form(request.POST)
-
         if register_form.is_valid():
-            username = register_form.cleaned_data.get('username')
-            password = register_form.cleaned_data.get('password1')
-            register_form.save()
-            new_user = auth.authenticate(username=username, password=password)
-            auth.login(request, new_user)
-            return HttpResponseRedirect(reverse("main:index"))
+            new_user = register_form.save(commit=False)
+            new_user.is_active = False
+            new_user.avatar = 'users_avatars/00_default_avatar.png'
+            new_user.save()
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account.'
+            message = render_to_string('authapp/acc_active_email.html', {
+                'user': new_user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(new_user.pk)),
+                'token': default_token_generator.make_token(new_user),
+            })
+            to_email = register_form.cleaned_data.get('email')
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            template_name = 'authapp/service_messages.html'
+            service_message = 'Для активации Вашего профиля перейдите по ссылке, отправленной Вам по электронной почте.'
+            content = {"service_message": service_message}
+            return render(request, template_name, content)
         else:
-            messages.info(request, "Регистрация невозможна.\n Введите корректные данные")
-            return redirect('auth:register')
+            self.content["register_form"] = register_form
+            return render(request, self.template_name, self.content)
 
 
-class Account(View):
+class Activate(View):
+    title = 'Страница подтверждения'
+    template_name = 'authapp/service_messages.html'
+    service_message = 'Благодарим Вас за подтверждение электронной почты. Вы можете авторизоваться.'
+    context = {
+        'title': title,
+        'service_message': service_message,
+        'categories': CategoryPost.objects.all(),
+    }
+
+    def get(self, request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = get_user_model()._default_manager.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and default_token_generator.check_token(
+                user, token):
+            user.is_active = True
+            user.save()
+            self.context['login_allowed'] = True
+            #TODO: при авторизации по ссылке из письма нужно уходить с этой страницы. Спросить МИхаила.
+        else:
+            self.context['service_message'] = 'Ссылка устарела или недействительна.'
+        return render(request, self.template_name, self.context)
+
+
+class Account(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр личного кабинета пользователя.
     """
+
     title = 'Личный кабинет пользователя'
     template_name = 'authapp/account.html'
-
     context = {
-        'title': title
+        'title': title,
+        'categories': CategoryPost.objects.all(),
     }
 
     def get(self, request, *args, **kwargs):
@@ -158,54 +205,61 @@ class Account(View):
         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
         со словарем с передаваемыми шаблону данными;
         """
-        articles = Post.objects.filter(
-            user_id=self.request.user.id).exclude(
-            post_status='Del')
-        self.context = {
-            'articles': articles
-        }
+        if self.kwargs.get('status'):
+            articles = Post.objects.filter(
+                user_id=self.request.user.id, post_status=self.kwargs['status'])
+        else:
+            articles = Post.objects.filter(
+                user_id=self.request.user.id).exclude(
+                post_status='Del')
+
+        self.context['Aip'] = Post.objects.filter(user_id=self.request.user.id, post_status='Aip').count
+        self.context['Apr'] = Post.objects.filter(user_id=self.request.user.id, post_status='Apr').count
+        self.context['Can'] = Post.objects.filter(user_id=self.request.user.id, post_status='Can').count
+        self.context['Drf'] = Post.objects.filter(user_id=self.request.user.id, post_status='Drf').count
+        self.context['articles'] = articles
         return render(request, self.template_name, self.context)
 
 
-class Edit(View):
-    """
-    Класс контроллера обработки запросов на изменение данных пользователя
-
-    """
-    title = 'Редактирование'
-    form = UserEditForm
-    template_name = 'authapp/edit.html'
-    content = {
-        'title': title,
-        'edit_form': form
-    }
-
-    def get(self, request, *args, **kwargs):
-        """
-        Функция обработки get-запросов на редактирование информации о пользователе
-        :param request - функция получает объект request, содержащий параметры запроса
-        :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
-        со славарём с передаваемыми шаблону данными;
-        """
-        return render(request, self.template_name, self.content)
-
-    def post(self, request):
-        """
-        Функция обработки post-запросов на редактиирвание данных пользователя
-        Функция определяет валидность введенных в форму данных и выполняет запись данных в базу данных.
-        :param request - фукнция получает объект request, содержажщий параментры запроса
-        :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
-        со словарем с передаваемыми шаблону данными;
-        """
-        edit_form = self.form(
-            request.POST,
-            request.FILES,
-            instance=request.user)
-        if edit_form.is_valid():
-            edit_form.save()
-            return HttpResponseRedirect(reverse('auth:edit'))
-
-        return render(request, self.template_name, self.content)
+# class Edit(View):
+#     """
+#     Класс контроллера обработки запросов на изменение данных пользователя
+#
+#     """
+#     title = 'Редактирование'
+#     form = UserEditForm
+#     template_name = 'authapp/edit.html'
+#     content = {
+#         'title': title,
+#         'form': form
+#     }
+#
+#     def get(self, request, *args, **kwargs):
+#         """
+#         Функция обработки get-запросов на редактирование информации о пользователе
+#         :param request - функция получает объект request, содержащий параметры запроса
+#         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
+#         со славарём с передаваемыми шаблону данными;
+#         """
+#         return render(request, self.template_name, self.content)
+#
+#     def post(self, request):
+#         """
+#         Функция обработки post-запросов на редактиирвание данных пользователя
+#         Функция определяет валидность введенных в форму данных и выполняет запись данных в базу данных.
+#         :param request - фукнция получает объект request, содержажщий параментры запроса
+#         :return: render() - функция возвращает функцию render, комбинирующую указанный шаблон
+#         со словарем с передаваемыми шаблону данными;
+#         """
+#         edit_form = self.form(
+#             request.POST,
+#             request.FILES,
+#             instance=request.user)
+#         if edit_form.is_valid():
+#             edit_form.save()
+#             return HttpResponseRedirect(reverse('auth:edit'))
+#
+#         return render(request, self.template_name, self.content)
 
 # TODO: проверить PermissionsMixin
 
@@ -213,12 +267,25 @@ class Edit(View):
 class UserUpdate(UpdateView):
     """
     Класс контроллера обработки запросов на изменение данных пользователя
-
     """
+
     model = User
-    fields = ['username', 'name', 'surname', 'email']
+    fields = [
+        'username',
+        'name',
+        'surname',
+        'email',
+        'age',
+        'aboutMe',
+        'avatar']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 
     def get_object(self):
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(UserUpdate, self).get_context_data(**kwargs)
+        context['title'] = 'Редактирование данных пользователя'
+        context['categories'] = CategoryPost.objects.all()
+        return context

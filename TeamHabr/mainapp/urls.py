@@ -21,13 +21,28 @@ urlpatterns = [
         '',
         mainapp.Index.as_view(),
         name='index'),
+    path(
+        'search_results',
+        mainapp.Index.as_view(),
+        name='search_results'),
 
     path(
         'category/<slug:slug>/',
         mainapp.Index.as_view(),
         name='category'),
+    path(
+        'search_results/<slug:slug>/',
+        mainapp.Index.as_view(),
+        name='search_results'),
 
-
+    path(
+        'main/<str:data_type>/',
+        mainapp.Index.as_view(),
+        name='popular'),
+    path(
+        'category/<slug:slug>/<str:data_type>/',
+        mainapp.Index.as_view(),
+        name='category_popular'),
     path(
         'post/create/',
         mainapp.ArticleCreate.as_view(),
@@ -47,6 +62,15 @@ urlpatterns = [
         'post/delete/<slug:slug>/',
         mainapp.ArticleDelete.as_view(),
         name='article_delete'),
+
+    path(
+        'comment/delete/<int:pk>/',
+        mainapp.CommentDelete.as_view(),
+        name='comment_delete'),
+    path(
+        'comment/update/<int:pk>/',
+        mainapp.CommentUpdate.as_view(),
+        name='comment_update'),
 
     path(
         'like/<int:pk>/<str:type_likes>',

@@ -10,9 +10,13 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify">
-            <p class="h2 text-center">Редактирование статьи</p>
+            <p class="h2 text-center">Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}</p>
             <hr>
-            <a href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
+            {% if slug %}
+            <a  class="text-info" href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
+            {% elif pk %}
+            <a  class="text-info" href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
+            {% endif %}
             <form method=post>
                 {% csrf_token %}
 

@@ -62,6 +62,10 @@ class CategoryPost(models.Model):
         return Post.objects.filter(category_id_id=self.pk).count()
 
 
+# def count_status_posts(status):
+#     return Post.objects.filter(post_status=status).count()
+
+
 class Post(models.Model):
     """
     Класс модели статей.
@@ -77,8 +81,8 @@ class Post(models.Model):
     date_create - дата и время создания статьи
     date_update - дата и встемя любого последнего изменения статьи
     """
-    CHOICES_STATUS = [('Apr', 'Одобрено'), ('Pub', 'Ждет одобрения'),
-                      ('Del', 'Удалено'), ('Drf', 'Черновик')]
+    CHOICES_STATUS = [('Aip', 'Ждет одобрения'), ('Apr', 'Одобрено'),
+                      ('Del', 'Удалено'), ('Can', 'Отклоненая'), ('Drf', 'Черновик')]
     category_id = models.ForeignKey(
         CategoryPost,
         on_delete=models.CASCADE,
@@ -142,8 +146,6 @@ class Post(models.Model):
         verbose_name = 'Статья'
         ordering = ['-date_create']
 
-
-
     def get_absolute_url(self):
         """
         Метод генерирует абсолютный путь для получения url через слаги.
@@ -162,6 +164,9 @@ class Post(models.Model):
 
     def count_all_comment(self):
         return Comment.objects.filter(post_id_id=self.pk).count()
+
+    def get_reason(self):
+        return Reason.objects.filter(post_id_id=self.pk)
 
 
 class Comment(models.Model):
@@ -192,6 +197,12 @@ class Comment(models.Model):
     date_update = models.DateTimeField(
         verbose_name='Дата изменения комментария',
         default=datetime.datetime.today)
+    comment_status = models.CharField(
+        verbose_name='Статус комментария',
+        max_length=3,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         """
@@ -241,3 +252,15 @@ class Like(models.Model):
     #     При вызове команды print метод выводит наименование статьи и имя пользователя, ставящего лайк.
     #     """
     #     return f'{self.post_id.name} ({self.user_id.name})'
+
+
+class Reason(models.Model):
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(
+        Post, on_delete=models.CASCADE)
+    text = models.TextField(
+        verbose_name="причина отклонения",
+        max_length=512, blank=False)
+    date_create = models.DateTimeField(
+        default=datetime.datetime.today)

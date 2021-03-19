@@ -2,40 +2,25 @@ from django import forms
 from django.http import Http404
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import PostCreationForm, CommentForm
 from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
-from .models import Post, CategoryPost, Comment, Like
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.template import RequestContext
+from django.db.models import Count
+from django.db.models import Q
 from slugify import slugify
 import re
 import datetime
 import string
 import random
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.template import RequestContext
+import ctypes
 
-
-def likes(request, pk, type_likes):
-    """
-    Функция создания лайков
-    :param request:
-    :param pk:
-    :param type_likes:
-    :return:
-    """
-    field_id = f"{type_likes}_id_id"
-    author = request.user
-    obj, created = Like.objects.update_or_create(
-        **{field_id: pk}, author_user_id_id=author.pk)
-    if not created:
-        Like.objects.filter(
-            **{field_id: pk}, author_user_id_id=author.pk).delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    # return HttpResponse('<script>history.back();</script>')
+from .models import Post, CategoryPost, Comment, Like
+from .forms import PostCreationForm, CommentForm
 
 
 class FunctionsMixin:
@@ -55,16 +40,18 @@ class FunctionsMixin:
                 id=post_id).values_list(
                 'slug',
                 flat=True).count()
-
             if slug_count > 0:
                 symbols = string.ascii_lowercase
                 random_symbol = random.choice(symbols)
                 slug = random_symbol + slug
                 slug = make_unique(slug)
-
             return slug
 
         return make_unique(slug)
+
+    def verify_moderator(self, request):
+        result = request.user.groups.filter(name='Moder').exists()
+        return result
 
 
 class Index(ListView):
@@ -74,7 +61,15 @@ class Index(ListView):
     Задается связанная модель
     Задается количество статей, выводимых на одном экране одновременно (пагинация)
     """
+
     model = Post
+    # user_windows = ctypes.windll.user32
+    # screen_width = user_windows.GetSystemMetrics(0)
+    # screen_height = user_windows.GetSystemMetrics(1)
+    # if screen_width > screen_height:
+    #     paginate_by = (screen_height - 125) / 150
+    # else:
+    #     paginate_by = (screen_width - 125) / 150
     paginate_by = 4
 
     def get_queryset(self, *args, **kwargs):
@@ -83,11 +78,35 @@ class Index(ListView):
         В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
         Функция возвращает queryset, используемой родительским классом ListView
         """
-        queryset = self.model.objects.filter(
-            post_status='Apr')
+
         if self.kwargs.get('slug'):
-            queryset = self.model.objects.filter(
-                category_id__slug=self.kwargs['slug'], post_status='Apr')
+            result = source_page(self.request)
+            if self.kwargs.get('data_type'):
+                queryset = self.model.objects.filter(
+                    post_status='Apr', category_id_id__slug=result).annotate(
+                    like_count=Count('like')).order_by(
+                    '-like_count')
+            elif self.request.GET.get('q'):
+                query = self.request.GET.get('q')
+                queryset = self.model.objects.filter(
+                    Q(title__icontains=query), post_status='Apr', category_id_id__slug=result)
+            else:
+                queryset = self.model.objects.filter(
+                    category_id__slug=self.kwargs['slug'], post_status='Apr')
+        else:
+            if self.kwargs.get('data_type'):
+                queryset = self.model.objects.filter(
+                    post_status='Apr').annotate(
+                    like_count=Count('like')).order_by(
+                    '-like_count')
+            elif self.request.GET.get('q'):
+                query = self.request.GET.get('q')
+                queryset = self.model.objects.filter(
+                    Q(title__icontains=query), post_status='Apr')
+            else:
+                queryset = self.model.objects.filter(
+                    post_status='Apr')
+        queryset = queryset.select_related('user_id')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -96,10 +115,14 @@ class Index(ListView):
         передаваемой шаблону для формирования главной старицы.
         В словарь context добавляются значения заголовка и списка категорий для формирования меню.
         """
+
         context = super().get_context_data(**kwargs)
+        if self.request.GET.get('q'):
+            context['query'] = self.request.GET.get('q')
         if self.kwargs.get('slug'):
             category = CategoryPost.objects.filter(slug=self.kwargs['slug'])
             context['title'] = category[0].name
+            context['category'] = category[0].slug
         else:
             context['title'] = 'Главная'
         context['categories'] = CategoryPost.objects.all()
@@ -125,12 +148,14 @@ class ArticleCreate(FunctionsMixin, CreateView):
         Функция задает исходные параметры полей формы создания статьи
         :return: функуия возвращает словарь initial, содержащий исходные (присутствующие по умолчанию) параметры
         """
+
         initial = super(ArticleCreate, self).get_initial()
         # опделеляем url страницы, с которой осуществлен переход
-        source_page = self.request.META["HTTP_REFERER"]
-        # с помощью регулярного выражения определен слаг страницы, с которой
-        # выполнен переход
-        result = re.search('.*/(.*)/', source_page).group(1)
+        # source_page = self.request.META["HTTP_REFERER"]
+        # # с помощью регулярного выражения определен слаг страницы, с которой
+        # # выполнен переход
+        # result = re.search('.*/(.*)/', source_page).group(1)
+        result = source_page(self.request)
         # выполняется запрос в базу данных - по слагу определяется id категории
         # из модели CategoryPost
         category_id = self.category_post_model.objects.filter(
@@ -150,15 +175,16 @@ class ArticleCreate(FunctionsMixin, CreateView):
         создается экземпляр класса PostCreationForm с пустыми полями.
         Далее, в словарь data добавляется экземпряр класса PostCreationForm и обновленный словарь возвращается шаблону.
         """
-        data = super(ArticleCreate, self).get_context_data(**kwargs)
 
+        context = super(ArticleCreate, self).get_context_data(**kwargs)
         if self.request.POST:
             form = PostCreationForm(self.request.POST)
         else:
             form = PostCreationForm
-        data["postitems"] = form
-
-        return data
+        context["postitems"] = form
+        context['title'] = 'Создание новой статьи'
+        context['categories'] = CategoryPost.objects.all()
+        return context
 
     def form_valid(self, form):
         """
@@ -166,6 +192,7 @@ class ArticleCreate(FunctionsMixin, CreateView):
         осуществляет дозаполнение поля сгенерируемым автоматически слагом,
         сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
         """
+
         context = self.get_context_data()
         postitems = context["postitems"]
         with transaction.atomic():
@@ -176,7 +203,6 @@ class ArticleCreate(FunctionsMixin, CreateView):
             if postitems.is_valid():
                 postitems.instance = self.object
                 postitems.save()
-
         return super(ArticleCreate, self).form_valid(form)
 
 
@@ -200,16 +226,16 @@ class ArticleUpdate(FunctionsMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['slug'] = self.get_object().slug
-
+        context['title'] = 'Редактирование статьи'
+        context['categories'] = CategoryPost.objects.all()
         return context
 
     def form_valid(self, form):
-
         slug = self.generate_unique_slag(form)
         form.instance.slug = slug
         if form.instance.post_status != 'Drf':
             form.instance.date_update = datetime.datetime.today()
-            form.instance.post_status = 'Pub'
+            form.instance.post_status = 'Aip'
         return super(ArticleUpdate, self).form_valid(form)
 
 
@@ -240,6 +266,7 @@ class PostRead(DetailView):
     Класс наследуется от встроенного класса DetailView
     Задается связанная модель - Post
     """
+
     model = Post
     form = CommentForm
 
@@ -250,11 +277,14 @@ class PostRead(DetailView):
         """
         В словарь контекста data добавляется заголовок страницы, коментарии, количество коментариев
         """
+
         context = super(PostRead, self).get_context_data(**kwargs)
         context["title"] = "Статья"
+        context["categories"] = CategoryPost.objects.all()
         context["comments"] = Comment.objects.filter(
             post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
+        # context['avatar'] =
         return context
 
     def form_valid(self, form):
@@ -263,6 +293,7 @@ class PostRead(DetailView):
         осуществляет дозаполнение полeй юзера и id статьи,
         сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
         """
+
         form.instance.post_id = self.object
         form.instance.user_id = self.request.user
         if self.request.POST.get("parent", None):
@@ -275,18 +306,21 @@ class PostRead(DetailView):
         """
         Метод выполняется при не прохождении проверки правильности заполнения формы данными
         """
+
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_object(self, queryset=None):
         """
         Функция возвращает объект со статьей и базы данных, найденный по полю slug
         """
+
         return get_object_or_404(Post, slug=self.kwargs.get('slug'))
 
     def post(self, *args, **kwargs):
         """
         Метод срабатывает при отправке данных из формы коментариев
         """
+
         self.object = self.get_object()
         form = self.form(self.request.POST)
         print(form)
@@ -296,16 +330,93 @@ class PostRead(DetailView):
             return self.form_invalid(form)
 
 
-class HelpPage(View):
+class CommentDelete(FunctionsMixin, DeleteView):
+    model = Comment
+    template_name = 'mainapp/post_confirm_delete.html'
+
+    def get_object(self, queryset=None):
+        """
+        Функция возвращает объект с коментарием и базы данных, найденный по полю pk
+        """
+        return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'main:post', kwargs={
+                'slug': self.get_object().post_id.slug})
+
+    def get(self, request, *args, **kwargs):
+        if self.verify_author(request) or self.verify_moderator(request):
+            return super(CommentDelete, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для удаления данного коментария.</h2>')
+
+    def delete(self, request, pk):
+        comment_to_delete = self.get_object()
+        comment_to_delete.comment_status = 'Del'
+        comment_to_delete.save()
+        if self.verify_moderator(request) == True:
+            pass
+            # Сюда поместить функционал блокировки юзера
+        return redirect(self.get_success_url())
+
+
+class CommentUpdate(FunctionsMixin, UpdateView):
+    """
+    Контроллер редактирования коментариев, использует встроенный контроллер Django UpdateView
+    """
+
+    model = Comment
+    fields = ['text', ]
+    template_name = 'mainapp/post_update_form.html'
+
+
+    # template_name_suffix = '_update_form'
+    # success_url = reverse_lazy("authapp:account")
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'main:post', kwargs={
+                'slug': self.object.post_id.slug})
+
+    # def get_object(self, queryset=None):
+    #     """
+    #     Функция возвращает объект с коментарием и базы данных, найденный по полю pk
+    #     """
+    #     return get_object_or_404(Comment, pk=self.kwargs.get('pk'))
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.verify_author(request) and self.object.comment_status != 'Del':
+            return super(CommentUpdate, self).get(request, *args, **kwargs)
+        else:
+            return HttpResponse(
+                f'<h2>Вы не имеете прав для редактирования данного комментария или ответа.</h2>')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pk'] = self.get_object().pk
+        context['title'] = 'Редактирование коментария'
+        return context
+
+    def form_valid(self, form):
+        form.instance.date_update = datetime.datetime.today()
+        return super(CommentUpdate, self).form_valid(form)
+
+
+class HelpPage(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр станицы помощи.
     Класс наследуется от встроенного класса View
     Для формирования словаря context задается заголовок, имя шаблона, контекст.
     """
+
     title = 'Помощь'
     template_name = 'mainapp/help.html'
     context = {
         'title': title,
+        'categories': CategoryPost.objects.all(),
     }
 
     def get(self, request, *args, **kwargs):
@@ -315,6 +426,7 @@ class HelpPage(View):
         и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
+
 
 # from django.views.generic import TemplateView
 #
@@ -342,11 +454,35 @@ class HelpPage(View):
 #         return self.render_to_response(context, status=500)
 
 
+def source_page(request):
+    source_page = request.META["HTTP_REFERER"]
+    return re.search('.*/(.*)/', source_page).group(1)
+
+
+def likes(request, pk, type_likes):
+    """
+    Функция создания лайков
+    :param request:
+    :param pk:
+    :param type_likes:
+    :return:
+    """
+
+    field_id = f"{type_likes}_id_id"
+    author = request.user
+    obj, created = Like.objects.update_or_create(
+        **{field_id: pk}, author_user_id_id=author.pk)
+    if not created:
+        Like.objects.filter(
+            **{field_id: pk}, author_user_id_id=author.pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # return HttpResponse('<script>history.back();</script>')
+
+
 def handler(request, *args, **argv):
     response = render(request, template_name='mainapp/404.html')
     response.status_code = 404
     return response
-
 
 # def handler500(request, *args, **argv):
 #     print(request, *args, **argv)

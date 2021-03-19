@@ -20,9 +20,18 @@ urlpatterns = [
         adminapp.AdminPostList.as_view(),
         name='post_list'),
     path(
+        'post_list/<str:status>/',
+        adminapp.AdminPostList.as_view(),
+        name='post_status_list'),
+    path(
         'create_category/',
         adminapp.AdminCreateCategory.as_view(),
         name='create_category'),
+
+    path(
+        'create_reason/<slug:slug>/<str:status>/',
+        adminapp.ReasonCreate.as_view(),
+        name='create_reason'),
 
     path(
         'create_moder/<int:pk>/',
@@ -35,7 +44,7 @@ urlpatterns = [
         name='delete_moder'),
 
     path(
-        'like/<slug:slug>/<str:status>',
+        'change_status/<slug:slug>/<str:status>',
         adminapp.change_status_post,
         name='change_status_post'),
 ]

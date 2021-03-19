@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'g36+w+!7k1)kggph6#_9b@)y226gknpo(vfuv^d=x@bl@&!1o!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -102,6 +102,7 @@ else:
     #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     #     }
     # }
+    # https://drive.google.com/drive/folders/1A_EWTFU8UMjBz2YEiCp54JG4xjaK5076?usp=sharing
     DATABASES = {
        'default': {
 
@@ -138,9 +139,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -154,6 +157,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
@@ -162,3 +166,17 @@ STATICFILES_DIRS = (
 AUTH_USER_MODEL = 'authapp.User'
 
 LOGIN_URL = '/login/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_PASSWORD = 'k5qVN*A+@j*B>4av'
+EMAIL_HOST_USER = 'teamhabr@mail.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
