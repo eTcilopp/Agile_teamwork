@@ -189,7 +189,7 @@ class ArticleUpdate(FunctionsMixin, UpdateView):
     """
 
     model = Post
-    fields = ['title', 'text', 'category_id']
+    fields = ['title', 'text', 'category_id', 'title_photo']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 

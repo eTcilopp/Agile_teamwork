@@ -40,7 +40,8 @@ class PostCreationForm(forms.ModelForm):
         model = Post
         fields = ('title',
                   'text',
-                  'category_id')
+                  'category_id',
+                  'title_photo')
 
 
 class ReasonCreateForm(forms.ModelForm):
