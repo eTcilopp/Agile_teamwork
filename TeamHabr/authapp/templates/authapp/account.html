@@ -26,7 +26,7 @@
             <p>Фамилия: {{ user.surname }}</p>
             <p>e-mail: {{ user.email }}</p>
             <p>Возраст: {{ user.age }}</p>
-            <p>О себе:  {{ user.aboutMe }}</p>
+            <p>О себе: {{ user.aboutMe }}</p>
             <div class="text-center">
                 <a class="text-info" href="{% url 'authapp:edit' %}">Редактировать</a>
             </div>
@@ -48,18 +48,18 @@
         <div class="col-2"></div>
         <div class="col text-justify">
             <div class="row text-center" style="font-size: 24px">
-    {% if Aip != 0%}
-    <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Aip'%}">Ожидающие одобрения ({{Aip}})</a></div>
-    {% endif %}
+                {% if Aip != 0%}
+                <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Aip'%}">Ожидающие одобрения ({{Aip}})</a></div>
+                {% endif %}
                 {% if Apr != 0%}
-    <div class="col  text-info"><a class="text-info" href="{% url 'auth:account_post_status' 'Apr'%}">Одобреные ({{Apr}})</a></div>
-    {% endif %}
+                <div class="col  text-info"><a class="text-info" href="{% url 'auth:account_post_status' 'Apr'%}">Одобреные ({{Apr}})</a></div>
+                {% endif %}
                 {% if Can != 0%}
-    <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Can'%}">Отклоненые ({{Can}})</a></div>
-    {% endif %}
+                <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Can'%}">Отклоненые ({{Can}})</a></div>
+                {% endif %}
                 {% if Drf != 0%}
-    <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Drf'%}">Черновики ({{Drf}})</a></div>
-{% endif %}
+                <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Drf'%}">Черновики ({{Drf}})</a></div>
+                {% endif %}
             </div>
             {% if articles %}
             {% for article in articles %}

@@ -17,10 +17,10 @@ class User(AbstractUser):
     status_update - дата последнего изменения статуса блокировки пользователя,
     date_create - дата создания учетной записи пользователя,
     date_update - дата любого изменения параметров учетной записи пользователя.
-
     Вложенный класс Meta определяет наименование полей формы в разделе администрирования,
     а также принцип сортировки вывода списка пользователей (по логину, по убыванию)
     """
+
     username = models.CharField(
         verbose_name="Логин",
         max_length=64,
@@ -53,8 +53,8 @@ class User(AbstractUser):
         verbose_name="Аватар")
     age = models.PositiveIntegerField(verbose_name="Возраст", default=0)
     aboutMe = models.TextField(verbose_name="О себе", max_length=512, blank=True)
+
     class Meta:
         verbose_name_plural = 'Пользователи'
         verbose_name = 'Пользователь'
         ordering = ['username']
-

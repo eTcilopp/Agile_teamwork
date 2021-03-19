@@ -1,8 +1,5 @@
-from django.contrib import admin
-from django.contrib.auth.decorators import login_required
 from django.urls import path
 import mainapp.views as mainapp
-
 
 app_name = 'mainapp'
 
@@ -16,7 +13,6 @@ help - Страница помощи
 """
 
 urlpatterns = [
-
     path(
         '',
         mainapp.Index.as_view(),
@@ -25,7 +21,6 @@ urlpatterns = [
         'search_results',
         mainapp.Index.as_view(),
         name='search_results'),
-
     path(
         'category/<slug:slug>/',
         mainapp.Index.as_view(),
@@ -34,7 +29,6 @@ urlpatterns = [
         'search_results/<slug:slug>/',
         mainapp.Index.as_view(),
         name='search_results'),
-
     path(
         'main/<str:data_type>/',
         mainapp.Index.as_view(),
@@ -47,22 +41,18 @@ urlpatterns = [
         'post/create/',
         mainapp.ArticleCreate.as_view(),
         name='article_create'),
-
     path(
         'post/<slug:slug>/',
         mainapp.PostRead.as_view(),
         name='post'),
-
     path(
         'post/edit/<slug:slug>/',
         mainapp.ArticleUpdate.as_view(),
         name='article_edit'),
-
     path(
         'post/delete/<slug:slug>/',
         mainapp.ArticleDelete.as_view(),
         name='article_delete'),
-
     path(
         'comment/delete/<int:pk>/',
         mainapp.CommentDelete.as_view(),
@@ -71,15 +61,12 @@ urlpatterns = [
         'comment/update/<int:pk>/',
         mainapp.CommentUpdate.as_view(),
         name='comment_update'),
-
     path(
         'like/<int:pk>/<str:type_likes>',
         mainapp.likes,
         name='like'),
-
     path(
         'help',
         mainapp.HelpPage.as_view(),
         name='help'),
-
 ]
