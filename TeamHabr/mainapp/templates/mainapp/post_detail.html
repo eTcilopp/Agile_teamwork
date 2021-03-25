@@ -36,7 +36,7 @@
             {% endfor %}
             {% endif %}
             {% if object.title_photo %}
-            <img class="rounded-circle" src="{{ object.title_photo.url }}" title="{{ user.name }} {{ user.surname }}" height="100px">
+            <img style="display: block; margin: 0 auto" src="{{ object.title_photo.url }}" title="{{ object.title_photo }}" height="300px">
             {% endif %}
             {% autoescape on %}
             <p class="text-justify" title="Содержание">{{object.text| linebreaks}}</p>

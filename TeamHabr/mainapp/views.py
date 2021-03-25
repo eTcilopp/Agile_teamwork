@@ -13,8 +13,8 @@ import datetime
 import string
 import random
 
-from .models import Post, CategoryPost, Comment, Like
-from .forms import PostCreationForm, CommentForm
+from .models import Post, CategoryPost, Comment, Like, Video
+from .forms import PostCreationForm, CommentForm, VideoCreationForm
 
 
 class FunctionsMixin:
@@ -126,7 +126,7 @@ class ArticleCreate(FunctionsMixin, CreateView):
 
     model = Post
     category_post_model = CategoryPost
-    fields = ['title', 'text', 'category_id']
+    fields = ['title', 'text', 'category_id', 'title_photo']
     success_url = reverse_lazy("authapp:account")
 
     def get_initial(self):
@@ -393,6 +393,114 @@ class HelpPage(DetailView):
         и словарь с передаваемыми шаблону данными.
         """
         return render(request, self.template_name, self.context)
+
+
+class VideoCreate(CreateView):
+    model = Video
+    fields = ['title', 'file']
+    success_url = reverse_lazy("mainapp:video_list")
+
+    def get_initial(self):
+        """
+        Функция задает исходные параметры полей формы создания статьи
+        :return: функуия возвращает словарь initial, содержащий исходные (присутствующие по умолчанию) параметры
+        """
+
+        initial = super(VideoCreate, self).get_initial()
+        return initial
+
+    def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенного метода get_context_data
+        Добавляется проверка: в случае получения запроса методом POST, создается экземпляр класса PostCreationForm
+        с параметром POST, и с заполненными полями.
+        если запрос получен другим методом (очевидно, get),
+        создается экземпляр класса PostCreationForm с пустыми полями.
+        Далее, в словарь data добавляется экземпряр класса PostCreationForm и обновленный словарь возвращается шаблону.
+        """
+
+        context = super(VideoCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            form = VideoCreationForm(self.request.POST)
+        else:
+            form = VideoCreationForm
+        context["postitems"] = form
+        context['title'] = 'Создание новой статьи'
+        return context
+
+    def form_valid(self, form):
+        """
+        Метод выполняет проверку правильности заполнения формы данными,
+        осуществляет дозаполнение поля сгенерируемым автоматически слагом,
+        сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
+        """
+
+        context = self.get_context_data()
+        postitems = context["postitems"]
+        self.object = form.save()
+        if postitems.is_valid():
+            postitems.instance = self.object
+            postitems.save()
+        return super(VideoCreate, self).form_valid(form)
+
+
+class VideoList(ListView):
+    """
+    Класс контроллера обрабоки запросов на просмотр главной станицы.
+    Класс наследует от встроенного класса ListView
+    Задается связанная модель
+    Задается количество статей, выводимых на одном экране одновременно (пагинация)
+    """
+
+    model = Video
+    paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        """
+        Функция получения набора данных со статьями из базы данных. Выдираются только статьи со статусом 'Утверждено'
+        В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
+        Функция возвращает queryset, используемой родительским классом ListView
+        """
+        return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенной функция получения информации из базы данных,
+        передаваемой шаблону для формирования главной старицы.
+        В словарь context добавляются значения заголовка и списка категорий для формирования меню.
+        """
+
+        context = super().get_context_data(**kwargs)
+
+        context['title'] = 'Главная'
+        context['categories'] = CategoryPost.objects.all()
+        return context
+
+
+class VideoDetail(DetailView):
+    """
+    Класс контроллера обрабоки запросов на просмотр индивидуальной статьи.
+    Класс наследуется от встроенного класса DetailView
+    Задается связанная модель - Post
+    """
+
+    model = Video
+
+    def get_context_data(self, **kwargs):
+        """
+        В словарь контекста data добавляется заголовок страницы, коментарии, количество коментариев
+        """
+
+        context = super(VideoDetail, self).get_context_data(**kwargs)
+        context["title"] = "Статья"
+        return context
+
+    def get_object(self, queryset=None):
+        """
+        Функция возвращает объект со статьей и базы данных, найденный по полю slug
+        """
+
+        return get_object_or_404(Video, pk=self.kwargs.get('pk'))
 
 
 def source_page(request):

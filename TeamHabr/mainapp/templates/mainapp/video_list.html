@@ -1,0 +1,54 @@
+{% extends 'mainapp_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col text-justify">
+            <div class="row">
+                <a href="{% url 'mainapp:video_create' %}">ADD</a>
+                <table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>File</th>
+      <th>uploaded_at</th>
+    </tr>
+  </thead>
+  <tbody>
+
+
+
+                {% for video in object_list %}
+                <tr>
+      <th scope="row">{{video.title}}</th>
+      <td><a href="{% url 'mainapp:video_detail' video.pk %}">смотреть</a></td>
+      <td>{{video.uploaded_at}}</td>
+    </tr>
+                {% endfor %}
+                    </tbody>
+</table>
+            </div>
+        </div>
+        <div class="col-2"></div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col text-center">
+                {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                <a class="text-info" href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
+                {% endif %}
+                <span class="current">{% trans "Cтраница " %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
+                </span>
+                {% if page_obj.has_next %}
+                <a class="text-info" href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

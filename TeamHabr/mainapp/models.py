@@ -112,9 +112,10 @@ class Post(models.Model):
         verbose_name='Дата изменения статьи',
         default=datetime.datetime.today)
     title_photo = models.ImageField(
+        verbose_name='Добавить фото статьи',
+        null=True,
         blank=True,
-        upload_to="post_title_photo/",
-        verbose_name="Фото заголовка")
+        upload_to="post_title_photo",)
 
     @property
     def post_updated(self):

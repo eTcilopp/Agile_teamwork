@@ -71,6 +71,18 @@ urlpatterns = [
         'help',
         mainapp.HelpPage.as_view(),
         name='help'),
+    path(
+        'video/create/',
+        mainapp.VideoCreate.as_view(),
+        name='video_create'),
+    path(
+        'video/list/',
+        mainapp.VideoList.as_view(),
+        name='video_list'),
+    path(
+        'video/<int:pk>/',
+        mainapp.VideoDetail.as_view(),
+        name='video_detail'),
 ]
 
 if settings.DEBUG:
