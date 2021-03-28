@@ -103,16 +103,26 @@ else:
     #     }
     # }
     # https://drive.google.com/drive/folders/1A_EWTFU8UMjBz2YEiCp54JG4xjaK5076?usp=sharing
+    # DATABASES = {
+    #    'default': {
+    #
+    #        'ENGINE': 'django.db.backends.postgresql',
+    #        'NAME': 'postgres',
+    #        'USER': 'postgres',
+    #        'PASSWORD': '2Be-U>Zq2h[!',
+    #        'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
+    #        'PORT': '5432',
+    #
+    #     }
+    # }
     DATABASES = {
-       'default': {
-
-           'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'postgres',
-           'USER': 'postgres',
-           'PASSWORD': '2Be-U>Zq2h[!',
-           'HOST': 'teamhabrdb.cjse1wsktjbz.ca-central-1.rds.amazonaws.com',
-           'PORT': '5432',
-
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres',
+            'PASSWORD': 'mike159753',
+            'HOST': 'agile-database.chquw4u8i55v.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
         }
     }
 

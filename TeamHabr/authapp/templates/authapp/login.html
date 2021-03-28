@@ -1,5 +1,4 @@
-﻿
-<div id="myModal" class="modal" tabindex="-1">
+﻿<div id="myModal" class="modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,26 +8,23 @@
                 {% for message in messages %}
                 {{ message }}
                 {% endfor %}
-
-                   {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
-                        <form action="{% url 'auth:login' %}?next={% url 'main:index' %}" method="post">
-                   {% else %}
-                        <form action="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" method="post">
-                   {% endif %}
-
-
-                    {% csrf_token %}
-                    <div class="form-group">
-                    <label for="id_username">Логин</label>
-                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="Например user"/>
-                    </div>
-                    <div class="form-group">
-                    <label for="id_password">Пароль</label>
-                    <input type="password" name="password" id="id_password" placeholder="Пароль"/>
-                    </div>
-                    <input class="form-control" type="submit" value="войти">
-                    <a class="text-info" href="{%url 'authapp:reset_password'%}">Забыли пароль?</a>
-                </form>
+                {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
+                <form action="{% url 'auth:login' %}?next={% url 'main:index' %}" method="post">
+                    {% else %}
+                    <form action="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" method="post">
+                        {% endif %}
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_username">Логин</label>
+                            <input type="text" name="username" maxlength="30" id="id_username" placeholder="Например user" />
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password">Пароль</label>
+                            <input type="password" name="password" id="id_password" placeholder="Пароль" />
+                        </div>
+                        <input class="form-control" type="submit" value="войти">
+                        <a class="text-info" href="{%url 'authapp:reset_password'%}">Забыли пароль?</a>
+                    </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>

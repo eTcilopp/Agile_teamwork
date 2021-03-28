@@ -1,7 +1,6 @@
-from django.shortcuts import render
-from django.views.generic import CreateView, ListView
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib.auth.decorators import user_passes_test
@@ -9,13 +8,8 @@ from django.contrib.auth.models import Group
 from django.views.generic.edit import CreateView
 from django.shortcuts import redirect
 from django.contrib.sites.shortcuts import get_current_site
-from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import get_user_model
-from django.contrib.auth.tokens import default_token_generator
 import datetime
 from slugify import slugify
 
@@ -256,7 +250,8 @@ def create_moder(request, pk):
     :return: Обратно на страницу админки
     """
 
-    my_group = Group.objects.get(name='Moder')
+    my_group, created = Group.objects.get_or_create(name='Moder')
+
     my_group.user_set.add(pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
