@@ -155,7 +155,7 @@ class ArticleCreate(FunctionsMixin, CreateView):
 
         context = super(ArticleCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            form = PostCreationForm(self.request.POST)
+            form = PostCreationForm(self.request.POST, self.request.FILES)
         else:
             form = PostCreationForm
         context["postitems"] = form
