@@ -117,22 +117,6 @@
         {% block content %}
         {% endblock %}
 
-        {% block footer %}
-        <section id="sidebar">
-            <section id="footer">
-                <ul class="icons">
-                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-                    <li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
-                    <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-                </ul>
-                <script>
-                    document.write("&copy; "+ new Date().getFullYear()+ " Server Monkeys");
-                </script>
-            </section>
-        </section>
-        {% endblock %}
     </div>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/browser.min.js' %}"></script>
