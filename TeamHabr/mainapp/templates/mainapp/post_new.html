@@ -1,0 +1,54 @@
+
+{% extends 'mainapp_base.html' %}
+{% load static %}
+{% load auth_extras %}
+
+{% block content %}
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="#">{{object.title}}</a></h2>
+										<p>Раздел: {{ object.category_id.name }}</p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2015-11-01">{{object.date_create}}</time>
+										<a href="#" class="author"><span class="name">{{object.user_id.username}}</span><img src="{{ object.user_id.avatar.url }}" title="{{ object.user_id.name }} {{ object.user_id.surname }}" alt="" /></a>
+									</div>
+								</header>
+								{% if object.title_photo %}
+								<span class="image featured"><img src="{{ object.title_photo.url }}" title="{{ object.title_photo }}" alt="" /></span>
+								{% endif %}
+								{% autoescape on %}
+								<p>{{object.text| linebreaks}}</p>
+								{% endautoescape %}
+								<footer>
+									<ul class="stats">
+										<li><a href="#">General</a></li>
+										<li><a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart">{{object.get_count_user}}</a></li>
+										<li><a href="#" class="icon solid fa-comment">{{object.count_all_comment}}</a></li>
+									</ul>
+								</footer>
+							</article>
+
+					</div>
+
+				<!-- Footer -->
+					<section id="footer">
+                <ul class="icons">
+                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    <li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
+                    <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
+                <script>
+                    document.write("&copy; "+ new Date().getFullYear()+ " Server Monkeys");
+                </script>
+            </section>
+
+{% endblock %}
