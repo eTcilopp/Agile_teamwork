@@ -16,7 +16,7 @@
             {% elif pk %}
             <a class="text-info" href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
             {% endif %}
-            <form method=post>
+            <form method=post enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                 <div class="d-flex align-self-start mr-3">{{field.label}}</div>

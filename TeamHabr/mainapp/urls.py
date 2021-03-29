@@ -1,5 +1,7 @@
 from django.urls import path
 import mainapp.views as mainapp
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'mainapp'
 
@@ -17,6 +19,7 @@ urlpatterns = [
         '',
         mainapp.Index.as_view(),
         name='index'),
+
     path(
         'search_results',
         mainapp.Index.as_view(),
@@ -69,4 +72,26 @@ urlpatterns = [
         'help',
         mainapp.HelpPage.as_view(),
         name='help'),
+    path(
+        'video/create/',
+        mainapp.VideoCreate.as_view(),
+        name='video_create'),
+    path(
+        'video/list/',
+        mainapp.VideoList.as_view(),
+        name='video_list'),
+    path(
+        'video/<int:pk>/',
+        mainapp.VideoDetail.as_view(),
+        name='video_detail'),
+    path(
+        'index2/',
+        mainapp.Index2.as_view(),
+        name='index2'),
+    path(
+        'post_new/<slug:slug>/',
+        mainapp.PostReadNew.as_view(),
+        name='post_new'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
