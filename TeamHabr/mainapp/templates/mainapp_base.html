@@ -12,96 +12,132 @@
         {% endblock %}
     </title>
     {% block css %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        $('a').click(function(e) {
-            e.preventDefault();
-            var newLocation = this.href;
-            $('body').fadeOut(250, newPage);
-            function newPage() {
-                if (newLocation == "javascript:history.back()") {
-                    history.back();
-                } else {
-                    window.location = newLocation;
-                }
-            }
-        });
-
-        $('a').click(function() {
-            location.reload();
-            console.log(123)
-        })
-
-
-
-        var url = window.location.href;
-        var last = url.slice(-6);
-        if (last == '#valid')
-            $(document).ready(function() {
-                $("#myModal").modal('show');
-            });
-    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     {% endblock %}
 </head>
-<body>
-    <div class="container-fluid">
+<body class="is-preload">
+    <div id="wrapper">
         {% block menu %}
-        <div class="row">
-            <div class="col-2 icon"></div>
-            <div class="col icon">
-                <a class="text-white h1" href="/">}{абр</a>
-            </div>
-            <div class="col-2 icon"></div>
-            <div class="row header">
-                <ul class="d-flex text-center list-inline justify-content-center align-items-center">
-                    <div class="col-2"></div>
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'main:index' %}">Главная</a></li>
+        <header id="header">
+            <h1><a href="/">}{абр</a></h1>
+            <nav class="links">
+                <ul>
                     {% for category in categories %}
-                    <li class="col"><a class="text-secondary h6" href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
+                    <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
                     {% endfor %}
-                    {% if user.is_authenticated %}
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:account' %}">
-                            {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} {{ user.name }}</a></li>
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:logout' %}">Выход</a></li>
-                    {% else %}
-                    <li class="col-1"><a class="text-secondary h6" href="#myModal" data-toggle="modal">Вход</a></li>
-                    {% include "authapp/login.html" %}
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'auth:register' %}">Регистрация</a></li>
-                    {% endif %}
-                    {% if user.is_superuser or user|has_group:"Moder"  %}
-                    <li class="col-1"><a class="text-secondary h6" href="{% url 'admin:user_list' %}">Админка</a></li>
-                    {% endif %}
-                    <div class="col-2"></div>
                 </ul>
-            </div>
-            <hr>
-        </div>
+            </nav>
+            <nav class="main">
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li>
+                        {% if user.avatar %}
+                        <a href="{% url 'auth:account' %}"><img class="author-pa" src="{{ user.avatar.url }}" title="{{ user.name }} {{ user.surname }}"></a>
+                        {% else %}
+                        <a href="{% url 'auth:account' %}"><img class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="Аватарка"></a>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                    <li class="search">
+                        <a class="fa-search" href="#search">Поиск</a>
+                        <form id="search" method="get" action="#">
+                            <input name="q" placeholder="Поиск..." class="form-control" type="text" aria-label="Поиск" aria-describedby="basic-addon2">
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <section id="menu">
+            <section>
+                <ul class="links">
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'auth:account' %}">
+                        {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
+                    <li><a href="{% url 'auth:logout' %}"><h3>Выход</h3></a></li>
+                    {% else %}
+                    <li>
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </li>
+                    <li>
+                        <h3>Авторизация</h3>
+                    </li>
+                    <li>
+                        {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
+                        <form action="{% url 'auth:login' %}?next={% url 'main:index' %}" method="post">
+                            {% else %}
+                            <form action="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" method="post">
+                                {% endif %}
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="id_username">Логин</label>
+                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="Например user" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password">Пароль</label>
+                                    <input type="password" name="password" id="id_password" placeholder="Пароль" />
+                                </div>
+
+                                <input class="form-control" type="submit" style="margin-top: 7%" value="войти">
+                                <a class="text-info" href="{%url 'authapp:reset_password'%}">Забыли пароль?</a>
+                            </form>
+                    </li>
+                    <li><a href="{% url 'auth:register' %}"><h3>Регистрация</h3></a></li>
+                    {% endif %}
+                    {% if user.is_superuser or user|has_group:"Moder" %}
+                    <li><a href="{% url 'admin:user_list' %}"><h3>Админка</h3></a></li>
+                    {% endif %}
+                </ul>
+            </section>
+            <section>
+                <ul class="links">
+                    <li>
+                        <h3>Разделы</h3>
+                    </li>
+                    {% for category in categories %}
+                    <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+            <section>
+                <p><a href="{% url 'main:help' %}"><h3>Помощь</h3></a></p>
+                <script>
+                    document.write("&copy; "+ new Date().getFullYear()+ " Server Monkeys");
+                </script>
+            </section>
+        </section>
         {% endblock %}
 
         {% block content %}
         {% endblock %}
 
         {% block footer %}
-        <div class="row" style="margin-top: 130px">
-            <div class="col-2"></div>
-            <div class="col text-center fixed-bottom" style="background-color: white">
-                <hr>
-                <p><a href="{% url 'main:help' %}" class="text-secondary h6">Помощь</a></p>
+        <section id="sidebar">
+            <section id="footer">
+                <ul class="icons">
+                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    <li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
+                    <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+                </ul>
                 <script>
                     document.write("&copy; "+ new Date().getFullYear()+ " Server Monkeys");
                 </script>
-                <p></p>
-            </div>
-            <div class="col-2"></div>
-        </div>
+            </section>
+        </section>
         {% endblock %}
     </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/browser.min.js' %}"></script>
+    <script src="{% static 'js/breakpoints.min.js' %}"></script>
+    <script src="{% static 'js/util.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
