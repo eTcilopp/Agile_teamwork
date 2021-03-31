@@ -115,6 +115,75 @@ class Index(ListView):
         return context
 
 
+class Index2(ListView):
+    """
+    Класс контроллера обрабоки запросов на просмотр главной станицы.
+    Класс наследует от встроенного класса ListView
+    Задается связанная модель
+    Задается количество статей, выводимых на одном экране одновременно (пагинация)
+    """
+
+    model = Post
+    paginate_by = 4
+    template_name = 'mainapp/index2.html'
+
+    def get_queryset(self, *args, **kwargs):
+        """
+        Функция получения набора данных со статьями из базы данных. Выдираются только статьи со статусом 'Утверждено'
+        В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
+        Функция возвращает queryset, используемой родительским классом ListView
+        """
+
+        if self.kwargs.get('slug'):
+            result = source_page(self.request)
+            if self.kwargs.get('data_type'):
+                queryset = self.model.objects.filter(
+                    post_status='Apr', category_id_id__slug=result).annotate(
+                    like_count=Count('like')).order_by(
+                    '-like_count')
+            elif self.request.GET.get('q'):
+                query = self.request.GET.get('q')
+                queryset = self.model.objects.filter(
+                    Q(title__icontains=query), post_status='Apr', category_id_id__slug=result)
+            else:
+                queryset = self.model.objects.filter(
+                    category_id__slug=self.kwargs['slug'], post_status='Apr')
+        else:
+            if self.kwargs.get('data_type'):
+                queryset = self.model.objects.filter(
+                    post_status='Apr').annotate(
+                    like_count=Count('like')).order_by(
+                    '-like_count')
+            elif self.request.GET.get('q'):
+                query = self.request.GET.get('q')
+                queryset = self.model.objects.filter(
+                    Q(title__icontains=query), post_status='Apr')
+            else:
+                queryset = self.model.objects.filter(
+                    post_status='Apr')
+        queryset = queryset.select_related('user_id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенной функция получения информации из базы данных,
+        передаваемой шаблону для формирования главной старицы.
+        В словарь context добавляются значения заголовка и списка категорий для формирования меню.
+        """
+
+        context = super().get_context_data(**kwargs)
+        if self.request.GET.get('q'):
+            context['query'] = self.request.GET.get('q')
+        if self.kwargs.get('slug'):
+            category = CategoryPost.objects.filter(slug=self.kwargs['slug'])
+            context['title'] = category[0].name
+            context['category'] = category[0].slug
+        else:
+            context['title'] = 'Главная'
+        context['categories'] = CategoryPost.objects.all()
+        return context
+
+
 class ArticleCreate(FunctionsMixin, CreateView):
     """
     Класс контроллера обрабоки запросов на создание новой статьи.
@@ -237,6 +306,76 @@ class ArticleDelete(FunctionsMixin, DeleteView):
             return super(ArticleDelete, self).delete(request, slug)
 
 
+class PostReadNew(DetailView):
+    """
+    Класс контроллера обрабоки запросов на просмотр индивидуальной статьи.
+    Класс наследуется от встроенного класса DetailView
+    Задается связанная модель - Post
+    """
+
+    model = Post
+    form = CommentForm
+    template_name = 'mainapp/post_new.html'
+
+    def get_success_url(self):
+        return reverse_lazy('main:post_new', kwargs={'slug': self.object.slug})
+
+    def get_context_data(self, **kwargs):
+        """
+        В словарь контекста data добавляется заголовок страницы, коментарии, количество коментариев
+        """
+
+        context = super(PostReadNew, self).get_context_data(**kwargs)
+        context["title"] = "Статья"
+        context["categories"] = CategoryPost.objects.all()
+        context["comments"] = Comment.objects.filter(
+            post_id=self.get_object().id, parent_comment=None)
+        context['form'] = self.form()
+        return context
+
+    def form_valid(self, form):
+        """
+        Метод выполняет проверку правильности заполнения формы данными,
+        осуществляет дозаполнение полeй юзера и id статьи,
+        сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
+        """
+
+        form.instance.post_id = self.object
+        form.instance.user_id = self.request.user
+        if self.request.POST.get("parent", None):
+            form.instance.parent_comment_id = int(
+                self.request.POST.get("parent"))
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        """
+        Метод выполняется при не прохождении проверки правильности заполнения формы данными
+        """
+
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_object(self, queryset=None):
+        """
+        Функция возвращает объект со статьей и базы данных, найденный по полю slug
+        """
+
+        return get_object_or_404(Post, slug=self.kwargs.get('slug'))
+
+    def post(self, *args, **kwargs):
+        """
+        Метод срабатывает при отправке данных из формы коментариев
+        """
+
+        self.object = self.get_object()
+        form = self.form(self.request.POST)
+        print(form)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
 class PostRead(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр индивидуальной статьи.
@@ -261,7 +400,6 @@ class PostRead(DetailView):
         context["comments"] = Comment.objects.filter(
             post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
-        # context['avatar'] =
         return context
 
     def form_valid(self, form):

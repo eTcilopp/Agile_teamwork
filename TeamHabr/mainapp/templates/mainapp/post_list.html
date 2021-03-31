@@ -3,86 +3,128 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col text-justify">
-            <div class="row">
-                <div class="col my-auto">
-                    <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:article_create' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>Создать новую статью</a></div>
-                <div class="col-md-auto my-auto">
-                    <a class="text-info" {% if category %} href=" {% url  'main:category_popular' slug=category data_type='popular'  %}" {% else %} href=" {% url  'main:popular' data_type='popular'  %}" {% endif %}>По популярности</a>
-                </div>
-                <div class="col text-info my-auto">
-                    <a class="text-info" {% if category %} href=" {% url  'main:category' slug=category   %}" {% else %} href=" {% url 'main:index'  %}" {% endif %}>Сначала свежие {% if category %}в разделе "{{title}}"{% endif %}</a>
-                </div>
-                <div class="col form-control border-0 input-group no-border">
-                    <div class="form-outline">
-                        <form {% if category %} action=" {% url  'main:search_results' slug=category   %}" {% else %} action="{% url 'main:search_results' %}" {% endif %} method="get" class="form-inline" id="main_page_search">
-                            <div class="input-group mb-2">
-                                <input name="q" placeholder="Поиск..." class="form-control" type="text" aria-label="Поиск" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="input-group-text" id="main_page_search_button" type="submit" value="submit">
-                                        <i class="fa fa-search fa-2x" title="Нажмите для поиска"></i>
-                                    </button>
-                                </div> <!-- closing lass="input-group-append" -->
-                            </div> <!-- closing div class="input-group" -->
-                        </form>
-                    </div> <!-- closing div class="form-outline" -->
-                </div> <!-- closing div class="col form-control input-group" -->
-                {% if query%}
-                <div class="text-center text-secondary h4">Результаты поиска по запросу "{{query}}" {% if category %}в категории "{{title}}"{% endif %}</div>
-                {% endif %}
-                <hr>
-                {% for article in object_list %}
-                <div class="row">
-                    {% if article.user_id.avatar %}
-                    <div class="col-md-auto text-uppercase">
-                        <img class="rounded-circle" src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" height="50px">
-                    </div>
-                    {% endif %}
-                    <div class="col-md-auto text-uppercase font-weight-bold">{{article.user_id}} </div>
-                    <div class="col text-black-50">&middot; {{article.date_create}}</div>
-                </div>
-                <p class="h2 text-center">
-                    <a class="text-info" href="{% url 'main:post' article.slug %}">
-                        {{article.title}}
-                    </a>
-                    <span id="like_post" style="font-size: 14px">
-                        <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' article.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                            <i class="bi bi-hand-thumbs-up" title="Поставить лайк"></i>
-                        </a> {{article.get_count_post}}
-                    </span>
-                    <span style="font-size: 14px">
-                        <a class="text-info" href="{% url 'main:post' article.slug  %}#comment_block">
-                            <i class="bi bi-chat-left" title="Написать комментарий"></i>
-                        </a> {{article.count_all_comment}}
-                    </span>
-                </p>
-                <h6>Раздел: {{ article.category_id.name }}</h6>
-                <p>{{article.text| truncatewords:50}}</p>
-                <a class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
-                <hr>
-                {% endfor %}
+<div id="main">
+
+    <!-- Post -->
+    {% for article in object_list %}
+    <article class="post">
+        <header>
+            <div class="title">
+                <h2><a href="{% url 'main:post_new' article.slug %}">{{article.title}}</a></h2>
+                <p>Раздел: {{ article.category_id.name }}</p>
             </div>
-        </div>
-        <div class="col-2"></div>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col text-center">
-                {% if is_paginated %}
-                {% if page_obj.has_previous %}
-                <a class="text-info" href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
-                {% endif %}
-                <span class="current">{% trans "Cтраница " %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
-                </span>
-                {% if page_obj.has_next %}
-                <a class="text-info" href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
-                {% endif %}
+            <div class="meta">
+                <time class="published" datetime="2015-11-01">{{article.date_create}}</time>
+                {% if article.user_id.avatar %}
+                <a href="#" class="author"><span class="name">{{article.user_id}}</span><img src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" alt="" /></a>
                 {% endif %}
             </div>
-            <div class="col-2"></div>
-        </div>
-    </div>
+        </header>
+        <a href="{% url 'main:post_new' article.slug %}" class="image featured"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+        <p>{{article.text| truncatewords:50}}</p>
+        <footer>
+            <ul class="actions">
+                <li><a href="{% url 'main:post_new' article.slug %}" class="button large">Продолжить чтение</a></li>
+            </ul>
+            <ul class="stats">
+                <li><a href="#">General</a></li>
+                <li><a {% if user.is_authenticated %} href="{% url 'main:like' article.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart">{{article.get_count_post}}</a></li>
+                <li><a href="{% url 'main:post_new' article.slug  %}#comment_block" class="icon solid fa-comment">{{article.count_all_comment}}</a></li>
+            </ul>
+        </footer>
+    </article>
+    {% endfor %}
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+
+    <ul class="actions pagination">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="disabled button large previous">Предыдущая страница</a></li>
+        {% endif %}
+        <li><a href="" class="disabled button large previous">{% trans "Cтраница" %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</a></li>
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">Следующая страница</a></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+
 </div>
+
+<!-- Sidebar -->
+<section id="sidebar">
+
+    <!-- Intro -->
+    <section id="intro">
+
+        <a href="#" class="logo"><img src="https://static01.nyt.com/images/2017/09/12/us/12xp-monkey1/12xp-monkey1-superJumbo.jpg" alt="" /></a>
+        <header>
+            <h2>Server Monkeys</h2>
+            <p>Будут мысли что сюда записать говорите: <br> <a href="https://trello.com/b/X5HjNG2g/agile-board">Сайта нет но есть доска!</a></p>
+        </header>
+    </section>
+
+    <!-- Mini Posts -->
+    <section>
+        <div class="mini-posts">
+
+            <!-- Mini Post -->
+            {% for article in object_list %}
+            <article class="mini-post">
+                <header>
+                    <h3><a href="{% url 'main:post_new' article.slug %}">{{article.title}}</a></h3>
+                    <time class="published" datetime="2015-10-20">{{article.date_create}}</time>
+                    {% if article.user_id.avatar %}
+                    <a href="#" class="author"><img src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" alt="" /></a>
+                    {% endif %}
+                </header>
+                <a href="{% url 'main:post_new' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+            </article>
+            {% endfor %}
+
+        </div>
+    </section>
+
+    <!-- Posts List -->
+    <section>
+        <ul class="posts">
+            {% for article in object_list %}
+            <li>
+                <article>
+                    <header>
+                        <h3><a href="{% url 'main:post_new' article.slug %}">{{article.title}}</a></h3>
+                        <time class="published" datetime="2015-10-20">{{article.date_create}}</time>
+                    </header>
+                    <a href="{% url 'main:post_new' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+                </article>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- About -->
+    <section class="blurb">
+        <h2>About</h2>
+        <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.</p>
+        <ul class="actions">
+            <li><a href="#" class="button">Learn More</a></li>
+        </ul>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+            <li><a href="#" class="icon solid fa-rss"><span class="label">RSS</span></a></li>
+            <li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+        <script>
+            document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");
+
+        </script>
+    </section>
+
+</section>
 {% endblock %}

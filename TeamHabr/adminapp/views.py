@@ -249,7 +249,8 @@ def create_moder(request, pk):
     :return: Обратно на страницу админки
     """
 
-    my_group = Group.objects.get(name='Moder')
+    my_group, created = Group.objects.get_or_create(name='Moder')
+
     my_group.user_set.add(pk)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

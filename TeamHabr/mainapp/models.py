@@ -112,10 +112,10 @@ class Post(models.Model):
         verbose_name='Дата изменения статьи',
         default=datetime.datetime.today)
     title_photo = models.ImageField(
-        verbose_name='Добавить фото статьи',
+        verbose_name='Картинка статьи',
         null=True,
         blank=True,
-        upload_to="post_title_photo",)
+        upload_to="post_title_photo", )
 
     @property
     def post_updated(self):
@@ -270,3 +270,5 @@ class Video(models.Model):
     title = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to='video/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+

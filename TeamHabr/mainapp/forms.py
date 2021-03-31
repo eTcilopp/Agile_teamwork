@@ -107,4 +107,3 @@ class VideoCreationForm(forms.ModelForm):
         model = Video
         fields = ('title',
                   'file')
-
