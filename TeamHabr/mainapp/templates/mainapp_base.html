@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     {% endblock %}
 </head>
+
 <body class="{% if object_list %}{% else %}single{% endif %} is-preload">
     <div id="wrapper">
         {% block menu %}
@@ -56,8 +57,10 @@
                 <ul class="links">
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'auth:account' %}">
-                        {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
-                    <li><a href="{% url 'auth:logout' %}"><h3>Выход</h3></a></li>
+                            {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
+                    <li><a href="{% url 'auth:logout' %}">
+                            <h3>Выход</h3>
+                        </a></li>
                     {% else %}
                     <li>
                         {% for message in messages %}
@@ -87,10 +90,14 @@
                                 <a class="text-info" href="{%url 'authapp:reset_password'%}">Забыли пароль?</a>
                             </form>
                     </li>
-                    <li><a href="{% url 'auth:register' %}"><h3>Регистрация</h3></a></li>
+                    <li><a href="{% url 'auth:register' %}">
+                            <h3>Регистрация</h3>
+                        </a></li>
                     {% endif %}
                     {% if user.is_superuser or user|has_group:"Moder" %}
-                    <li><a href="{% url 'admin:user_list' %}"><h3>Админка</h3></a></li>
+                    <li><a href="{% url 'admin:user_list' %}">
+                            <h3>Админка</h3>
+                        </a></li>
                     {% endif %}
                 </ul>
             </section>
@@ -105,9 +112,12 @@
                 </ul>
             </section>
             <section>
-                <p><a href="{% url 'main:help' %}"><h3>Помощь</h3></a></p>
+                <p><a href="{% url 'main:help' %}">
+                        <h3>Помощь</h3>
+                    </a></p>
                 <script>
-                    document.write("&copy; "+ new Date().getFullYear()+ " Server Monkeys");
+                    document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");
+
                 </script>
             </section>
         </section>
@@ -123,4 +133,5 @@
     <script src="{% static 'js/util.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
 </body>
+
 </html>
