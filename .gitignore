@@ -131,3 +131,4 @@ dmypy.json
 .pyre/
 /TeamHabr/mainapp/migrations/
 /TeamHabr/authapp/migrations/
+/TeamHabr/authapp/migrations/
