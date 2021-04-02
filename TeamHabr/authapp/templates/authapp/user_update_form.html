@@ -2,20 +2,17 @@
 {% load static %}
 
 {% block content %}
-<h2>Редактирование данных пользователя</h2>
-<hr>
-<form method=post enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="row gtr-uniform">
-        {% for field in form %}
-        <div class="{% if field.label == 'О себе' %}col-12{% else %}col-6{% endif %} col-12-xsmall">{{field.label}}{{field}}</div>
-
-        {% endfor %}
-    </div>
-    <button type="submit" , value="сохранить" , name="save-article" class="btn btn-primary" style="margin-top: 20px">
-        Сохранить
-    </button>
-</form>
-<a class="text-info" href="{% url 'authapp:password_change' %}">Сменить пароль</a>
-
+<div id="main">
+    <article class="post">
+        <h2>Редактирование данных пользователя</h2>
+        <form method=post enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="{% if field.label == 'О себе' %}col-12{% else %}col-6{% endif %} col-12-xsmall">{{field.label}}{{field}}</div>
+            {% endfor %}
+            <button type="submit"  value="сохранить"  name="save-article"> Сохранить </button>
+        </form>
+        <h6><a href="{% url 'authapp:password_change' %}">Сменить пароль</a></h6>
+    </article>
+</div>
 {% endblock %}

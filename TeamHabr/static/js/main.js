@@ -93,3 +93,7 @@
 			});
 
 })(jQuery);
+
+function goBack() {
+  window.history.back();
+}
