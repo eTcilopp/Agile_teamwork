@@ -5,30 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col text-justify">
-            <p class="h2 text-center">Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}</p>
-            <hr>
-            {% if slug %}
-            <a class="text-info" href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
-            {% elif pk %}
-            <a class="text-info" href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
-            {% endif %}
-            <form method=post enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in form %}
-                <div class="d-flex align-self-start mr-3">{{field.label}}</div>
-                <div class="form-con-create">{{field}}</div>
-                {% endfor %}
 
-                <button type="submit" , value="сохранить" , name="save-article" class="btn btn-primary" style="margin-top: 20px">
-                    Сохранить
-                </button>
-            </form>
-        </div>
-        <div class="col-2"></div>
-    </div>
-</div>
+<h2>Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}</h2>
+<hr>
+{% if slug %}
+<a href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
+{% elif pk %}
+<a href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
+{% endif %}
+<form method=post enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="d-flex align-self-start mr-3">{{field.label}}</div>
+    <div class="form-con-create">{{field}}</div>
+    {% endfor %}
+
+    <button type="submit" , value="сохранить" , name="save-article" class="btn" style="margin-top: 20px">
+        Сохранить
+    </button>
+</form>
 {% endblock %}

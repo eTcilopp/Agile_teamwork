@@ -83,15 +83,7 @@ urlpatterns = [
     path(
         'video/<int:pk>/',
         mainapp.VideoDetail.as_view(),
-        name='video_detail'),
-    path(
-        'index2/',
-        mainapp.Index2.as_view(),
-        name='index2'),
-    path(
-        'post_new/<slug:slug>/',
-        mainapp.PostReadNew.as_view(),
-        name='post_new'),
+        name='video_detail')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

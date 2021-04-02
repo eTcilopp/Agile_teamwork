@@ -186,13 +186,13 @@ class UserUpdate(UpdateView):
 
     model = User
     fields = [
-        'username',
+        'username', 'email',
         'name',
         'surname',
-        'email',
         'age',
+        'avatar',
         'aboutMe',
-        'avatar']
+        ]
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 

@@ -8,8 +8,7 @@
         <form method=post enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
-                <h6>{{field.label}}</h6>
-                <h6>{{field}}</h6>
+                <div class="{% if field.label == 'О себе' %}col-12{% else %}col-6{% endif %} col-12-xsmall">{{field.label}}{{field}}</div>
             {% endfor %}
             <button type="submit"  value="сохранить"  name="save-article"> Сохранить </button>
         </form>

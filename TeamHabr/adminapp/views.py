@@ -122,7 +122,6 @@ class AdminPostList(LoginRequiredMixin, ListView):
         Функция возвращает queryset, используемой родительским классом ListView
         """
 
-
         if self.kwargs.get('status'):
             # print(self.kwargs['status'])
             queryset = self.model.objects.filter(post_status=self.kwargs['status'])
