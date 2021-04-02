@@ -1,6 +1,7 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
 {% load auth_extras %}
+{% load i18n %}
 
 {% block users %}
 {% endblock %}
@@ -11,48 +12,48 @@
         <header>
             <div class="title">
                 <ul class="alt">
-                    <li>Логин: {{ user.username }}</li>
-                    <li>Имя: {{ user.name }}</li>
-                    <li>Фамилия: {{ user.surname }}</li>
+                    <li>{% trans 'Логин' %}: {{ user.username }}</li>
+                    <li>{% trans 'Имя' %}: {{ user.name }}</li>
+                    <li>{% trans 'Фамилия' %}: {{ user.surname }}</li>
                     <li>e-mail: {{ user.email }}</li>
-                    <li>Возраст: {{ user.age }}</li>
+                    <li>{% trans 'Возраст' %}: {{ user.age }}</li>
                 </ul>
-                <a class="text-info" href="{% url 'authapp:edit' %}">Редактировать</a>
+                <a class="text-info" href="{% url 'authapp:edit' %}">{% trans 'Редактировать' %}</a>
             </div>
             <div class="meta"> {% if user.is_superuser or user|has_group:"Moder"  %}
-                <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" title="Теперь вы модератор" width="150px" height="100px">
+                <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" title="{% trans 'Теперь вы модератор' %}" width="150px" height="100px">
                 {% endif %}
                 {% if user.avatar %}
                 <img class="rounded-circle" src="{{ user.avatar.url }}" title="{{ user.name }} {{ user.surname }}" height="100px">
                 {% else %}
-                <img class="img-thumbnail" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="Аватарка" width="100px" height="100px">
+                <img class="img-thumbnail" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="{% trans 'Аватарка' %}" width="100px" height="100px">
                 {% endif %}
                 <p class="user-name">{{ user.name }} {{ user.surname }}</p>
             </div>
 
 
         </header>
-        <h4>О себе</h4> {{ user.aboutMe }}
+        <h4>{% trans 'О себе' %}</h4> {{ user.aboutMe }}
 
 
     </article>
     <article class="post">
-        <h3>Мои статьи</h3>
+        <h3>{% trans 'Мои статьи' %}</h3>
         <div class="title" style="font-size: 24px">
             {% if Aip != 0%}
-            <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Aip'%}">Ожидающие одобрения ({{Aip}})</a></div>
+            <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Aip'%}">{% trans 'Ожидающие одобрения' %} ({{Aip}})</a></div>
             {% endif %}
             {% if Apr != 0%}
-            <div class="col  text-info"><a class="text-info" href="{% url 'auth:account_post_status' 'Apr'%}">Одобреные ({{Apr}})</a></div>
+            <div class="col  text-info"><a class="text-info" href="{% url 'auth:account_post_status' 'Apr'%}">{% trans 'Одобреные' %} ({{Apr}})</a></div>
             {% endif %}
             {% if Can != 0%}
-            <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Can'%}">Отклоненые ({{Can}})</a></div>
+            <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Can'%}">{% trans 'Отклоненые' %} ({{Can}})</a></div>
             {% endif %}
             {% if Drf != 0%}
-            <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Drf'%}">Черновики ({{Drf}})</a></div>
+            <div class="col"><a class="text-info" href="{% url 'auth:account_post_status' 'Drf'%}">{% trans 'Черновики' %} ({{Drf}})</a></div>
             {% endif %}
         </div>
-        <div class="meta"><a class="text-info" href="{% url 'main:article_create' %}">Создать новую статью</a></div>
+        <div class="meta"><a class="text-info" href="{% url 'main:article_create' %}">{% trans 'Создать новую статью' %}</a></div>
 
     </article>
 
@@ -64,22 +65,22 @@
             <div class="title">
                 <h3>{{ article.title }}</h3>
                 <hr>
-                <p>Статус: {{ article.get_post_status_display }}</p>
+                <p>{% trans 'Статус' %}: {{ article.get_post_status_display }}</p>
             </div>
-            <div class="meta"><a class="text-info" href="{% url 'main:article_edit' slug=article.slug %}">Редактировать статью</a>
+            <div class="meta"><a class="text-info" href="{% url 'main:article_edit' slug=article.slug %}">{% trans 'Редактировать статью' %}</a>
                 <br>
                 {% if article.post_status == 'Drf' %}
                 <a class="text-info" href="{% url 'admin:change_status_post' article.slug 'Aip'%}"><br>
-                    <i class="bi bi-truck"> Отправить на одобрение</i></a>
+                    <i class="bi bi-truck"> {% trans 'Отправить на одобрение' %}</i></a>
                 {% endif %}
             </div>
         </header>
         <p>{{ article.text| truncatewords:200 }}</p>
-        <a class="text-info" class="text-info" href="{% url 'main:post' article.slug %}">Читать целиком</a>
+        <a class="text-info" class="text-info" href="{% url 'main:post' article.slug %}">{% trans 'Читать целиком' %}</a>
     </article>
     {% endfor %}
     {% else %}
-    <p class="h2 text-center">У вас ещё нет статей</p>
+    <p class="h2 text-center">{% trans 'У вас ещё нет статей' %}</p>
     {% endif %}
 
 
