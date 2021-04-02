@@ -28,7 +28,7 @@
             </ul>
             <ul class="stats">
                 <li><a href="#">General</a></li>
-                <li><a {% if user.is_authenticated %} href="#" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart likeIcon" data-url="{% url 'main:like' article.pk 'post' %}">{{article.get_count_post}}</a></li>
+                <li><a {% if user.is_authenticated %} href="#/" data-url="{% url 'main:like' article.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart likeIcon">{{article.get_count_post}}</a></li>
                 <li><a href="{% url 'main:post' article.slug  %}#comment_block" class="icon solid fa-comment">{{article.count_all_comment}}</a></li>
             </ul>
         </footer>

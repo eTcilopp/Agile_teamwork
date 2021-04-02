@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -524,6 +524,10 @@ def likes(request, pk, type_likes):
     if not created:
         Like.objects.filter(
             **{field_id: pk}, author_user_id_id=author.pk).delete()
+        if request.is_ajax():
+            return JsonResponse({'like_change': -1})
+    if request.is_ajax():
+        return JsonResponse({'like_change': 1})
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
