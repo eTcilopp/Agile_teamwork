@@ -57,7 +57,7 @@
                 <ul class="links">
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'auth:account' %}">
-                            {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
+                            {% if user.is_superuser or user|has_group:"Moder" %} <img src="#" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
                     <li><a href="{% url 'auth:logout' %}">
                             <h3>Выход</h3>
                         </a></li>
