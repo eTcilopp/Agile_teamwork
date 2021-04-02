@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-28 21:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: TeamHabr/settings.py:150
+msgid "English"
+msgstr "Английский"
+
+#: TeamHabr/settings.py:151
+msgid "Russian"
+msgstr "Русский"
+
+#: adminapp/templates/adminapp/admin_base.html:28
+msgid "Page "
+msgstr "Страница"
+
+#: adminapp/templates/adminapp/admin_base.html:28
+msgid "out of"
+msgstr "Из"
+
+#: authapp/templates/authapp/password_reset_html_email.html:3
+msgid "Please go to the following page and choose a new password:"
+msgstr "Пожалуйста перейдите на следующую страницу для ввода нового пароля:"
+
+#: authapp/templates/authapp/password_reset_html_email.html:7
+msgid "Your username, in case you’ve forgotten:"
+msgstr "Ваше имя пользователя -на случай, если Вы его позабыли:"
+
+#: authapp/templates/authapp/password_reset_html_email.html:8
+msgid "Thanks for using our site!"
+msgstr "Спасибо за использование нашего сайта!"
+
+#: authapp/templates/authapp/password_reset_html_email.html:9
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "Команда %(site_name)s"
+
+#: mainapp/models.py:86
+msgid "Approved"
+msgstr "Обобрено"
+
+#: mainapp/models.py:87
+msgid "Deleted"
+msgstr "Удалено"
+
+#: mainapp/models.py:87
+msgid "Declined"
+msgstr ""
+
+#: mainapp/models.py:87
+msgid "Draft"
+msgstr "Проект"
+
+#: mainapp/templates/mainapp/post_list.html:12
+msgid "Write a post"
+msgstr "Написать статью"
+
+#: mainapp/templates/mainapp/post_list.html:14
+msgid "..by popularity"
+msgstr ".. по популярности"
+
+#: mainapp/templates/mainapp/post_list.html:26
+msgid "Search"
+msgstr "Поиск"
+
+#: mainapp/templates/mainapp/post_list.html:34
+msgid "Search result for "
+msgstr ""
+
+#: mainapp/templates/mainapp/post_list.html:34
+msgid "in category"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_list.html:58
+msgid "Comment"
+msgstr "Комментировать"
+
+#: mainapp/templates/mainapp/post_list.html:64
+msgid "Continue reading"
+msgstr "ЧИтать целиком"
+
+#: mainapp/templates/mainapp/post_list.html:77
+#, python-format
+msgid "Page %(page_obj.number)s of %(paginator.num_pages)s"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:66 mainapp/views.py:114
+msgid "Main"
+msgstr "Главная"
+
+#: mainapp/templates/mainapp_base.html:73
+msgid "Exit"
+msgstr "Выход"
+
+#: mainapp/templates/mainapp_base.html:75
+msgid "Sign In"
+msgstr "Вход"
+
+#: mainapp/templates/mainapp_base.html:77
+msgid "Sign Up"
+msgstr "Регистрация"
+
+#: mainapp/templates/mainapp_base.html:80
+msgid "Administration"
+msgstr "Админка"
