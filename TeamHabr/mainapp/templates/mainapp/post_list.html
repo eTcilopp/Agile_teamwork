@@ -10,7 +10,7 @@
     <article class="post">
         <header>
             <div class="title">
-                <h2><a href="{% url 'main:post_new' article.slug %}">{{article.title}}</a></h2>
+                <h2><a href="{% url 'main:post' article.slug %}">{{article.title}}</a></h2>
                 <p>Раздел: {{ article.category_id.name }}</p>
             </div>
             <div class="meta">
@@ -20,16 +20,16 @@
                 {% endif %}
             </div>
         </header>
-        <a href="{% url 'main:post_new' article.slug %}" class="image featured"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+        <a href="{% url 'main:post' article.slug %}" class="image featured"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
         <p>{{article.text| truncatewords:50}}</p>
         <footer>
             <ul class="actions">
-                <li><a href="{% url 'main:post_new' article.slug %}" class="button large">Продолжить чтение</a></li>
+                <li><a href="{% url 'main:post' article.slug %}" class="button large">Продолжить чтение</a></li>
             </ul>
             <ul class="stats">
                 <li><a href="#">General</a></li>
                 <li><a {% if user.is_authenticated %} href="{% url 'main:like' article.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart">{{article.get_count_post}}</a></li>
-                <li><a href="{% url 'main:post_new' article.slug  %}#comment_block" class="icon solid fa-comment">{{article.count_all_comment}}</a></li>
+                <li><a href="{% url 'main:post' article.slug  %}#comment_block" class="icon solid fa-comment">{{article.count_all_comment}}</a></li>
             </ul>
         </footer>
     </article>
@@ -72,13 +72,13 @@
             {% for article in object_list %}
             <article class="mini-post">
                 <header>
-                    <h3><a href="{% url 'main:post_new' article.slug %}">{{article.title}}</a></h3>
+                    <h3><a href="{% url 'main:post' article.slug %}">{{article.title}}</a></h3>
                     <time class="published" datetime="2015-10-20">{{article.date_create}}</time>
                     {% if article.user_id.avatar %}
                     <a href="#" class="author"><img src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" alt="" /></a>
                     {% endif %}
                 </header>
-                <a href="{% url 'main:post_new' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+                <a href="{% url 'main:post' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
             </article>
             {% endfor %}
 
@@ -92,10 +92,10 @@
             <li>
                 <article>
                     <header>
-                        <h3><a href="{% url 'main:post_new' article.slug %}">{{article.title}}</a></h3>
+                        <h3><a href="{% url 'main:post' article.slug %}">{{article.title}}</a></h3>
                         <time class="published" datetime="2015-10-20">{{article.date_create}}</time>
                     </header>
-                    <a href="{% url 'main:post_new' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+                    <a href="{% url 'main:post' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
                 </article>
             </li>
             {% endfor %}
