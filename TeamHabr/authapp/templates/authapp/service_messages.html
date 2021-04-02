@@ -5,61 +5,38 @@
 {% endblock %}
 
 {% block content %}
-{% if request.resolver_match.url_name == 'reset_password' %}
-<div class="text-center" style="width: 80%; margin: 0 auto">
-    <h1>Вы на странице восстановления пароля.</h1>
-    <h3>
-        Забыли пароль? Пожалуйста, введите адрес электронной почты, введенный при регистрации
-        и мы отправим Вам письмо с инструкцией.
-    </h3>
+<div id="main">
+    <article class="post">
+        {% if request.resolver_match.url_name == 'reset_password' %}
+            <h2>Вы на странице восстановления пароля.</h2>
+            <h6>
+                Забыли пароль? Пожалуйста, введите адрес электронной почты, введенный при регистрации
+                и мы отправим Вам письмо с инструкцией.
+            </h6>
+        <form action="" method="POST" class="text-center">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" style="margin-top: 2%" value="Отправить письмо" /><br>
+        </form>
+        {% elif request.resolver_match.url_name == 'password_reset_done' %}
+            <h2>Инициирована процедура сброса пароля</h2>
+            <h6>Мы отправили Вам инструкцию по сбросу парола на указанный адрес. Если данный адрес существует в базе,
+                Вы получите от нас письмо.</h6>
+            <h6>Если письмо не приходит, удостоверьтесь, пожалуйста,
+                что введенный Вами адрес корректен. Также рекомендуем проверить содержимое папки Спам</h6>
+        {% elif request.resolver_match.url_name == 'password_reset_complete' %}
+            <h2>Сброс пароля завершен успешно</h2>
+            <h6> Сброс пароля завершен успешно. Вы можете войти в систему с новым паролем. </h6>
+        {% elif request.resolver_match.url_name == 'password_change_done' %}
+            <h2>Успех!</h2>
+            <h6> Пароль успешно изменен. </h6>
+        {% else %}
+            {{ service_message }}
+            {% if login_allowed %}
+            <a class="text-secondary h6" href=#menu">Вход</a>
+            {% endif %}
+        {% endif %}
+            <a href="{% url 'mainapp:index' %}">Вернуться на Главную страницу</a>
+    </article>
 </div>
-<br />
-<form action="" method="POST" class="text-center">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Отправить письмо" /><br>
-</form><br />
-{% elif request.resolver_match.url_name == 'password_reset_done' %}
-<div class="text-center" style="width: 80%; margin: 0 auto">
-    <h1>Инициирована процедура сброса пароля</h1>
-    <h5>Мы отправили Вам инструкцию по сбросу парола на указанный адрес. Если данный адрес существует в базе,
-        Вы получите от нас письмо.</h5><br>
-    <h6 style="width: 60%; margin: 0 auto">Если письмо не приходит, удостоверьтесь, пожалуйста,
-        что введенный Вами адрес корректен. Также рекомендуем проверить содержимое папки Спам</h6>
-</div>
-{% elif request.resolver_match.url_name == 'password_reset_complete' %}
-<div class="text-center" style="width: 80%; margin: 0 auto">
-    <h1>Сброс пароля завершен успешно</h1>
-    <h6 style="width: 60%; margin: 0 auto">
-        Сброс пароля завершен успешно. Вы можете войти в систему с новым паролем.
-    </h6>
-</div>
-<br />
-<div class="text-center">
-    <a class="text-secondary h6" href="#myModal" data-toggle="modal">Вход</a>
-</div>
-{% elif request.resolver_match.url_name == 'password_change_done' %}
-<div class="text-center" style="width: 80%; margin: 0 auto">
-    <h1>Успех!</h1>
-    <h6 style="width: 60%; margin: 0 auto">
-        Пароль успешно изменен.
-    </h6>
-</div>
-<br />
-<div class="text-center">
-</div>
-{% else %}
-<div class="text-center font-weight-bold" style="width: 80%; margin: 0 auto">
-    {{ service_message }}
-    {% if login_allowed %}
-    <br>
-    <br>
-    <a class="text-secondary h6" href="#myModal" data-toggle="modal">Вход</a>
-    {% include "authapp/login.html" %}
-    {% endif %}
-</div>
-{% endif %}
-<div class="text-center">
-    <a href="{% url 'mainapp:index' %}">Вернуться на Главную страницу</a>
-</div>
-{% endblock%}
+{% endblock %}
