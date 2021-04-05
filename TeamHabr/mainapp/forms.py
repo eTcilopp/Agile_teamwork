@@ -39,8 +39,15 @@ class PostCreationForm(forms.ModelForm):
 
     def clean_title_photo(self):
         avatar = self.cleaned_data['title_photo']
+        filesize = avatar.file.size
+        print(filesize)
+        megabyte_limit = 0.02
+        if filesize > megabyte_limit * 1250 * 700:
+            raise forms.ValidationError("Max file size is %sMB" % str(megabyte_limit))
         try:
             w, h = get_image_dimensions(avatar)
+            filesize = avatar.file.size
+            print(filesize)
             # validate dimensions
             max_width = max_height = 1000
             if w > max_width or h > max_height:

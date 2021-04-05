@@ -66,6 +66,15 @@ class CategoryPost(models.Model):
         return Post.objects.filter(category_id_id=self.pk).count()
 
 
+from django.core.exceptions import ValidationError
+def valid_photo(photo):
+    filesize = photo.file.size
+    print(filesize)
+    megabyte_limit = 0.02
+    if filesize > megabyte_limit * 1250 * 700:
+        raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
+
+
 class Post(models.Model):
     """
     Класс модели статей.
@@ -113,6 +122,7 @@ class Post(models.Model):
         default=datetime.datetime.today)
     title_photo = models.ImageField(
         verbose_name='Картинка статьи',
+        # validators=[valid_photo],
         null=True,
         blank=True,
         upload_to="post_title_photo", )

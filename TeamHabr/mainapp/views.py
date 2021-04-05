@@ -237,7 +237,6 @@ class ArticleDelete(FunctionsMixin, DeleteView):
             return super(ArticleDelete, self).delete(request, slug)
 
 
-
 class PostRead(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр индивидуальной статьи.
