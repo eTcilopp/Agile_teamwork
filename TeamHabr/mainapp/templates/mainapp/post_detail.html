@@ -68,36 +68,36 @@
     </article>
 
 
-    <!--            {% if user.is_authenticated %}-->
-    <!--            <button class="open-button" id="open-button" onclick="openForm()">Комментировать</button>-->
-    <!--            {% endif %}-->
+                {% if user.is_authenticated %}
+                <button class="open-button" id="open-button" onclick="openForm()">Комментировать</button>
+                {% endif %}
 
 
 
-    <!--    &lt;!&ndash; Post &ndash;&gt;-->
-    <!--    <article class="post">-->
-    <!--            <div class="comment" id="commentsForm">-->
-    <!--                <form action="" method="post">-->
-    <!--                    {% csrf_token %}-->
-    <!--                    {% for field in form %}-->
-    <!--                    <input type="hidden" name="parent" id="contactparent" value="">-->
-    <!--                    <p class="form-con">{{field}}</p>-->
-    <!--                    {% endfor %}-->
-    <!--                    <div class="">-->
-    <!--                        {% if user.is_authenticated %}-->
-    <!--                        <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>-->
-    <!--                        <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>-->
-    <!--                        {% else %}-->
-    <!--                        <button type="submit" value="отправить" name="save-article" class="btn btn-primary">-->
-    <!--                            <a class="text-info" href="#myModal" data-toggle="modal" style="color: white;">Отправить</a>-->
-    <!--                            <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>-->
-    <!--                        </button>-->
-    <!--                        {% endif %}-->
-    <!--                    </div>-->
-    <!--                </form>-->
+        <!-- Post -->
+        <article class="post">
+                <div class="comment" id="commentsForm">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <input type="hidden" name="parent" id="contactparent" value="">
+                        <p class="form-con">{{field}}</p>
+                        {% endfor %}
+                        <div class="">
+                            {% if user.is_authenticated %}
+                            <button type="submit" value="отправить" name="save-article" class="btn btn-primary">Отправить</button>
+                            <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>
+                            {% else %}
+                            <button type="submit" value="отправить" name="save-article" class="btn btn-primary">
+                                <a class="text-info" href="#myModal" data-toggle="modal" style="color: white;">Отправить</a>
+                                <button type="button" class="btn btn-primary" onclick="closeForm()">Закрыть</button>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </form>
 
-    <!--            </div>-->
-    <!--    </article>-->
+                </div>
+        </article>
 
     <article class="post">
         <div class="row" id="comment_block">
