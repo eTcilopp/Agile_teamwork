@@ -1819,20 +1819,17 @@ input, select, textarea {
 
 
         .author-pa {
-            border-radius: 10px;
-            border: 3px solid rgba(160, 160, 160, 0.3);
-            box-shadow: 0 0 2px rgba(160, 160, 160, 0.3);
-            margin-top: 5px;
-            height: 40px;
-            width: 40px;
+            border-radius: 30px;
+            height: 70%;
+            margin: 7px;
         }
-        
+
         .author-pa:hover {
-            border-radius: 20px;
-            border: 3px solid #2ebaae;
+            border: 1px solid #2ebaae;
             box-shadow: 0 0 3px #2ebaae;
-            height: 40px;
-            width: 40px;
+            border-radius: 30px;
+            height: 70%;
+            margin: 7px;
         }
 
 

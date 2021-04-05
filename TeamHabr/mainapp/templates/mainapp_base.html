@@ -34,9 +34,13 @@
                 <ul>
                     {% if user.is_authenticated %}<li>
                         {% if user.avatar %}
+                        <p style="margin-top: auto;"><a href="{% url 'auth:account' %}">
                         <img class="author-pa" src="{{ user.avatar.url }}" title="{{ user.name }} {{ user.surname }}">
+                        </a></p>
                         {% else %}
+                        <p style="margin-top: auto;"><a href="{% url 'auth:account' %}">
                         <img class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="Аватарка">
+                        </a></p>
                         {% endif %}
                     </li>
                     {% endif %}
