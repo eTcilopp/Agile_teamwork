@@ -1,0 +1,139 @@
+{% load static %}
+{% load auth_extras %}
+
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {{ title|title }}
+        {% endblock %}
+    </title>
+    {% block css %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    {% endblock %}
+</head>
+
+<body class="{% if object_list %}{% else %}single{% endif %} is-preload">
+    <div id="wrapper">
+        {% block menu %}
+        <header id="header">
+            <h1><a href="/">}{абр</a></h1>
+            <nav class="links">
+                <ul>
+                    {% for category in categories %}
+                    <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            <nav class="main">
+                <ul>
+                    {% if user.is_authenticated %}<li>
+                        {% if user.avatar %}
+                        <img class="author-pa" src="{{ user.avatar.url }}" title="{{ user.name }} {{ user.surname }}">
+                        {% else %}
+                        <img class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="Аватарка">
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                    <li class="search">
+                        <a class="fa-search" href="#search">Поиск</a>
+                        <form id="search" method="get" action="#">
+                            <input name="q" placeholder="Поиск..." class="form-control" type="text" aria-label="Поиск" aria-describedby="basic-addon2">
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <section id="menu">
+            <section>
+                <ul class="links">
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'auth:account' %}">
+                            {% if user.is_superuser or user|has_group:"Moder" %} <img src="#" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
+                    <li><a href="{% url 'auth:logout' %}">
+                            <h3>Выход</h3>
+                        </a></li>
+                    {% else %}
+                    <li>
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </li>
+                    <li>
+                        <h3>Авторизация</h3>
+                    </li>
+                    <li>
+                        {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
+                        <form action="{% url 'auth:login' %}?next={% url 'main:index' %}" method="post">
+                            {% else %}
+                            <form action="{% url 'auth:login' %}?next={{request.get_full_path|urlencode}}" method="post">
+                                {% endif %}
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="id_username">Логин</label>
+                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="Например user" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_password">Пароль</label>
+                                    <input type="password" name="password" id="id_password" placeholder="Пароль" />
+                                </div>
+
+                                <input class="form-control" type="submit" style="margin-top: 7%" value="войти">
+                                <a class="text-info" href="{%url 'authapp:reset_password'%}">Забыли пароль?</a>
+                            </form>
+                    </li>
+                    <li><a href="{% url 'auth:register' %}">
+                            <h3>Регистрация</h3>
+                        </a></li>
+                    {% endif %}
+                    {% if user.is_superuser or user|has_group:"Moder" %}
+                    <li><a href="{% url 'admin:user_list' %}">
+                            <h3>Админка</h3>
+                        </a></li>
+                    {% endif %}
+                </ul>
+            </section>
+            <section>
+                <ul class="links">
+                    <li>
+                        <h3>Разделы</h3>
+                    </li>
+                    {% for category in categories %}
+                    <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+            <section>
+                <p><a href="{% url 'main:help' %}">
+                        <h3>Помощь</h3>
+                    </a></p>
+                <script>
+                    document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");
+
+                </script>
+            </section>
+        </section>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/browser.min.js' %}"></script>
+    <script src="{% static 'js/breakpoints.min.js' %}"></script>
+    <script src="{% static 'js/util.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> 
+    <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
+</body>
+
+</html>
