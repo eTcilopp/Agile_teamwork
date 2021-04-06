@@ -15,12 +15,14 @@
             </div>
             <div class="meta">
                 <time class="published" datetime="2015-11-01">{{article.date_create}}</time>
-                {% if article.user_id.avatar %}
-                <a href="#" class="author"><span class="name">{{article.user_id}}</span><img src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" alt="" /></a>
-                {% endif %}
+
+                <a href="#" class="author"><span class="name">{{article.user_id}}</span>{% if article.user_id.avatar %}<img src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" alt="" />{% endif %}</a>
+
             </div>
         </header>
-        <a href="{% url 'main:post' article.slug %}" class="image featured"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+        {% if article.title_photo %}
+        <a href="{% url 'main:post' article.slug %}" class="image featured"><img src="{{ article.title_photo.url }}" title="{{ article.title_photo }}"  alt="" /></a>
+        {% endif %}
         <p>{{article.text| truncatewords:50}}</p>
         <footer>
             <ul class="actions">
@@ -78,7 +80,9 @@
                     <a href="#" class="author"><img src="{{ article.user_id.avatar.url }}" title="{{ article.user_id.name }} {{ article.user_id.surname }}" alt="" /></a>
                     {% endif %}
                 </header>
-                <a href="{% url 'main:post' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+                {% if article.title_photo %}
+                <a href="{% url 'main:post' article.slug %}" class="image"><img src="{{ article.title_photo.url }}" title="{{ article.title_photo }}"   alt="" /></a>
+                {% endif %}
             </article>
             {% endfor %}
 

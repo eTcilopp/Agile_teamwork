@@ -34,9 +34,13 @@
                 <ul>
                     {% if user.is_authenticated %}<li>
                         {% if user.avatar %}
+                        <p style="margin-top: auto;"><a href="{% url 'auth:account' %}">
                         <img class="author-pa" src="{{ user.avatar.url }}" title="{{ user.name }} {{ user.surname }}">
+                        </a></p>
                         {% else %}
+                        <p style="margin-top: auto;"><a href="{% url 'auth:account' %}">
                         <img class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="Аватарка">
+                        </a></p>
                         {% endif %}
                     </li>
                     {% endif %}
@@ -57,7 +61,7 @@
                 <ul class="links">
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'auth:account' %}">
-                            {% if user.is_superuser or user|has_group:"Moder" %} <img src="#" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
+                            {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
                     <li><a href="{% url 'auth:logout' %}">
                             <h3>Выход</h3>
                         </a></li>
@@ -132,7 +136,7 @@
     <script src="{% static 'js/breakpoints.min.js' %}"></script>
     <script src="{% static 'js/util.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> 
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 </body>
 

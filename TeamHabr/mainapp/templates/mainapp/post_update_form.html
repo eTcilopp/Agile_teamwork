@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-
+<div id="main">
+    <article class="post">
 <h2>Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}</h2>
 <hr>
 {% if slug %}
@@ -13,6 +14,9 @@
 {% elif pk %}
 <a href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
 {% endif %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
 <form method=post enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
@@ -24,4 +28,6 @@
         Сохранить
     </button>
 </form>
+        </article>
+</div>
 {% endblock %}
