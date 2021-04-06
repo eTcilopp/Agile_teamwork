@@ -47,7 +47,7 @@
             <div class="meta">
                 <time class="published" datetime="{{object.date_create}}">{{object.date_create}}</time>
                 {%  if object.post_updated %}
-                <time class="published" datetime="{{object.date_update}}">Дата обновления: {{object.date_update}}</time>
+                <time class="published" datetime="{{object.date_update}}">Дата обновления: <br> {{object.date_update}}</time>
                 {% endif %}
                 <a href="#" class="author"><span class="name">{{object.user_id.username}}</span>{% if object.user_id.avatar %}  <img src="{{ object.user_id.avatar.url }}" title="{{ object.user_id.name }} {{ object.user_id.surname }}" alt="" /> {% endif %} </a>
             </div>

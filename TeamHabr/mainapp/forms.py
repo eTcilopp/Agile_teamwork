@@ -37,40 +37,6 @@ class PostCreationForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
 
-    def clean_title_photo(self):
-        avatar = self.cleaned_data['title_photo']
-        filesize = avatar.file.size
-        print(filesize)
-        megabyte_limit = 0.02
-        if filesize > megabyte_limit * 1250 * 700:
-            raise forms.ValidationError("Max file size is %sMB" % str(megabyte_limit))
-        try:
-            w, h = get_image_dimensions(avatar)
-            filesize = avatar.file.size
-            print(filesize)
-            # validate dimensions
-            max_width = max_height = 1000
-            if w > max_width or h > max_height:
-                raise forms.ValidationError(
-                    u'Please use an image that is '
-                    '%s x %s pixels or smaller.' % (max_width, max_height))
-            # validate content type
-            main, sub = avatar.content_type.split('/')
-            if not (main == 'image' and sub in ['jpeg', 'pjpeg', 'gif', 'png']):
-                raise forms.ValidationError(u'Please use a JPEG, '
-                                            'GIF or PNG image.')
-            # validate file size
-            if len(avatar) > (20 * 1024):
-                raise forms.ValidationError(
-                    u'Avatar file size may not exceed 20k.')
-        except AttributeError:
-            """
-            Handles case when we are updating the user profile
-            and do not supply a new avatar
-            """
-            pass
-        return avatar
-
     class Meta:
         model = Post
         fields = ('title',
