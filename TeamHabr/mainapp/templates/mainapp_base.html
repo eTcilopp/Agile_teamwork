@@ -1,5 +1,6 @@
 {% load static %}
 {% load auth_extras %}
+{% load i18n %}
 
 
 <html lang="en">
@@ -22,7 +23,7 @@
     <div id="wrapper">
         {% block menu %}
         <header id="header">
-            <h1><a href="/">}{абр</a></h1>
+            <h1><a href="/">{% trans "}{абр" %}</a></h1>
             <nav class="links">
                 <ul>
                     {% for category in categories %}
@@ -39,13 +40,13 @@
                         </a></p>
                         {% else %}
                         <p style="margin-top: auto;"><a href="{% url 'auth:account' %}">
-                        <img class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="Аватарка">
+                        <img class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="{% trans 'Аватарка' %}">
                         </a></p>
                         {% endif %}
                     </li>
                     {% endif %}
                     <li class="search">
-                        <a class="fa-search" href="#search">Поиск</a>
+                        <a class="fa-search" href="#search">{% trans "Поиск" %}</a>
                         <form id="search" method="get" action="#">
                             <input name="q" placeholder="Поиск..." class="form-control" type="text" aria-label="Поиск" aria-describedby="basic-addon2">
                         </form>
@@ -72,7 +73,7 @@
                         {% endfor %}
                     </li>
                     <li>
-                        <h3>Авторизация</h3>
+                        <h3>{% trans "Авторизация" %}</h3>
                     </li>
                     <li>
                         {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
@@ -83,24 +84,24 @@
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="id_username">Логин</label>
-                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="Например user" />
+                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="{% trans 'Например user' %}" />
                                 </div>
                                 <div class="form-group">
                                     <label for="id_password">Пароль</label>
-                                    <input type="password" name="password" id="id_password" placeholder="Пароль" />
+                                    <input type="password" name="password" id="id_password" placeholder="{% trans 'Пароль' %}" />
                                 </div>
 
-                                <input class="form-control" type="submit" style="margin-top: 7%" value="войти">
-                                <a class="text-info" href="{%url 'authapp:reset_password'%}">Забыли пароль?</a>
+                                <input class="form-control" type="submit" style="margin-top: 7%" value="{% trans 'войти' %}">
+                                <a class="text-info" href="{%url 'authapp:reset_password'%}">{% trans "Забыли пароль?" %}</a>
                             </form>
                     </li>
                     <li><a href="{% url 'auth:register' %}">
-                            <h3>Регистрация</h3>
+                            <h3>{% trans "Регистрация" %}</h3>
                         </a></li>
                     {% endif %}
                     {% if user.is_superuser or user|has_group:"Moder" %}
                     <li><a href="{% url 'admin:user_list' %}">
-                            <h3>Админка</h3>
+                            <h3>{% trans "Админка" %}</h3>
                         </a></li>
                     {% endif %}
                 </ul>
@@ -108,7 +109,7 @@
             <section>
                 <ul class="links">
                     <li>
-                        <h3>Разделы</h3>
+                        <h3>{% trans "Разделы" %}</h3>
                     </li>
                     {% for category in categories %}
                     <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
@@ -117,7 +118,7 @@
             </section>
             <section>
                 <p><a href="{% url 'main:help' %}">
-                        <h3>Помощь</h3>
+                        <h3>{% trans "Помощь" %}</h3>
                     </a></p>
                 <script>
                     document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");
