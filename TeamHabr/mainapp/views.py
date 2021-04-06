@@ -1,6 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
@@ -275,7 +278,19 @@ class PostRead(DetailView):
         if self.request.POST.get("parent", None):
             form.instance.parent_comment_id = int(
                 self.request.POST.get("parent"))
+
+            comment = Comment.objects.get(pk=int(self.request.POST.get("parent")))
+            current_site = get_current_site(self.request)
+            mail_subject = 'Ответ на ваш коментарий.'
+            message = render_to_string('mainapp/email_answer_message.html', {
+                'domain': current_site.domain,
+                'comment': comment
+            })
+            to_email = comment.user_id.email
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
         form.save()
+
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):

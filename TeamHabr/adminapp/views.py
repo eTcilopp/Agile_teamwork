@@ -237,6 +237,16 @@ def change_status_post(request, slug, status):
             if Reason.objects.filter(post_id_id=post.pk).exists():
                 Reason.objects.filter(post_id_id=post.pk).delete()
         Post.objects.filter(slug=slug).update(post_status=status, status_update=datetime.datetime.now())
+        post_to_email = Post.objects.get(slug=slug)
+        current_site = get_current_site(request)
+        mail_subject = 'Изменение статуса вашей статьи.'
+        message = render_to_string('adminapp/email_change_status_message.html', {
+            'domain': current_site.domain,
+            'post': post_to_email
+        })
+        to_email = post_to_email.user_id.email
+        email = EmailMessage(mail_subject, message, to=[to_email])
+        email.send()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
