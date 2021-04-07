@@ -11,7 +11,7 @@
         <form method=post action='' enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
-                <h6>{{field.label}}</h6>
+                <h6>{{field.label}}  <span style="color: red">{{field.errors}}</span></h6>
                 <h6>{{field}}</h6>
             {% endfor %}
             <button type="submit"  value="сохранить"  name="save-article" > Сохранить </button>
