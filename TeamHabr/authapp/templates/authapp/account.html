@@ -8,6 +8,42 @@
 
 {% block content %}
 <div id="main">
+    <details>
+
+
+    <article class="post">
+        <div class="row">
+            <div class="col-6">
+            {% for comment in answer_comments %}
+            <div class="col-12">
+                <p>{% trans 'На ваш коментарий' %} "{{comment.text|truncatewords:50}}" {% trans 'пришел ответ' %}
+                    {{comment.delta_update}}
+
+                    <br>
+                    <a href="{% url 'main:post' comment.post_id.slug  %}#comment_block">{% trans 'Прочитать' %}</a></p>
+
+                <br>
+            </div>
+            {% endfor %}
+                </div>
+            <div class="col-6">
+                {% for post in change_status_post %}
+            <div class="col-12">
+                <p>{% trans 'У вашей статьи' %} "{{post.title}}" {% trans 'сменился статус на' %}
+                    {{post.get_post_status_display}}
+                    {{post.delta_update}}
+
+                    <br>
+                    <a href="{% url 'main:post' post.slug  %}">{% trans 'Прочитать' %}</a></p>
+
+                <br>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+
+    </article>
+        </details>
     <article class="post">
         <header>
             <div class="title">
@@ -34,9 +70,8 @@
 
         </header>
         <h4>{% trans 'О себе' %}</h4> {{ user.aboutMe }}
-
-
     </article>
+
     <article class="post">
         <h3>{% trans 'Мои статьи' %}</h3>
         <div class="title" style="font-size: 24px">

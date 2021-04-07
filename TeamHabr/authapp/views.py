@@ -16,7 +16,7 @@ from django.core.mail import EmailMessage
 from django.views.generic.detail import DetailView
 
 from .models import User
-from mainapp.models import Post, CategoryPost
+from mainapp.models import Post, CategoryPost, Comment
 from .forms import UserRegisterForm
 
 
@@ -142,7 +142,7 @@ class Activate(View):
             self.context['service_message'] = 'Ссылка устарела или недействительна.'
         return render(request, self.template_name, self.context)
 
-
+from django.db.models import Q
 class Account(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр личного кабинета пользователя.
@@ -175,6 +175,18 @@ class Account(DetailView):
         self.context['Can'] = Post.objects.filter(user_id=self.request.user.id, post_status='Can').count
         self.context['Drf'] = Post.objects.filter(user_id=self.request.user.id, post_status='Drf').count
         self.context['articles'] = articles
+        parent_comment = Comment.objects.all().exclude(parent_comment=None)
+        list_parent_comment = []
+        for i in parent_comment:
+            list_parent_comment.append(i.parent_comment_id)
+        answer_comments = Comment.objects.filter(user_id=self.request.user,
+                                               pk__in=list_parent_comment,
+                                               parent_comment=None).exclude(
+            comment_status='Del').order_by('-date_create')[:3]
+        self.context['answer_comments'] = answer_comments
+        change_status_post = Post.objects.filter(
+            user_id=self.request.user.id).exclude(post_status='Del').order_by('-status_update')[:3]
+        self.context['change_status_post'] = change_status_post
         return render(request, self.template_name, self.context)
 # TODO: проверить PermissionsMixin
 

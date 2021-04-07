@@ -288,7 +288,7 @@ class PostRead(DetailView):
             })
             to_email = comment.user_id.email
             email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
+            # email.send()
         form.save()
 
         return HttpResponseRedirect(self.get_success_url())

@@ -1,10 +1,13 @@
 from django.core.exceptions import ValidationError
+from django.utils.timezone import utc
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from authapp.models import User
 import datetime
 from slugify import slugify
+
+now = datetime.datetime.now().replace(tzinfo=utc)
 
 
 def valid_photo(photo):
@@ -190,6 +193,19 @@ class Post(models.Model):
     def get_reason(self):
         return Reason.objects.filter(post_id_id=self.pk)
 
+    def delta_update(self):
+
+        delta = (now - self.status_update)
+        if delta.days < 1:
+            answer = "Меньше суток назад"
+        elif delta.days == 1:
+            answer = f"{delta.days} день назад"
+        elif 2 >= delta.days < 5:
+            answer = f"{delta.days} дня назад"
+        else:
+            answer = f"{delta.days} дней назад"
+        return answer
+
 
 class Comment(models.Model):
     """
@@ -239,6 +255,18 @@ class Comment(models.Model):
 
     def get_count_comment(self):
         return Like.objects.filter(comment_id_id=self.pk).count()
+
+    def delta_update(self):
+        delta = (now - self.date_create)
+        if delta.days < 1:
+            answer = "Меньше суток назад"
+        elif delta.days == 1:
+            answer = f"{delta.days} день назад"
+        elif 2 >= delta.days < 5:
+            answer = f"{delta.days} дня назад"
+        else:
+            answer = f"{delta.days} дней назад"
+        return answer
 
 
 class Like(models.Model):
