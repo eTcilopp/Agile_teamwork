@@ -14,15 +14,15 @@
 {% elif pk %}
 <a href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
 {% endif %}
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
+
 <form method=post enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
-    <div class="d-flex align-self-start mr-3">{{field.label}}</div>
+    <div class="d-flex align-self-start mr-3">{{field.label}} <span style="color: red">{{field.errors}}</span></div>
+
     <div class="form-con-create">{{field}}</div>
     {% endfor %}
+
 
     <button type="submit" , value="сохранить" , name="save-article" class="btn" style="margin-top: 20px">
         Сохранить

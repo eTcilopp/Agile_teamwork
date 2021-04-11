@@ -1,9 +1,26 @@
+from django.core.exceptions import ValidationError
+from django.utils.timezone import utc
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from authapp.models import User
 import datetime
 from slugify import slugify
+
+now = datetime.datetime.now().replace(tzinfo=utc)
+
+
+def valid_photo(photo):
+    """
+    Функция валидации размера фото
+    :param photo: принимает фотографию
+    :return: ошибку в случае провала валидации
+    """
+    filesize = photo.file.size
+    megabyte_limit = 0.9
+    if filesize > megabyte_limit * 1250 * 700:
+
+        raise ValidationError(f"Максимальный размер картинки {megabyte_limit}MB и размеры 1250 * 700")
 
 
 class CategoryPost(models.Model):
@@ -66,15 +83,6 @@ class CategoryPost(models.Model):
         return Post.objects.filter(category_id_id=self.pk).count()
 
 
-from django.core.exceptions import ValidationError
-def valid_photo(photo):
-    filesize = photo.file.size
-    print(filesize)
-    megabyte_limit = 0.02
-    if filesize > megabyte_limit * 1250 * 700:
-        raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
-
-
 class Post(models.Model):
     """
     Класс модели статей.
@@ -122,10 +130,11 @@ class Post(models.Model):
         default=datetime.datetime.today)
     title_photo = models.ImageField(
         verbose_name='Картинка статьи',
-        # validators=[valid_photo],
+        validators=[valid_photo],
         null=True,
         blank=True,
-        upload_to="post_title_photo", )
+        upload_to="post_title_photo",
+        )
 
     @property
     def post_updated(self):
@@ -184,6 +193,19 @@ class Post(models.Model):
     def get_reason(self):
         return Reason.objects.filter(post_id_id=self.pk)
 
+    def delta_update(self):
+
+        delta = (now - self.status_update)
+        if delta.days < 1:
+            answer = "Меньше суток назад"
+        elif delta.days == 1:
+            answer = f"{delta.days} день назад"
+        elif 2 >= delta.days < 5:
+            answer = f"{delta.days} дня назад"
+        else:
+            answer = f"{delta.days} дней назад"
+        return answer
+
 
 class Comment(models.Model):
     """
@@ -233,6 +255,18 @@ class Comment(models.Model):
 
     def get_count_comment(self):
         return Like.objects.filter(comment_id_id=self.pk).count()
+
+    def delta_update(self):
+        delta = (now - self.date_create)
+        if delta.days < 1:
+            answer = "Меньше суток назад"
+        elif delta.days == 1:
+            answer = f"{delta.days} день назад"
+        elif 2 >= delta.days < 5:
+            answer = f"{delta.days} дня назад"
+        else:
+            answer = f"{delta.days} дней назад"
+        return answer
 
 
 class Like(models.Model):
