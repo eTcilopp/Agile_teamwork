@@ -530,7 +530,6 @@ def likes(request, pk, type_likes):
     :param type_likes:
     :return:
     """
-
     field_id = f"{type_likes}_id_id"
     author = request.user
     obj, created = Like.objects.update_or_create(

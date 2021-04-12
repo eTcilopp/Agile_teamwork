@@ -63,7 +63,14 @@
         <footer>
             <ul class="stats">
                 <li><a href="{% url 'main:category' slug=object.category_id.slug %}">{{ object.category_id.name }}</a></li>
-                <li><a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart">{{object.get_count_user}}</a></li>
+                <li><a {% if user.is_authenticated %}
+                       href="#/"
+                       data-url="{% url 'main:like' object.pk 'post' %}"
+                       {% else %}
+                       href="#myModal" data-toggle="modal"
+                       {% endif %}
+                       class="icon solid fa-heart likeIcon">{{object.get_count_user}}</a></li>
+
                 <li><a href="#" class="icon solid fa-comment">{{object.count_all_comment}}</a></li>
             </ul>
         </footer>
@@ -109,10 +116,13 @@
                 {% if comment.comment_status != 'Del' or user|has_group:"Moder" %}
 
                 <p style="text-align: right" class="text-info">
-                    <span id="like_comment" style="font-size: 14px">
-                        <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                            <i class="icon solid fa-heart" title="Поставить лайк"></i>
-                        </a>{{comment.get_count_comment}}</span>
+                    <a {% if user.is_authenticated %}
+                       href="#/"
+                       data-url="{% url 'main:like' comment.pk 'comment' %}"
+                       {% else %}
+                       href="#myModal" data-toggle="modal"
+                       {% endif %}
+                       class="icon solid fa-heart likeIcon">{{comment.get_count_comment}}</a>
                     <br>
                     Автор: {{comment.user_id.username}}
                     <br>
@@ -172,10 +182,16 @@
                         {% if answer.comment_status != 'Del' or user|has_group:"Moder" %}
 
                         <p style="text-align: right" class="text-info">
-                            <span style="font-size: 14px">
-                                <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                                    <i class="icon solid fa-heart" title="Поставить лайк"></i>
-                                </a>{{answer.get_count_comment}}</span>
+                            <a style="font-size: 14px">
+                                <a
+                                   {% if user.is_authenticated %}
+                                    href="#/"
+                                    data-url="{% url 'main:like' answer.pk 'comment' %}"
+                                   {% else %}
+                                    href="#myModal" data-toggle="modal"
+                                   {% endif %}
+                                   class="icon solid fa-heart likeIcon">{{answer.get_count_comment}}</a>
+
                             <br>
                             Автор: <b>{{answer.user_id.username}}</b>
                             <br>
