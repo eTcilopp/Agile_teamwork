@@ -6,6 +6,7 @@ from django.conf import settings
 from authapp.models import User
 import datetime
 from slugify import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
 
 now = datetime.datetime.now().replace(tzinfo=utc)
 
@@ -114,7 +115,7 @@ class Post(models.Model):
         max_length=64,
         editable=False,
         unique=True)
-    text = models.TextField(verbose_name='Содержание')
+    text = RichTextUploadingField(verbose_name='Содержание')
     post_status = models.CharField(
         max_length=3,
         choices=CHOICES_STATUS,
