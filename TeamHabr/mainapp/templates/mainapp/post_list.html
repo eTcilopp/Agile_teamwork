@@ -23,13 +23,17 @@
         {% if article.title_photo %}
         <a href="{% url 'main:post' article.slug %}" class="image featured"><img src="{{ article.title_photo.url }}" title="{{ article.title_photo }}"  alt="" /></a>
         {% endif %}
+        <div>
+        {% autoescape off %}
         <p>{{article.text| truncatewords:50}}</p>
+        {% endautoescape %}
+        </div>
         <footer>
             <ul class="actions">
                 <li><a href="{% url 'main:post' article.slug %}" class="button large">{% trans "Продолжить чтение" %}</a></li>
             </ul>
             <ul class="stats">
-                <li><a href="#">General</a></li>
+                <li><a href="{% url 'main:category' slug=article.category_id.slug %}">{{ article.category_id.name }}</a></li>
                 <li><a {% if user.is_authenticated %} href="#/" data-url="{% url 'main:like' article.pk 'post' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart likeIcon">{{article.get_count_post}}</a></li>
                 <li><a href="{% url 'main:post' article.slug  %}#comment_block" class="icon solid fa-comment">{{article.count_all_comment}}</a></li>
             </ul>

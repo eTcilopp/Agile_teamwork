@@ -246,7 +246,7 @@ def change_status_post(request, slug, status):
         })
         to_email = post_to_email.user_id.email
         email = EmailMessage(mail_subject, message, to=[to_email])
-        email.send()
+        # email.send()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

@@ -2,7 +2,9 @@
 {% load static %}
 {% load auth_extras %}
 
+
 {% block content %}
+
 
 <!-- Main -->
 <div id="main">
@@ -55,12 +57,12 @@
         {% if object.title_photo %}
         <span class="image featured"><img src="{{ object.title_photo.url }}" title="{{ object.title_photo }}" alt="" /></span>
         {% endif %}
-        {% autoescape on %}
-        <p>{{object.text| linebreaks}}</p>
+        {% autoescape off %}
+        <p>{{object.text}}</p>
         {% endautoescape %}
         <footer>
             <ul class="stats">
-                <li><a href="#">General</a></li>
+                <li><a href="{% url 'main:category' slug=object.category_id.slug %}">{{ object.category_id.name }}</a></li>
                 <li><a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart">{{object.get_count_user}}</a></li>
                 <li><a href="#" class="icon solid fa-comment">{{object.count_all_comment}}</a></li>
             </ul>
@@ -97,7 +99,9 @@
                 <p class="bg-danger text-white text-center">Комментарий виден только модератору</p>
                 {% endif %}
                 {% else %}
+                {% autoescape off %}
                 {{comment.text | linebreaks}}
+                {% endautoescape %}
                 {% endif %}
                 </p>
             </div>
@@ -158,7 +162,9 @@
                         <p class="bg-danger text-white text-center">Ответ виден только модератору</p>
                         {% endif %}
                         {% else %}
+                        {% autoescape off %}
                         {{answer.text | linebreaks}}
+                        {% endautoescape %}
                         {% endif %}
                         </p>
                     </div>
