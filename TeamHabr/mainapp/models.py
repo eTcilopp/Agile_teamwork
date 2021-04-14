@@ -1,4 +1,6 @@
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.utils.timezone import utc
 from django.db import models
 from django.urls import reverse
@@ -20,7 +22,6 @@ def valid_photo(photo):
     filesize = photo.file.size
     megabyte_limit = 0.9
     if filesize > megabyte_limit * 1250 * 700:
-
         raise ValidationError(f"Максимальный размер картинки {megabyte_limit}MB и размеры 1250 * 700")
 
 
@@ -135,7 +136,7 @@ class Post(models.Model):
         null=True,
         blank=True,
         upload_to="post_title_photo",
-        )
+    )
 
     @property
     def post_updated(self):
@@ -206,6 +207,11 @@ class Post(models.Model):
         else:
             answer = f"{delta.days} дней назад"
         return answer
+
+# Удаляет файл фотографии если удалена запись о ней из базы
+@receiver(post_delete, sender=Post)
+def submission_delete(sender, instance, **kwargs):
+    instance.image.delete(False)
 
 
 class Comment(models.Model):
@@ -286,11 +292,11 @@ class Like(models.Model):
     author_user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Author_like')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None,
-        null=True,
-        blank=True)
+                                null=True,
+                                blank=True)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None,
-        null=True,
-        blank=True)
+                                null=True,
+                                blank=True)
     comment_id = models.ForeignKey(
         Comment, on_delete=models.CASCADE, default=None,
         null=True,
@@ -315,5 +321,3 @@ class Video(models.Model):
     title = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to='video/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
-

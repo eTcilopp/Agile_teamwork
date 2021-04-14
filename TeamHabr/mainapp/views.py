@@ -15,6 +15,7 @@ import re
 import datetime
 import string
 import random
+from django.utils.translation import ugettext
 
 from .models import Post, CategoryPost, Comment, Like, Video
 from .forms import PostCreationForm, CommentForm, VideoCreationForm
@@ -110,10 +111,10 @@ class Index(ListView):
             context['query'] = self.request.GET.get('q')
         if self.kwargs.get('slug'):
             category = CategoryPost.objects.filter(slug=self.kwargs['slug'])
-            context['title'] = category[0].name
+            context['title'] = ugettext(category[0].name)
             context['category'] = category[0].slug
         else:
-            context['title'] = 'Главная'
+            context['title'] = ugettext('Главная')
         context['categories'] = CategoryPost.objects.all()
         return context
 
@@ -162,7 +163,7 @@ class ArticleCreate(FunctionsMixin, CreateView):
         else:
             form = PostCreationForm
         context["postitems"] = form
-        context['title'] = 'Создание новой статьи'
+        context['title'] = ugettext('Создание новой статьи')
         context['categories'] = CategoryPost.objects.all()
         return context
 
@@ -206,7 +207,7 @@ class ArticleUpdate(FunctionsMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['slug'] = self.get_object().slug
-        context['title'] = 'Редактирование статьи'
+        context['title'] = ugettext('Редактирование статьи')
         context['categories'] = CategoryPost.objects.all()
         return context
 
