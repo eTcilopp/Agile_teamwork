@@ -2,36 +2,4 @@
 {% load static %}
 {% load i18n %}
 {% block content %}
-<div class="row">
-    <div class="col-2"></div>
-    <div class="col text-justify">{% include 'adminapp/inc_admin_menu.html' %}</div>
-    <div class="col-2"></div>
-</div>
-<div class="row">
-
-    <div class="col-2"></div>
-    <div class="col text-justify">
-
-        {% block admin_content %}
-        {% endblock %}
-
-    </div>
-    <div class="col-2"></div>
-</div>
-<div class="row">
-    <div class="col-2"></div>
-    <div class="col text-center">
-        {% if is_paginated %}
-        {% if page_obj.has_previous %}
-        <a class="text-info" href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}">&lt;</a>
-        {% endif %}
-        <span class="current">{% trans "Cтраница " %}{{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}
-        </span>
-        {% if page_obj.has_next %}
-        <a class="text-info" href="?page={{ page_obj.next_page_number }}&{{ request.GET }}">&gt;</a>
-        {% endif %}
-        {% endif %}
-    </div>
-    <div class="col-2"></div>
-</div>
 {% endblock %}

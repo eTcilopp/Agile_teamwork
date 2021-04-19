@@ -1,74 +1,103 @@
-{% extends 'adminapp/admin_base.html' %}
-{% block admin_content %}
+{% extends 'mainapp_base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
 {{categories2}}
-<div class="row text-center">
-    {% if Aip != 0%}
-    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Aip'%}">Ожидающие одобрения ({{Aip}})</a></div>
+<div id="main">
+    <article class="post">
+        <div class="row">
+
+            {% include 'adminapp/inc_admin_menu.html' %}
+
+
+            <div class="col-8-xlarge col-12-large">
+                <ul class="actions">
+                    {% if Aip != 0%}
+                    <li><a href="{% url 'admin:post_status_list' 'Aip'%}" class="button">Ожидающие одобрения ({{Aip}})</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'admin:post_status_list' 'Apr'%}" class="button">Одобреные ({{Apr}})</a></li>
+                    {% if Can != 0%}
+                    <li><a href="{% url 'admin:post_status_list' 'Can'%}" class="button">Отклоненые ({{Can}})</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'admin:post_status_list' 'Del'%}" class="button">Удаленые статьи ({{Del}})</a></li>
+                </ul>
+            </div>
+        </div>
+
+        {% if object_list %}
+        <table class="table">
+            <thead class="thead-dark">
+                <tr class="text-center">
+                    <th>Статус</th>
+                    <th>Автор</th>
+                    <th>Категория</th>
+                    <th>Заголовок</th>
+                    <th>Читать</th>
+                    <th>Дата создания/обновления</th>
+                    <th>Дата смены статуса</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr class="text-center" {% if object.post_status == 'Aip' %} style="background-color: #dbd2c1" {% endif %} {% if object.post_status == 'Del' or object.post_status == 'Can' %} style="opacity: 0.5" {% endif %}>
+                    <td>
+                        {{object.get_post_status_display}}
+                        <br>
+                        {% if object.post_status != 'Apr' %}
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
+                            <i class="icon solid fa-check"></i></a>
+                        {% endif %}
+                        {% if object.post_status != 'Del' %}
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
+                            <i class="icon solid fa-trash"></i></a>
+                        {% endif %}
+                        {% if object.post_status != 'Can' %}
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отправить на доработку">
+                            <i class="icon solid fa-window-close"></i></a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{object.user_id.name}}
+                    </td>
+                    <td>
+                        {{object.category_id.name}}
+                    </td>
+                    <td>
+                        {{object.title}}
+                    </td>
+                    <td>
+                        <a class="text-info" href="{% url 'main:post' object.slug %}">читать статью</a>
+                    </td>
+                    <td>
+                        {{object.date_create}}
+                        {% if object.date_update|date:"Y,m,d,h,i" > object.date_create|date:"Y,m,d,h,i" %}
+                        <br> {{object.date_update}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{object.status_update}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+    {% if is_paginated %}
+
+    <ul class="actions pagination">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Предыдущая страница" %}</a></li>
+        {% endif %}
+        <li>
+            <p class="button large">{% trans "Cтраница" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p>
+        </li>
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Следующая страница" %}</a></li>
+        {% endif %}
+    </ul>
     {% endif %}
-    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Apr'%}">Одобреные ({{Apr}})</a></div>
-    {% if Can != 0%}
-    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Can'%}">Отклоненые ({{Can}})</a></div>
-    {% endif %}
-    <div class="col"><a class="text-info" href="{% url 'admin:post_status_list' 'Del'%}">Удаленые статьи ({{Del}})</a></div>
 </div>
-{% if object_list %}
-<table class="table">
-    <thead class="thead-dark">
-        <tr class="text-center">
-            <th>Статус</th>
-            <th>Автор</th>
-            <th>Категория</th>
-            <th>Заголовок</th>
-            <th>Читать</th>
-            <th>Дата создания/обновления</th>
-            <th>Дата смены статуса</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for object in object_list %}
-        <tr class="text-center {% if object.post_status == 'Aip' %} table-warning {% endif %}" 
-           {% if object.post_status == 'Del' or object.post_status == 'Can' %} style="opacity: 0.5" {% endif %}>
-            <td>
-                {{object.get_post_status_display}}
-                <br>
-                {% if object.post_status != 'Apr' %}
-                <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
-                    <i class="bi bi-check2-square"></i></a>
-                {% endif %}
-                {% if object.post_status != 'Del' %}
-                <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
-                    <i class="bi bi-trash"></i></a>
-                {% endif %}
-                {% if object.post_status != 'Can' %}
-                <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отправить на доработку">
-                    <i class="bi bi-x-octagon"></i></a>
-                {% endif %}
-            </td>
-            <td>
-                {{object.user_id.name}}
-            </td>
-            <td>
-                {{object.category_id.name}}
-            </td>
-            <td>
-                {{object.title}}
-            </td>
-            <td>
-                <a class="text-info" href="{% url 'main:post' object.slug %}">читать статью</a>
-            </td>
-            <td>
-                {{object.date_create}}
-                {% if object.date_update|date:"Y,m,d,h,i" > object.date_create|date:"Y,m,d,h,i" %}
-                <br> {{object.date_update}}
-                {% endif %}
-            </td>
-            <td>
-                {{object.status_update}}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+
 {% else %}
 <h2 class="text-center">С данным статусом нет статей</h2>
 {% endif %}
