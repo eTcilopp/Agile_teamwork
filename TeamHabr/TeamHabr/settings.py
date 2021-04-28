@@ -145,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru-RU'
 
 LANGUAGES = (
     ('en', _('English')),
@@ -192,7 +192,7 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
 EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_HOST_PASSWORD = 'k5qVN*A+@j*B>4av'
+EMAIL_HOST_PASSWORD = 'X[mE7RQ[xCqvDP*%'
 EMAIL_HOST_USER = 'teamhabr@mail.ru'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True

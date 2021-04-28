@@ -533,6 +533,7 @@ def likes(request, pk, type_likes):
     :param type_likes:
     :return:
     """
+    print('geeeeeeep')
     field_id = f"{type_likes}_id_id"
     author = request.user
     obj, created = Like.objects.update_or_create(
@@ -541,9 +542,12 @@ def likes(request, pk, type_likes):
         Like.objects.filter(
             **{field_id: pk}, author_user_id_id=author.pk).delete()
         if request.is_ajax():
+            print('beeep')
             return JsonResponse({'like_change': -1})
     if request.is_ajax():
+        print('peeep')
         return JsonResponse({'like_change': 1})
+    print('heeeeeeep')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
