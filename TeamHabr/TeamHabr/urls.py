@@ -35,7 +35,7 @@ urlpatterns = [
          include('adminapp.urls',
                  namespace='admin')),
 
-    path(r'^ckeditor/',
+    path(r'ckeditor/',
          include('ckeditor_uploader.urls')),
 
     # path('admin/',
