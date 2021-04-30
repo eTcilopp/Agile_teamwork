@@ -16,15 +16,16 @@ Including another URLconf
 # from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.i18n import i18n_patterns
 
 """
 Ссылки на основные приложения проекта
 """
 
 urlpatterns = [
-    path('',
-         include('mainapp.urls',
-                 namespace='main')),
+    # path('',
+    #      include('mainapp.urls',
+    #              namespace='main')),
 
     path('',
          include('authapp.urls',
@@ -43,6 +44,8 @@ urlpatterns = [
 
 ]
 urlpatterns += staticfiles_urlpatterns()
+urlpatterns += i18n_patterns(path('', include('mainapp.urls', namespace='main')),)
+
 import mainapp.views as mainapp
 
 handler404 = mainapp.handler

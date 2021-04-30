@@ -3,7 +3,7 @@
 {% load i18n %}
 
 
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -53,6 +53,17 @@
                     </li>
                     <li class="menu">
                         <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                    <li>
+                        {% get_current_language as LANGUAGE_CODE %}
+                        <!-- Current language: {{ LANGUAGE_CODE }} -->
+                        <p>{% translate "Welcome to our page" %}</p>
+
+                        {% language 'en' %}
+                            {% get_current_language as LANGUAGE_CODE %}
+                            <!-- Current language: {{ LANGUAGE_CODE }} -->
+                            <p>{% translate "Welcome to our page" %}</p>
+                        {% endlanguage %}
                     </li>
                 </ul>
             </nav>

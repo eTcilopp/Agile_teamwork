@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import sys
+from django.utils.translation import ugettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'TeamHabr.urls'
@@ -140,7 +145,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'ru-RU'
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('ru', _('Russian'))
+)
+
+LOCALE_PATHS = (
+                  os.path.join(BASE_DIR, 'locale'),
+)
+
+PREFIX_DEFAULT_LANGUAGE = False
 
 TIME_ZONE = 'Europe/Moscow'
 # TIME_ZONE = 'UTC'
@@ -176,7 +192,7 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
 EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_HOST_PASSWORD = 'k5qVN*A+@j*B>4av'
+EMAIL_HOST_PASSWORD = 'X[mE7RQ[xCqvDP*%'
 EMAIL_HOST_USER = 'teamhabr@mail.ru'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
