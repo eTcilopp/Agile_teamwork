@@ -65,7 +65,7 @@ urlpatterns = [
         mainapp.CommentUpdate.as_view(),
         name='comment_update'),
     path(
-        'like/<int:pk>/<str:type_likes>',
+        'like/<int:pk>/<str:type_likes>/',
         mainapp.likes,
         name='like'),
     path(
@@ -87,3 +87,4 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

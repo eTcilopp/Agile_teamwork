@@ -8,6 +8,9 @@ $(document).ready(function(){
             let like_count = $(this);
             let url = $(this).attr("data-url");
 
+            if (typeof url === 'undefined')
+                return;
+
 
         $.ajax({
                 type: "GET",

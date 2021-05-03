@@ -15,6 +15,7 @@ import re
 import datetime
 import string
 import random
+import smtplib
 
 from .models import Post, CategoryPost, Comment, Like, Video
 from .forms import PostCreationForm, CommentForm, VideoCreationForm
@@ -278,17 +279,19 @@ class PostRead(DetailView):
         if self.request.POST.get("parent", None):
             form.instance.parent_comment_id = int(
                 self.request.POST.get("parent"))
-
-            comment = Comment.objects.get(pk=int(self.request.POST.get("parent")))
-            current_site = get_current_site(self.request)
-            mail_subject = 'Ответ на ваш коментарий.'
-            message = render_to_string('mainapp/email_answer_message.html', {
-                'domain': current_site.domain,
-                'comment': comment
-            })
-            to_email = comment.user_id.email
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            # email.send()
+            try:
+                comment = Comment.objects.get(pk=int(self.request.POST.get("parent")))
+                current_site = get_current_site(self.request)
+                mail_subject = 'Ответ на ваш коментарий.'
+                message = render_to_string('mainapp/email_answer_message.html', {
+                    'domain': current_site.domain,
+                    'comment': comment
+                })
+                to_email = comment.user_id.email
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+            except smtplib.SMTPAuthenticationError as server:
+                print(f"ERROR\n {server} \n ************")
         form.save()
 
         return HttpResponseRedirect(self.get_success_url())

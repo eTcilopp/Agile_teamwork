@@ -11,6 +11,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 import datetime
+import smtplib
 from slugify import slugify
 
 from authapp.models import User
@@ -68,17 +69,20 @@ class ReasonCreate(CreateView):
                     slug=self.kwargs['slug']).update(
                     post_status=self.kwargs['status'],
                     status_update=datetime.datetime.now())
+                try:
+                    current_site = get_current_site(self.request)
+                    mail_subject = 'Отклонение вашей статьи.'
+                    message = render_to_string('adminapp/cancel_email.html', {
+                        'domain': current_site.domain,
+                        'post': post,
+                        'moder': self.request.user.username
+                    })
+                    to_email = post.user_id.email
+                    email = EmailMessage(mail_subject, message, to=[to_email])
 
-                current_site = get_current_site(self.request)
-                mail_subject = 'Отклонение вашей статьи.'
-                message = render_to_string('adminapp/cancel_email.html', {
-                    'domain': current_site.domain,
-                    'post': post,
-                    'moder': self.request.user.username
-                })
-                to_email = post.user_id.email
-                email = EmailMessage(mail_subject, message, to=[to_email])
-                email.send()
+                    email.send()
+                except smtplib.SMTPAuthenticationError as server:
+                    print(f"ERROR\n {server} \n ************")
         return super(ReasonCreate, self).form_valid(form)
 
 
@@ -237,16 +241,21 @@ def change_status_post(request, slug, status):
             if Reason.objects.filter(post_id_id=post.pk).exists():
                 Reason.objects.filter(post_id_id=post.pk).delete()
         Post.objects.filter(slug=slug).update(post_status=status, status_update=datetime.datetime.now())
-        post_to_email = Post.objects.get(slug=slug)
-        current_site = get_current_site(request)
-        mail_subject = 'Изменение статуса вашей статьи.'
-        message = render_to_string('adminapp/email_change_status_message.html', {
-            'domain': current_site.domain,
-            'post': post_to_email
-        })
-        to_email = post_to_email.user_id.email
-        email = EmailMessage(mail_subject, message, to=[to_email])
-        email.send()
+        try:
+            post_to_email = Post.objects.get(slug=slug)
+            current_site = get_current_site(request)
+            mail_subject = 'Изменение статуса вашей статьи.'
+            message = render_to_string('adminapp/email_change_status_message.html', {
+                'domain': current_site.domain,
+                'post': post_to_email
+            })
+            to_email = post_to_email.user_id.email
+            email = EmailMessage(mail_subject, message, to=[to_email])
+
+            email.send()
+        except smtplib.SMTPAuthenticationError as server:
+            print(f"ERROR\n {server} \n ************")
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

@@ -110,7 +110,11 @@
                 {% endif %}
             </div>
         </header>
+        <div>
+        {% autoescape off %}
         <p>{{ article.text| truncatewords:200 }}</p>
+        {% endautoescape %}
+            </div>
         <a class="text-info" class="text-info" href="{% url 'main:post' article.slug %}">{% trans 'Читать целиком' %}</a>
     </article>
     {% endfor %}
