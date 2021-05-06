@@ -16,6 +16,7 @@ import datetime
 import string
 import random
 import smtplib
+from django.views import View
 
 from .models import Post, CategoryPost, Comment, Like, Video
 from .forms import PostCreationForm, CommentForm, VideoCreationForm
@@ -518,6 +519,32 @@ class VideoDetail(DetailView):
         """
 
         return get_object_or_404(Video, pk=self.kwargs.get('pk'))
+
+
+class SecretZone(View):
+    title = 'вход в закрытый раздел'
+    template_name = 'mainapp/bufferzone.html'
+    content = {
+        "title": title,
+        'categories': CategoryPost.objects.all(),
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.content)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST['password'] == "Revers":
+            template_name = 'mainapp/bufferzone.html'
+            title = 'Закрытый раздел'
+            content = {
+                "title": title,
+                "text": 1,
+                'categories': CategoryPost.objects.all(),
+            }
+            return render(request, template_name, content)
+
+        else:
+            return render(request, self.template_name, self.content)
 
 
 def source_page(request):

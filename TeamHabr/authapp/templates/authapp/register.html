@@ -15,7 +15,7 @@
         {% for field in register_form %}
 
         <div class="col-6 col-12-xsmall">
-            {{field.label_tag }} {{field}}
+            {{field.label_tag }} <span style="color: red">{{field.errors}}</span> {{field}}
         </div>
         {% endfor %}
     </div>
