@@ -191,12 +191,17 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_HOST_PASSWORD = 'X[mE7RQ[xCqvDP*%'
-EMAIL_HOST_USER = 'teamhabr@mail.ru'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'teamhabr@gmail.com'
+EMAIL_HOST_PASSWORD = '*.6fm^"GhqxW\_P('
+# EMAIL_HOST = 'smtp.mail.ru'
+# EMAIL_HOST_PASSWORD = '*V5ErSQ<e?uRE#Z3'
+# EMAIL_HOST_USER = 'teamhabr@mail.ru'
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CKEDITOR_CONFIGS = {
     'default': {

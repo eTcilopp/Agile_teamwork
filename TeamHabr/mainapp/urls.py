@@ -83,7 +83,12 @@ urlpatterns = [
     path(
         'video/<int:pk>/',
         mainapp.VideoDetail.as_view(),
-        name='video_detail')
+        name='video_detail'),
+    path(
+        'bufferzone/',
+        mainapp.SecretZone.as_view(),
+        name='bufferzone'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
