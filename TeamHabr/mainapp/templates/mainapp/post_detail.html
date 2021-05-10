@@ -106,9 +106,12 @@
 
                 <p style="text-align: right" class="text-info">
                     <span id="like_comment" style="font-size: 14px">
-                        <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' comment.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                            <i class="icon solid fa-heart" title="Поставить лайк"></i>
-                        </a>{{comment.get_count_comment}}</span>
+                        {% if user.is_authenticated %}
+                        <a href="#/" data-url="{% url 'main:like' comment.pk 'comment' %}" class="icon solid fa-heart likeIcon">{{comment.get_count_comment}}</a>
+                        {% else %}
+                        <a href="#menu" class="icon solid fa-heart fa-bars">{{comment.get_count_comment}}</a>
+                        {% endif %}
+                    </span>
                     <br>
                     Автор: {{comment.user_id.username}}
                     <br>
