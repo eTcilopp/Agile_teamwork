@@ -119,10 +119,11 @@
                     <a {% if user.is_authenticated %}
                        href="#/"
                        data-url="{% url 'main:like' comment.pk 'comment' %}"
+                       class="icon solid fa-heart likeIcon"
                        {% else %}
-                       href="#myModal" data-toggle="modal"
+                       href="#menu"  class="icon solid fa-heart fa-bars"
                        {% endif %}
-                       class="icon solid fa-heart likeIcon">{{comment.get_count_comment}}</a>
+                       >{{comment.get_count_comment}}</a>
                     <br>
                     Автор: {{comment.user_id.username}}
                     <br>
