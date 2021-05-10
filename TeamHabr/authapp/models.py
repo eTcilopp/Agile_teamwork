@@ -51,8 +51,13 @@ class User(AbstractUser):
         blank=True,
         upload_to="users_avatars/",
         verbose_name="Аватар")
-    age = models.PositiveIntegerField(verbose_name="Возраст", default=0)
-    aboutMe = models.TextField(verbose_name="О себе", max_length=512, blank=True)
+    age = models.PositiveIntegerField(
+        verbose_name="Возраст",
+        default=0)
+    aboutMe = models.TextField(
+        verbose_name="О себе",
+        max_length=512,
+        blank=True)
 
     class Meta:
         verbose_name_plural = 'Пользователи'

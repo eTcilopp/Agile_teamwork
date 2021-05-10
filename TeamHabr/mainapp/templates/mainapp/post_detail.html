@@ -2,7 +2,9 @@
 {% load static %}
 {% load auth_extras %}
 
+
 {% block content %}
+
 
 <!-- Main -->
 <div id="main">
@@ -55,13 +57,20 @@
         {% if object.title_photo %}
         <span class="image featured"><img src="{{ object.title_photo.url }}" title="{{ object.title_photo }}" alt="" /></span>
         {% endif %}
-        {% autoescape on %}
-        <p>{{object.text| linebreaks}}</p>
+        {% autoescape off %}
+        <p>{{object.text}}</p>
         {% endautoescape %}
         <footer>
             <ul class="stats">
-                <li><a href="#">General</a></li>
-                <li><a {% if user.is_authenticated %} href="{% url 'main:like' object.user_id.pk 'user' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %} class="icon solid fa-heart">{{object.get_count_user}}</a></li>
+                <li><a href="{% url 'main:category' slug=object.category_id.slug %}">{{ object.category_id.name }}</a></li>
+                <li><a {% if user.is_authenticated %}
+                       href="#/"
+                       data-url="{% url 'main:like' object.pk 'post' %}"
+                       {% else %}
+                       href="#myModal" data-toggle="modal"
+                       {% endif %}
+                       class="icon solid fa-heart likeIcon">{{object.get_count_post}}</a></li>
+
                 <li><a href="#" class="icon solid fa-comment">{{object.count_all_comment}}</a></li>
             </ul>
         </footer>
@@ -97,7 +106,9 @@
                 <p class="bg-danger text-white text-center">Комментарий виден только модератору</p>
                 {% endif %}
                 {% else %}
+                {% autoescape off %}
                 {{comment.text | linebreaks}}
+                {% endautoescape %}
                 {% endif %}
                 </p>
             </div>
@@ -105,13 +116,14 @@
                 {% if comment.comment_status != 'Del' or user|has_group:"Moder" %}
 
                 <p style="text-align: right" class="text-info">
-                    <span id="like_comment" style="font-size: 14px">
-                        {% if user.is_authenticated %}
-                        <a href="#/" data-url="{% url 'main:like' comment.pk 'comment' %}" class="icon solid fa-heart likeIcon">{{comment.get_count_comment}}</a>
-                        {% else %}
-                        <a href="#menu" class="icon solid fa-heart fa-bars">{{comment.get_count_comment}}</a>
-                        {% endif %}
-                    </span>
+                    <a {% if user.is_authenticated %}
+                       href="#/"
+                       data-url="{% url 'main:like' comment.pk 'comment' %}"
+                       class="icon solid fa-heart likeIcon"
+                       {% else %}
+                       href="#menu"  class="icon solid fa-heart fa-bars"
+                       {% endif %}
+                       >{{comment.get_count_comment}}</a>
                     <br>
                     Автор: {{comment.user_id.username}}
                     <br>
@@ -161,7 +173,9 @@
                         <p class="bg-danger text-white text-center">Ответ виден только модератору</p>
                         {% endif %}
                         {% else %}
+                        {% autoescape off %}
                         {{answer.text | linebreaks}}
+                        {% endautoescape %}
                         {% endif %}
                         </p>
                     </div>
@@ -169,10 +183,16 @@
                         {% if answer.comment_status != 'Del' or user|has_group:"Moder" %}
 
                         <p style="text-align: right" class="text-info">
-                            <span style="font-size: 14px">
-                                <a class="text-info" {% if user.is_authenticated %} href="{% url 'main:like' answer.pk 'comment' %}" {% else %} href="#myModal" data-toggle="modal" {% endif %}>
-                                    <i class="icon solid fa-heart" title="Поставить лайк"></i>
-                                </a>{{answer.get_count_comment}}</span>
+                            <a style="font-size: 14px">
+                                <a
+                                   {% if user.is_authenticated %}
+                                    href="#/"
+                                    data-url="{% url 'main:like' answer.pk 'comment' %}"
+                                   {% else %}
+                                    href="#myModal" data-toggle="modal"
+                                   {% endif %}
+                                   class="icon solid fa-heart likeIcon">{{answer.get_count_comment}}</a>
+
                             <br>
                             Автор: <b>{{answer.user_id.username}}</b>
                             <br>

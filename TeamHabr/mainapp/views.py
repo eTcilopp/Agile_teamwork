@@ -15,6 +15,8 @@ import re
 import datetime
 import string
 import random
+import smtplib
+from django.views import View
 
 from .models import Post, CategoryPost, Comment, Like, Video
 from .forms import PostCreationForm, CommentForm, VideoCreationForm
@@ -278,17 +280,19 @@ class PostRead(DetailView):
         if self.request.POST.get("parent", None):
             form.instance.parent_comment_id = int(
                 self.request.POST.get("parent"))
-
-            comment = Comment.objects.get(pk=int(self.request.POST.get("parent")))
-            current_site = get_current_site(self.request)
-            mail_subject = 'Ответ на ваш коментарий.'
-            message = render_to_string('mainapp/email_answer_message.html', {
-                'domain': current_site.domain,
-                'comment': comment
-            })
-            to_email = comment.user_id.email
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            # email.send()
+            try:
+                comment = Comment.objects.get(pk=int(self.request.POST.get("parent")))
+                current_site = get_current_site(self.request)
+                mail_subject = 'Ответ на ваш коментарий.'
+                message = render_to_string('mainapp/email_answer_message.html', {
+                    'domain': current_site.domain,
+                    'comment': comment
+                })
+                to_email = comment.user_id.email
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+            except smtplib.SMTPAuthenticationError as server:
+                print(f"ERROR\n {server} \n ************")
         form.save()
 
         return HttpResponseRedirect(self.get_success_url())
@@ -515,6 +519,32 @@ class VideoDetail(DetailView):
         """
 
         return get_object_or_404(Video, pk=self.kwargs.get('pk'))
+
+
+class SecretZone(View):
+    title = 'вход в закрытый раздел'
+    template_name = 'mainapp/bufferzone.html'
+    content = {
+        "title": title,
+        'categories': CategoryPost.objects.all(),
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.content)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST['password'] == "Revers":
+            template_name = 'mainapp/bufferzone.html'
+            title = 'Закрытый раздел'
+            content = {
+                "title": title,
+                "text": 1,
+                'categories': CategoryPost.objects.all(),
+            }
+            return render(request, template_name, content)
+
+        else:
+            return render(request, self.template_name, self.content)
 
 
 def source_page(request):

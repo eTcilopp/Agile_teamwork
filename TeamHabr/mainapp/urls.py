@@ -65,7 +65,7 @@ urlpatterns = [
         mainapp.CommentUpdate.as_view(),
         name='comment_update'),
     path(
-        'like/<int:pk>/<str:type_likes>',
+        'like/<int:pk>/<str:type_likes>/',
         mainapp.likes,
         name='like'),
     path(
@@ -83,7 +83,13 @@ urlpatterns = [
     path(
         'video/<int:pk>/',
         mainapp.VideoDetail.as_view(),
-        name='video_detail')
+        name='video_detail'),
+    path(
+        'bufferzone/',
+        mainapp.SecretZone.as_view(),
+        name='bufferzone'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
