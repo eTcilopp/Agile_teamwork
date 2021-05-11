@@ -140,7 +140,7 @@
                     {% endif %}
                     {% if user.is_authenticated %}
                     <br>
-                    <a class="text-info" href="#formReview" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                    <a  class="text-info" href="#modelComment" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
                     {% endif %}
                 </p>
 
