@@ -67,11 +67,15 @@
                        href="#/"
                        data-url="{% url 'main:like' object.pk 'post' %}"
                        {% else %}
-                       href="#myModal" data-toggle="modal"
+                       href="#menu" data-toggle="modal"
                        {% endif %}
-                       class="icon solid fa-heart likeIcon">{{object.get_count_post}}</a></li>
+                       class="icon solid fa-heart fa-bars">{{object.get_count_post}}</a></li>
 
-                <li><a href="#" class="icon solid fa-comment">{{object.count_all_comment}}</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="#" class="icon solid fa-comment">{{object.count_all_comment}}</a></li>
+                {% else %}
+                    <li><a href="#menu" class="icon solid fa-comment fa-bars">{{object.count_all_comment}}</a></li>
+                {% endif %}
             </ul>
         </footer>
         {% if user.is_authenticated %}
@@ -188,10 +192,11 @@
                                    {% if user.is_authenticated %}
                                     href="#/"
                                     data-url="{% url 'main:like' answer.pk 'comment' %}"
+                                    class="icon solid fa-heart likeIcon"
                                    {% else %}
-                                    href="#myModal" data-toggle="modal"
-                                   {% endif %}
-                                   class="icon solid fa-heart likeIcon">{{answer.get_count_comment}}</a>
+                                    href="#menu" data-toggle="modal"
+                                    class="icon solid fa-heart fa-bars"
+                                   {% endif %}>{{answer.get_count_comment}}</a>
 
                             <br>
                             Автор: <b>{{answer.user_id.username}}</b>
