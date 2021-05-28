@@ -1,16 +1,20 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
 <div id="main">
     <article class="post">
-<h2>Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}</h2>
+<h2>{% blocktranslate  trimmed %}
+    Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}
+    {% endblocktranslate %}
+</h2>
 <hr>
 {% if slug %}
-<a href="{% url 'main:article_delete' slug=slug%}">Удалить статью</a>
+<a href="{% url 'main:article_delete' slug=slug%}">{% trans 'Удалить статью' %}</a>
 {% elif pk %}
-<a href="{% url 'main:comment_delete' pk=pk%}">Удалить коментарий</a>
+<a href="{% url 'main:comment_delete' pk=pk%}">{% trans 'Удалить коментарий' %}</a>
 {% endif %}
 
 <form method=post enctype="multipart/form-data">
@@ -23,7 +27,7 @@
 
 
     <button type="submit" , value="сохранить" , name="save-article" class="btn" style="margin-top: 20px">
-        Сохранить
+        {% trans 'Сохранить' %}
     </button>
 </form>
         </article>

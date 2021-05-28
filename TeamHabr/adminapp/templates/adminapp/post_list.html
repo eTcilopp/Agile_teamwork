@@ -13,13 +13,13 @@
             <div class="col-8-xlarge col-12-large">
                 <ul class="actions">
                     {% if Aip != 0%}
-                    <li><a href="{% url 'admin:post_status_list' 'Aip'%}" class="button">Ожидающие одобрения ({{Aip}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Aip'%}" class="button">{% trans 'Ожидающие одобрения' %} ({{Aip}})</a></li>
                     {% endif %}
-                    <li><a href="{% url 'admin:post_status_list' 'Apr'%}" class="button">Одобреные ({{Apr}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Apr'%}" class="button">{% trans 'Одобреные' %} ({{Apr}})</a></li>
                     {% if Can != 0%}
-                    <li><a href="{% url 'admin:post_status_list' 'Can'%}" class="button">Отклоненые ({{Can}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Can'%}" class="button">{% trans 'Отклоненые' %} ({{Can}})</a></li>
                     {% endif %}
-                    <li><a href="{% url 'admin:post_status_list' 'Del'%}" class="button">Удаленые статьи ({{Del}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Del'%}" class="button">{% trans 'Удаленые статьи' %} ({{Del}})</a></li>
                 </ul>
             </div>
         </div>
@@ -28,13 +28,13 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr class="text-center">
-                    <th>Статус</th>
-                    <th>Автор</th>
-                    <th>Категория</th>
-                    <th>Заголовок</th>
-                    <th>Читать</th>
-                    <th>Дата создания/обновления</th>
-                    <th>Дата смены статуса</th>
+                    <th>{% trans 'Статус' %}</th>
+                    <th>{% trans 'Автор' %}</th>
+                    <th>{% trans 'Категория' %}</th>
+                    <th>{% trans 'Заголовок' %}</th>
+                    <th>{% trans 'Читать' %}</th>
+                    <th>{% trans 'Дата создания/обновления' %}</th>
+                    <th>{% trans 'Дата смены статуса' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,15 +44,15 @@
                         {{object.get_post_status_display}}
                         <br>
                         {% if object.post_status != 'Apr' %}
-                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрить">
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="{% trans 'Одобрить' %}">
                             <i class="icon solid fa-check"></i></a>
                         {% endif %}
                         {% if object.post_status != 'Del' %}
-                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="{% trans 'Удалить' %}">
                             <i class="icon solid fa-trash"></i></a>
                         {% endif %}
                         {% if object.post_status != 'Can' %}
-                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отправить на доработку">
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="{% trans 'Отправить на доработку' %}">
                             <i class="icon solid fa-window-close"></i></a>
                         {% endif %}
                     </td>
@@ -66,7 +66,7 @@
                         {{object.title}}
                     </td>
                     <td>
-                        <a class="text-info" href="{% url 'main:post' object.slug %}">читать статью</a>
+                        <a class="text-info" href="{% url 'main:post' object.slug %}">{% trans 'Читать статью' %}</a>
                     </td>
                     <td>
                         {{object.date_create}}
@@ -99,7 +99,9 @@
 </div>
 
 {% else %}
-<h2 class="text-center">С данным статусом нет статей</h2>
+<h2 class="text-center">
+    {% trans 'Нет статей с данным статусом' %}
+</h2>
 {% endif %}
 
 {% endblock %}

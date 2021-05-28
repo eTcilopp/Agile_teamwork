@@ -3,8 +3,6 @@
 {% load i18n %}
 
 
-<html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <title>
@@ -27,7 +25,7 @@
             <nav class="links">
                 <ul>
                     {% for category in categories %}
-                    <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
+                        <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
                     {% endfor %}
                 </ul>
             </nav>
@@ -48,11 +46,11 @@
                     <li class="search">
                         <a class="fa-search" href="#search">{% trans "Поиск" %}</a>
                         <form id="search" method="get" action="#">
-                            <input name="q" placeholder="Поиск..." class="form-control" type="text" aria-label="Поиск" aria-describedby="basic-addon2">
+                            <input name="q" placeholder="{% trans 'Поиск' %}..." class="form-control" type="text" aria-label="{% trans 'Поиск' %}" aria-describedby="basic-addon2">
                         </form>
                     </li>
                     <li class="menu">
-                        <a class="fa-bars" href="#menu">Menu</a>
+                        <a class="fa-bars" href="#menu">{% trans 'Меню' %}</a>
                     </li>
                 </ul>
             </nav>
@@ -73,7 +71,7 @@
                         {% endfor %}
                     </li>
                     <li>
-                        <h3>{% trans "Авторизация" %}</h3>
+                        <h3>{% trans 'Авторизация' %}</h3>
                     </li>
                     <li>
                         {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
@@ -83,11 +81,11 @@
                                 {% endif %}
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="id_username">Логин</label>
+                                    <label for="id_username">{% trans 'Логин' %}</label>
                                     <input type="text" name="username" maxlength="30" id="id_username" placeholder="{% trans 'Например user' %}" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_password">Пароль</label>
+                                    <label for="id_password">{% trans 'Пароль' %}</label>
                                     <input type="password" name="password" id="id_password" placeholder="{% trans 'Пароль' %}" />
                                 </div>
 
@@ -101,7 +99,7 @@
                     {% endif %}
                     {% if user.is_superuser or user|has_group:"Moder" %}
                     <li><a href="{% url 'admin:user_list' %}">
-                            <h3>{% trans "Админка" %}</h3>
+                            <h3>{% trans "Администрирование" %}</h3>
                         </a></li>
                     {% endif %}
                 </ul>
@@ -109,7 +107,7 @@
             <section>
                 <ul class="links">
                     <li>
-                        <h3>{% trans "Разделы" %}</h3>
+                        <h3>{% trans 'Разделы' %}</h3>
                     </li>
                     {% for category in categories %}
                     <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
@@ -118,7 +116,7 @@
             </section>
             <section>
                 <p><a href="{% url 'main:help' %}">
-                        <h3>{% trans "Помощь" %}</h3>
+                        <h3>{% trans 'Помощь' %}</h3>
                     </a></p>
                 <script>
                     document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");

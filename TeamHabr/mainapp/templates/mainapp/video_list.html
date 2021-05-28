@@ -12,9 +12,9 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>File</th>
-                            <th>uploaded_at</th>
+                            <th>{% trans 'Название' %}</th>
+                            <th>{% trans 'Файл' %}</th>
+                            <th>{% trans 'Загружено' %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,7 +24,7 @@
                         {% for video in object_list %}
                         <tr>
                             <th scope="row">{{video.title}}</th>
-                            <td><a href="{% url 'mainapp:video_detail' video.pk %}">смотреть</a></td>
+                            <td><a href="{% url 'mainapp:video_detail' video.pk %}">{% trans 'Смотреть' %}</a></td>
                             <td>{{video.uploaded_at}}</td>
                         </tr>
                         {% endfor %}

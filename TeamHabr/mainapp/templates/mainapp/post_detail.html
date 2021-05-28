@@ -1,6 +1,7 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
 {% load auth_extras %}
+{% load i18n %}
 
 
 {% block content %}
@@ -21,20 +22,20 @@
                     {{object.get_post_status_display}}
                     <hr>
                     {% if object.post_status != 'Apr' %}
-                    <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="Одобрено">
+                    <a href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="{% trans 'Одобрено' %}">
                         <i class="icon solid fa-check"></i></a>
                     {% endif %}
                     {% if object.post_status != 'Del' %}
-                    <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="Удалить">
+                    <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="{% trans 'Удалить' %}">
                         <i class="icon solid fa-trash"></i></a>
                     {% endif %}
                     {% if object.post_status != 'Can' %}
-                    <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="Отклонить">
+                    <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="{% trans 'Отклонить' %}">
                         <i class="icon solid fa-window-close"></i></a>
                     {% endif %}{% endif %}
                 </span>
                 {% if object.get_reason %}
-                <h3 class="text-center">Причина отклонения статьи</h3>
+                <h3 class="text-center">{% trans 'Причина отклонения статьи' %}</h3>
                 {% for i in object.get_reason %}
                 <div class="alert alert-danger text-center" role="alert">
                     <strong>От {{i.user_id.username}}</strong> {{i.text}}
@@ -49,7 +50,7 @@
             <div class="meta">
                 <time class="published" datetime="{{object.date_create}}">{{object.date_create}}</time>
                 {%  if object.post_updated %}
-                <time class="published" datetime="{{object.date_update}}">Дата обновления: <br> {{object.date_update}}</time>
+                <time class="published" datetime="{{object.date_update}}">{% trans 'Дата обновления:' %} <br> {{object.date_update}}</time>
                 {% endif %}
                 <a href="#" class="author"><span class="name">{{object.user_id.username}}</span>{% if object.user_id.avatar %}  <img src="{{ object.user_id.avatar.url }}" title="{{ object.user_id.name }} {{ object.user_id.surname }}" alt="" /> {% endif %} </a>
             </div>
@@ -79,7 +80,7 @@
             </ul>
         </footer>
         {% if user.is_authenticated %}
-            <button onclick="window.location.href = '#modelComment';">Комментировать</button>
+            <button onclick="window.location.href = '#modelComment';">{% trans 'Комментировать' %}</button>
         {% endif %}
     </article>
 
@@ -91,8 +92,8 @@
                 <input type="hidden" name="parent" id="contactparent" value="">
                 <p class="form-con">{{field}}</p>
                 {% endfor %}
-                <button type="submit" value="отправить" name="save-article" onclick="window.location.href = '#close';">Отправить</button>
-                <button type="button" onclick="window.location.href = '#close';">Закрыть</button>
+                <button type="submit" value="отправить" name="save-article" onclick="window.location.href = '#close';">{% trans 'Отправить' %}</button>
+                <button type="button" onclick="window.location.href = '#close';">{% trans 'Закрыть' %}</button>
             </form>
         </div>
     </div>
@@ -104,10 +105,10 @@
             <div class="col-9">
                 <p style="text-align: center">
                     {% if 'Del' in comment.comment_status %}
-                <p>Комментарий удален</p>
+                <p>{% trans 'Комментарий удален' %}</p>
                 {% if user|has_group:"Moder" %}
                 <p> {{comment.text}} </p>
-                <p class="bg-danger text-white text-center">Комментарий виден только модератору</p>
+                <p class="bg-danger text-white text-center">{% trans 'Комментарий виден только модератору' %}</p>
                 {% endif %}
                 {% else %}
                 {% autoescape off %}
@@ -138,13 +139,13 @@
                     {% endif %}
                     {% if comment.user_id_id == user.id and 'Del' != comment.comment_status %}
                     <br>
-                    <a class="text-info" href="{% url 'main:comment_delete' comment.pk%}">Удалить коментарий</a>
+                    <a class="text-info" href="{% url 'main:comment_delete' comment.pk%}">{% trans 'Удалить коментарий' %}</a>
                     <br>
-                    <a class="text-info" href="{% url 'main:comment_update' comment.pk%}">Редактировать коментарий</a>
+                    <a class="text-info" href="{% url 'main:comment_update' comment.pk%}">{% trans 'Редактировать коментарий %}</a>
                     {% endif %}
                     {% if user.is_authenticated %}
                     <br>
-                    <a  class="text-info" href="#modelComment" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">Ответить</a>
+                    <a  class="text-info" href="#modelComment" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">{% trans 'Ответить' %}}</a>
                     {% endif %}
                 </p>
 
@@ -153,7 +154,7 @@
                 {% if user|has_group:"Moder" and 'Del' != comment.comment_status %}
                 <div class="">
                     <form action="{% url 'main:comment_delete' comment.pk%}">
-                        <input class="btn" type="submit" value="Модератор: Удалить коментарий" />
+                        <input class="btn" type="submit" value="{% trans 'Модератор: Удалить коментарий' %}" />
                     </form>
                 </div>
                 {% endif %}
@@ -171,10 +172,10 @@
                     <div class="col-9">
                         <p style="text-align: left">
                             {% if 'Del' in answer.comment_status %}
-                        <p class="alert alert-warning text-center">Ответ удален</p>
+                        <p class="alert alert-warning text-center">{% trans 'Ответ удален' %}</p>
                         {% if user|has_group:"Moder" %}
                         <p class="text-muted"> {{answer.text|linebreaks}} </p>
-                        <p class="bg-danger text-white text-center">Ответ виден только модератору</p>
+                        <p class="bg-danger text-white text-center">{% trans 'Ответ виден только модератору' %}</p>
                         {% endif %}
                         {% else %}
                         {% autoescape off %}
@@ -199,18 +200,18 @@
                                    {% endif %}>{{answer.get_count_comment}}</a>
 
                             <br>
-                            Автор: <b>{{answer.user_id.username}}</b>
+                            {% trans 'Автор' %}: <b>{{answer.user_id.username}}</b>
                             <br>
                             {{answer.date_create}}
                             {% if answer.date_update|date:"Y,m,d,h,i" > answer.date_create|date:"Y,m,d,h,i" %}
                             <br>
-                            Обновлен {{answer.date_update}}
+                            {% trans 'Обновлен' %} {{answer.date_update}}
                             {% endif %}
                             {% if answer.user_id_id == user.id and 'Del' != answer.comment_status %}
                             <br>
-                            <a class="text-info" href="{% url 'main:comment_delete' answer.pk%}">Удалить ответ</a>
+                            <a class="text-info" href="{% url 'main:comment_delete' answer.pk%}">{% trans 'Удалить ответ' %}</a>
                             <br>
-                            <a class="text-info" href="{% url 'main:comment_update' answer.pk%}">Редактировать ответ</a>
+                            <a class="text-info" href="{% url 'main:comment_update' answer.pk%}">{% trans 'Редактировать ответ' %}</a>
                             {% endif %}
                         </p>
                         {% endif %}
@@ -218,7 +219,7 @@
                         {% if user|has_group:"Moder" and 'Del' != answer.comment_status %}
                         <div class="row justify-content-md-end">
                             <form action="{% url 'main:comment_delete' answer.pk%}">
-                                <input class="btn btn-outline-warning" type="submit" value="Модератор: Удалить ответ" />
+                                <input class="btn btn-outline-warning" type="submit" value="{% trans 'Модератор: Удалить ответ' %}" />
                             </form>
                         </div>
                         {% endif %}

@@ -1,5 +1,6 @@
 ﻿{% extends 'mainapp_base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
@@ -19,7 +20,7 @@
         </div>
         {% endfor %}
     </div>
-    <input class="form-control" type="submit" value="зарегистрироваться">
+    <input class="form-control" type="submit" value="{% trans 'зарегистрироваться' %}">
 </form>
 
 

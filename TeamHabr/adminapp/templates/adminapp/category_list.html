@@ -13,11 +13,11 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr class="text-center">
-                    <th>Название категории</th>
-                    <th>Имя для адресной строки</th>
-                    <th>Активность</th>
-                    <th>Описание</th>
-                    <th>Всего статей</th>
+                    <th>{% trans 'Название категории' %}</th>
+                    <th>{% trans 'Имя для адресной строки' %}</th>
+                    <th>{% trans 'Активность' %}</th>
+                    <th>{% trans 'Описание' %}</th>
+                    <th>{% trans 'Всего статей' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,7 +48,7 @@
 
             </tbody>
         </table>
-        <button><a class="text-info" href="{% url 'admin:create_category' %}">Добавить категорию</a></button>
+        <button><a class="text-info" href="{% url 'admin:create_category' %}">{% trans 'Добавить категорию' %}</a></button>
     </article>
     {% if is_paginated %}
 

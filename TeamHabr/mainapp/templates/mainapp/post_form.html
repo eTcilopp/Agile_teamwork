@@ -1,18 +1,19 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
 <div id="main">
     <article class="post">
-        <h2>Создание новой статьи</h2>
+        <h2>{% trans 'Создание новой статьи' %}</h2>
         <form method=post action='' enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
                 <h6>{{field.label}}  <span style="color: red">{{field.errors}}</span></h6>
                 <h6>{{field}}</h6>
             {% endfor %}
-            <button type="submit"  value="сохранить"  name="save-article" > Сохранить </button>
+            <button type="submit"  value="{% trans 'Сохранить' %}"  name="save-article" >{% trans 'Сохранить' %} </button>
         </form>
     </article>
 </div>
