@@ -26,13 +26,13 @@
                 Вы получите от нас письмо.</h6>
             <h6>Если письмо не приходит, удостоверьтесь, пожалуйста,
                 что введенный Вами адрес корректен. Также рекомендуем проверить содержимое папки Спам</h6>
-        {% elif request.resolver_match.url_name == 'password_reset_complete' %}
-            <h2>Сброс пароля завершен успешно</h2>
-            <h6> Сброс пароля завершен успешно. Вы можете войти в систему с новым паролем. </h6>
-        {% elif request.resolver_match.url_name == 'password_change_done' %}
-            <h2>Успех!</h2>
-            <h6> Пароль успешно изменен. </h6>
             {% endblocktranslate %}
+        {% elif request.resolver_match.url_name == 'password_reset_complete' %}
+            <h2>{% trans 'Сброс пароля завершен успешно' %}</h2>
+            <h6>{% trans 'Сброс пароля завершен успешно. Вы можете войти в систему с новым паролем.' %}</h6>
+        {% elif request.resolver_match.url_name == 'password_change_done' %}
+            <h2>{% trans 'Успех!' %}</h2>
+            <h6>{% trans 'Пароль успешно изменен.' %}'</h6>
         {% else %}
             {{ service_message }}
             {% if login_allowed %}
