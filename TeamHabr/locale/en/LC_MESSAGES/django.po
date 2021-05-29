@@ -1,0 +1,722 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-05-29 06:39+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: TeamHabr/settings.py:151
+msgid "English"
+msgstr ""
+
+#: TeamHabr/settings.py:152
+msgid "Russian"
+msgstr ""
+
+#: adminapp/templates/adminapp/cancel_email.html:3
+#, python-format
+msgid ""
+"Здравствуйте, %(username)s! Вашу статью \"%(post_title)s\" отклонил "
+"модератор %(moderator)s, по причине"
+msgstr ""
+
+#: adminapp/templates/adminapp/cancel_email.html:15
+#, python-format
+msgid ""
+"Вы можете исправить свои ошибки и отправить на рассмотрению Вашу статью "
+"повторно Ссылка на вашу статью : http://%(domain)s/post/%(post.slug)s/"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:16
+msgid "Название категории"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:17
+msgid "Имя для адресной строки"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:18
+msgid "Активность"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:19
+msgid "Описание"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:20
+msgid "Всего статей"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:51
+msgid "Добавить категорию"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:57
+#: adminapp/templates/adminapp/post_list.html:89
+#: adminapp/templates/adminapp/user_list.html:84
+#: mainapp/templates/mainapp/post_list.html:54
+msgid "Предыдущая страница"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:60
+#: adminapp/templates/adminapp/post_list.html:92
+#: adminapp/templates/adminapp/user_list.html:87
+#: mainapp/templates/mainapp/post_list.html:56
+msgid "Cтраница"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:60
+#: adminapp/templates/adminapp/post_list.html:92
+#: adminapp/templates/adminapp/user_list.html:87
+#: mainapp/templates/mainapp/post_list.html:56
+#: mainapp/templates/mainapp/video_list.html:43
+msgid "из"
+msgstr ""
+
+#: adminapp/templates/adminapp/category_list.html:63
+#: adminapp/templates/adminapp/post_list.html:95
+#: adminapp/templates/adminapp/user_list.html:90
+#: mainapp/templates/mainapp/post_list.html:58
+msgid "Следующая страница"
+msgstr ""
+
+#: adminapp/templates/adminapp/create.html:18
+#: authapp/templates/authapp/user_update_form.html:17
+#: mainapp/templates/mainapp/post_form.html:16
+#: mainapp/templates/mainapp/post_update_form.html:29
+#: mainapp/templates/mainapp/video_form.html:22
+#: mainapp/templates/mainapp/video_form.html:23
+msgid "Сохранить"
+msgstr ""
+
+#: adminapp/templates/adminapp/create.html:20
+#: mainapp/templates/mainapp/post_confirm_delete.html:16
+msgid "Назад"
+msgstr ""
+
+#: adminapp/templates/adminapp/email_change_status_message.html:4
+#, python-format
+msgid ""
+"Здравствуйте, %(post.user_id.username)s! На вашей статье \"%(post.title)s\" "
+"сменился статус на %(post.get_post_status_display)s, Вы можете перейти к ней "
+"для просмотра. Ссылка на вашу статью : http://%(domain)s/post/%(post.slug)s/"
+msgstr ""
+
+#: adminapp/templates/adminapp/inc_admin_menu.html:4
+#: adminapp/templates/adminapp/user_list.html:34
+msgid "Пользователь"
+msgstr ""
+
+#: adminapp/templates/adminapp/inc_admin_menu.html:5
+msgid "Посты"
+msgstr ""
+
+#: adminapp/templates/adminapp/inc_admin_menu.html:6
+msgid "Категории"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:16
+#: authapp/templates/authapp/account.html:79
+msgid "Ожидающие одобрения"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:18
+#: authapp/templates/authapp/account.html:82
+msgid "Одобреные"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:20
+#: authapp/templates/authapp/account.html:85
+msgid "Отклоненые"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:22
+msgid "Удаленые статьи"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:31
+#: authapp/templates/authapp/account.html:103
+msgid "Статус"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:32
+#: mainapp/templates/mainapp/post_detail.html:203
+#: mainapp/templates/mainapp/post_old.html:191
+msgid "Автор"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:33
+msgid "Категория"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:34
+msgid "Заголовок"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:35
+msgid "Читать"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:36
+msgid "Дата создания/обновления"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:37
+msgid "Дата смены статуса"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:47
+msgid "Одобрить"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:51
+#: mainapp/templates/mainapp/post_confirm_delete.html:14
+#: mainapp/templates/mainapp/post_detail.html:29
+msgid "Удалить"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:55
+msgid "Отправить на доработку"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:69
+msgid "Читать статью"
+msgstr ""
+
+#: adminapp/templates/adminapp/post_list.html:103
+msgid "Нет статей с данным статусом"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:16
+msgid "Группа"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:17
+msgid "Блокирован"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:18
+msgid "Имя пользователя"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:19
+msgid "Имя/Фамилия"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:20
+msgid "Электропочта"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:21
+msgid "Дата последнего входа"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:29
+msgid "СуперАдминистратор"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:31
+msgid "Модератор"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:40
+msgid "Понизить статус"
+msgstr ""
+
+#: adminapp/templates/adminapp/user_list.html:44
+msgid "Назначить модератором"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:19
+msgid "На ваш коментарий"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:19
+msgid "пришел ответ"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:23
+#: authapp/templates/authapp/account.html:37
+msgid "Прочитать"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:32
+msgid "У вашей статьи"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:32
+msgid "сменился статус на"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:51
+#: mainapp/templates/mainapp_base.html:84
+msgid "Логин"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:52
+msgid "Имя"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:53
+msgid "Фамилия"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:55
+msgid "Возраст"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:57
+msgid "Редактировать"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:60
+msgid "Теперь вы модератор"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:65
+#: mainapp/templates/mainapp_base.html:41
+msgid "Аватарка"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:72
+msgid "О себе"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:76
+msgid "Мои статьи"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:88
+msgid "Черновики"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:91
+msgid "Создать новую статью"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:105
+msgid "Редактировать статью"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:109
+msgid "Отправить на одобрение"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:118
+msgid "Читать целиком"
+msgstr ""
+
+#: authapp/templates/authapp/account.html:122
+msgid "У вас ещё нет статей"
+msgstr ""
+
+#: authapp/templates/authapp/password_change_form.html:10
+msgid "Изменение пароля"
+msgstr ""
+
+#: authapp/templates/authapp/password_change_form.html:15
+msgid ""
+"<li>Пароль не должен быть слишком похож на другую вашу личную информацию.</"
+"li> <li>Ваш пароль должен содержать как минимум 8 символов.</li> <li>Пароль "
+"должен быть достаточно оригинальным и не часто употребимым.</li> <li>Пароль "
+"не должен состоять только из цифр.</li>"
+msgstr ""
+
+#: authapp/templates/authapp/password_change_form.html:33
+#: authapp/templates/authapp/user_update_form.html:19
+msgid "Изменить пароль"
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_form.html:11
+msgid "Форма сброса пароля"
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_form.html:12
+msgid "Пожалуйста, введите новые пароль."
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_form.html:20
+msgid "Сбросить пароль"
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_html_email.html:4
+msgid "Пожалуйста, перейдите по ссылке  и введите новый пароль:"
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_html_email.html:8
+msgid "Ваш Логин:"
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_html_email.html:9
+msgid "Благодарим Вам за использование нашего сервиса!"
+msgstr ""
+
+#: authapp/templates/authapp/password_reset_html_email.html:10
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: authapp/templates/authapp/register.html:23
+msgid "зарегистрироваться"
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:12
+msgid "Вы на странице восстановления пароля."
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:23
+msgid ""
+"<h2>Инициирована процедура сброса пароля</h2> <h6>Мы отправили Вам "
+"инструкцию по сбросу пароля на указанный адрес. Если данный адрес существует "
+"в базе, Вы получите от нас письмо.</h6> <h6>Если письмо не приходит, "
+"удостоверьтесь, пожалуйста, что введенный Вами адрес корректен. Также "
+"рекомендуем проверить содержимое папки Спам</h6>"
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:31
+msgid "Сброс пароля завершен успешно"
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:32
+msgid ""
+"Сброс пароля завершен успешно. Вы можете войти в систему с новым паролем."
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:34
+msgid "Успех!"
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:35
+msgid "Пароль успешно изменен."
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:39
+msgid "Вход"
+msgstr ""
+
+#: authapp/templates/authapp/service_messages.html:42
+msgid "Вернуться на Главную страницу"
+msgstr ""
+
+#: mainapp/templates/mainapp/404.html:42
+msgid "Вы забрели не туда"
+msgstr ""
+
+#: mainapp/templates/mainapp/404.html:43
+msgid "Вернитесь на сайт..."
+msgstr ""
+
+#: mainapp/templates/mainapp/bufferzone.html:21
+#: mainapp/templates/mainapp/bufferzone.html:22
+#: mainapp/templates/mainapp_base.html:88
+#: mainapp/templates/mainapp_base.html:89
+msgid "Пароль"
+msgstr ""
+
+#: mainapp/templates/mainapp/bufferzone.html:25
+msgid "Войти"
+msgstr ""
+
+#: mainapp/templates/mainapp/email_answer_message.html:4
+#, python-format
+msgid ""
+"Здравствуйте, %(comment.user_id.username)s! На ваш коменатрий "
+"\"%(comment.text)s\" пришел ответ... Вы можете его посмотреть на странице со "
+"статьей Ссылка на вашу статью : http://%(domain)s/post/"
+"%(comment.post_id.slug)s/"
+msgstr ""
+
+#: mainapp/templates/mainapp/help.html:6
+msgid "Страница помощи"
+msgstr ""
+
+#: mainapp/templates/mainapp/help.html:10
+msgid ""
+"<li> У всех пользователей есть возможно только читать статьи, создать "
+"аккаунт, нажав на «Регистрация». При попытке комментировать статью создать "
+"статью, лайкнуть статью, пользователя, комментарий, пользователя "
+"перебрасывает на страницу авторизации/регистрации. После этого он получает "
+"права авторизованного пользователя.</li> <li> Доступен поиск по статьям. Для "
+"это нужно ввести запрос в поле под меню и нажать «Enter».</li> <li> Также "
+"возможно посмотреть новые статьи и самые популярные статьи, кликнув на "
+"соответствующие ссылки под м</li>"
+msgstr ""
+
+#: mainapp/templates/mainapp/help.html:20
+msgid "Авторизованные пользователи могут:"
+msgstr ""
+
+#: mainapp/templates/mainapp/help.html:24
+msgid ""
+"<li> Зайти в личный кабинет. Для этого нужно кликнуть на своё имя в меню.</"
+"li> <li> В личном кабинете пользователь может отредактировать свои данные. "
+"Для этого нужно клинков на «Редактировать».</li> Пользователю будет "
+"предложено изменить желаемые данные и сохранить их нажатием на «Сохранить».</"
+"li> <li> Также пользователь может изменить пароль. Для этого нужно кликнуть "
+"на «Сменить пароль» и заполнить необходимые поля.</li> <li> Восстановить "
+"пароль, если не удается войти. Для нужно нажать на \"Забыли пароль?\" и "
+"следовать дальнейшим инструкциям.</li> <li> Создать/редактировать/удалить "
+"свою статью. Создать статью можно из разных тематических разделов сайта, а "
+"также из личного кабинета. Для этого нужно кликнуть на «Создать статью», "
+"после чего пользователю будет предложено заполнить название, содержание и "
+"выбрать категорию. После надо нажать на «сохранить» и ей присваивается "
+"статус «Ждет одобрения».</li> <li> Лайкать/комментировать статьи и "
+"комментарии других авторов, лайкать других авторов. Для этого нужно просто "
+"кликнуть на название статьи или на «Читать целиком».</li>"
+msgstr ""
+
+#: mainapp/templates/mainapp/help.html:38
+msgid ""
+"Там можно найти</a> поле для ввода комментария и после заполнения отправить "
+"комментарий. Для лайка нужно просто нажать на «👍»<br> <li> Комментировать "
+"статьи других пользователей. Это можно сделать на странице самой статьи, "
+"нажав на \"Комментировать\", после чего пользователю будет предложено ввести "
+"комментарий в поле. А можно прокомментировать статьи, нажав на иконку "
+"комментария справа от названия статьи. Нажав на \"Отправить\", комментарий "
+"будет создан. Также пользователь может удалить комментарий, нажав на "
+"\"Удаить комментарий\" или отредактировать, нажав на \"Редактировать "
+"комментарий\".</li> <li> Можно также ответить на комменатрий другого "
+"пользователя, нажав на \"Ответить\" и, заполнив поле, отправить.</li>"
+msgstr ""
+
+#: mainapp/templates/mainapp/inc_buffer.html:3
+msgid "Материалы команды Server Monkeys"
+msgstr ""
+
+#: mainapp/templates/mainapp/inc_buffer.html:5
+msgid "Репозиторий проекта на "
+msgstr ""
+
+#: mainapp/templates/mainapp/post_confirm_delete.html:12
+msgid "Вы уверены, что хотите удалить "
+msgstr ""
+
+#: mainapp/templates/mainapp/post_confirm_delete.html:12
+msgid "коментарий"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:25
+#: mainapp/templates/mainapp/post_old.html:16
+msgid "Одобрено"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:33
+msgid "Отклонить"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:38
+#: mainapp/templates/mainapp/post_old.html:30
+msgid "Причина отклонения статьи"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:53
+msgid "Дата обновления:"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:83
+#: mainapp/templates/mainapp/post_old.html:83
+msgid "Комментировать"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:95
+#: mainapp/templates/mainapp/post_old.html:100
+#: mainapp/templates/mainapp/post_old.html:104
+msgid "Отправить"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:96
+#: mainapp/templates/mainapp/post_old.html:101
+#: mainapp/templates/mainapp/post_old.html:105
+msgid "Закрыть"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:108
+#: mainapp/templates/mainapp/post_old.html:128
+msgid "Комментарий удален"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:111
+#: mainapp/templates/mainapp/post_old.html:131
+msgid "Комментарий виден только модератору"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:142
+#: mainapp/templates/mainapp/post_old.html:151
+#: mainapp/templates/mainapp/post_update_form.html:16
+msgid "Удалить коментарий"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:148
+#: mainapp/templates/mainapp/post_old.html:157
+msgid "Ответить"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:157
+#: mainapp/templates/mainapp/post_old.html:163
+msgid "Модератор: Удалить коментарий"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:175
+#: mainapp/templates/mainapp/post_old.html:177
+msgid "Ответ удален"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:178
+#: mainapp/templates/mainapp/post_old.html:180
+msgid "Ответ виден только модератору"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:208
+msgid "Обновлен"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:212
+#: mainapp/templates/mainapp/post_old.html:200
+msgid "Удалить ответ"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:214
+#: mainapp/templates/mainapp/post_old.html:202
+msgid "Редактировать ответ"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_detail.html:222
+#: mainapp/templates/mainapp/post_old.html:210
+msgid "Модератор: Удалить ответ"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_form.html:9
+#: mainapp/templates/mainapp/video_form.html:14
+msgid "Создание новой статьи"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_list.html:14
+msgid "Раздел"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_list.html:33
+msgid "Продолжить чтение"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:11
+msgid "Заголовок статьи"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:20
+msgid "Удалено"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:24
+msgid "Отклоненная"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:70
+msgid "Дата создания"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:72
+msgid "Дата обновления"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:140
+#: mainapp/templates/mainapp/post_old.html:189
+msgid "Поставить лайк"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_old.html:153
+msgid "Редактировать коментарий"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_update_form.html:10
+msgid "редактирование"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_update_form.html:10
+msgid "статьи"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_update_form.html:10
+msgid "коментария"
+msgstr ""
+
+#: mainapp/templates/mainapp/post_update_form.html:14
+msgid "Удалить статью"
+msgstr ""
+
+#: mainapp/templates/mainapp/video_list.html:15
+msgid "Название"
+msgstr ""
+
+#: mainapp/templates/mainapp/video_list.html:16
+msgid "Файл"
+msgstr ""
+
+#: mainapp/templates/mainapp/video_list.html:17
+msgid "Загружено"
+msgstr ""
+
+#: mainapp/templates/mainapp/video_list.html:27
+msgid "Смотреть"
+msgstr ""
+
+#: mainapp/templates/mainapp/video_list.html:43
+msgid "Cтраница "
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:24
+msgid "}{абр"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:47
+#: mainapp/templates/mainapp_base.html:49
+msgid "Поиск"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:53
+msgid "Меню"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:74
+msgid "Авторизация"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:85
+msgid "Например user"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:92
+msgid "войти"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:93
+msgid "Забыли пароль?"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:97
+msgid "Регистрация"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:102
+msgid "Администрирование"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:110
+msgid "Разделы"
+msgstr ""
+
+#: mainapp/templates/mainapp_base.html:119
+msgid "Помощь"
+msgstr ""
