@@ -9,12 +9,10 @@
 
 <div id="main">
     <article class="post">
-        {% blocktranslate  trimmed %}
-        <p>Вы уверены, что хотите удалить {% if object.title %}статью "{{ object.title }} {% elif object.text %} коментарий <br> "{{object.text | truncatewords:10}} {% endif %}"?</p>
+        <p>{% trans 'Вы уверены, что хотите удалить ' %} {% if object.title %}статью "{{ object.title }} {% elif object.text %} {% trans 'коментарий' %}} <br> "{{object.text | truncatewords:10}} {% endif %}"?</p>
         <form method="post">{% csrf_token %}
             <input type="submit" class="btn btn-outline-danger text-center" value="{% trans 'Удалить' %}">
         </form>
-        {% endblocktranslate %}
         <button onclick="goBack()">{% trans 'Назад' %}</button>
     </article>
 </div>

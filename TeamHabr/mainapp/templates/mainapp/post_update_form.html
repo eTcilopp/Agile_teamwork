@@ -6,9 +6,8 @@
 
 <div id="main">
     <article class="post">
-<h2>{% blocktranslate  trimmed %}
-    Редактирование {% if slug %}статьи{% elif pk %} коментария{% endif %}
-    {% endblocktranslate %}
+<h2>
+    {% trans 'редактирование' %} {% if slug %}{% trans 'статьи' %}{% elif pk %} {% trans 'коментария' %}{% endif %}
 </h2>
 <hr>
 {% if slug %}
