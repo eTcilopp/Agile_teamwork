@@ -9,37 +9,37 @@
 <div id="main">
     <article class="post">
         {% if request.resolver_match.url_name == 'reset_password' %}
-            <h2>{% trans 'Вы на странице восстановления пароля.' %}</h2>
+            <h2>{% trans 'Password recovery page.' %}</h2>
             <h6>
-                {% trans ' Забыли пароль? Пожалуйста, введите адрес электронной почты, введенный при регистрации
-                и мы отправим Вам письмо с инструкцией. %}
+                {% trans 'Forgot your password? Please enter email you entered when registering
+                and we will send you a link to password reset page. %}
             </h6>
         <form action="" method="POST" class="text-center">
             {% csrf_token %}
             {{form}}
-            <input type="submit" style="margin-top: 2%" value="Отправить письмо" /><br>
+            <input type="submit" style="margin-top: 2%" value="Send email" /><br>
         </form>
         {% elif request.resolver_match.url_name == 'password_reset_done' %}
             {% blocktranslate  trimmed %}
-            <h2>Инициирована процедура сброса пароля</h2>
-            <h6>Мы отправили Вам инструкцию по сбросу пароля на указанный адрес. Если данный адрес существует в базе,
-                Вы получите от нас письмо.</h6>
-            <h6>Если письмо не приходит, удостоверьтесь, пожалуйста,
-                что введенный Вами адрес корректен. Также рекомендуем проверить содержимое папки Спам</h6>
+            <h2>Password reset procedure initiated</h2>
+            <h6>We've sent you instruction on how to reset password. If submitted email exist in our database,
+                you will receive a email.</h6>
+            <h6>If you cannot find the email, please verify that the email was entered correctly.
+                Also we recommend to check your Spam folder</h6>
             {% endblocktranslate %}
         {% elif request.resolver_match.url_name == 'password_reset_complete' %}
-            <h2>{% trans 'Сброс пароля завершен успешно' %}</h2>
-            <h6>{% trans 'Сброс пароля завершен успешно. Вы можете войти в систему с новым паролем.' %}</h6>
+            <h2>{% trans 'Password was successfully reset' %}</h2>
+            <h6>{% trans 'Password was successfully reset. You can login now with a new password.' %}</h6>
         {% elif request.resolver_match.url_name == 'password_change_done' %}
-            <h2>{% trans 'Успех!' %}</h2>
-            <h6>{% trans 'Пароль успешно изменен.' %}'</h6>
+            <h2>{% trans 'Success!' %}</h2>
+            <h6>{% trans 'Password was updated successfully.' %}'</h6>
         {% else %}
             {{ service_message }}
             {% if login_allowed %}
-            <a class="text-secondary h6" href=#menu">{% trans 'Вход' %}</a>
+            <a class="text-secondary h6" href=#menu">{% trans 'Log in' %}</a>
             {% endif %}
         {% endif %}
-            <a href="{% url 'mainapp:index' %}">{% trans 'Вернуться на Главную страницу' %}</a>
+            <a href="{% url 'mainapp:index' %}">{% trans 'Back to Main page' %}</a>
     </article>
 </div>
 {% endblock %}
