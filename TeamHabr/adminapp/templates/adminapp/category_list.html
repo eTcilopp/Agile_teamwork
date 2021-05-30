@@ -13,11 +13,11 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr class="text-center">
-                    <th>{% trans 'Название категории' %}</th>
-                    <th>{% trans 'Имя для адресной строки' %}</th>
-                    <th>{% trans 'Активность' %}</th>
-                    <th>{% trans 'Описание' %}</th>
-                    <th>{% trans 'Всего статей' %}</th>
+                    <th>{% trans 'Category name' %}</th>
+                    <th>{% trans 'URL' %}</th>
+                    <th>{% trans 'Activity' %}</th>
+                    <th>{% trans 'Description' %}</th>
+                    <th>{% trans 'Total number of posts' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,19 +48,19 @@
 
             </tbody>
         </table>
-        <button><a class="text-info" href="{% url 'admin:create_category' %}">{% trans 'Добавить категорию' %}</a></button>
+        <button><a class="text-info" href="{% url 'admin:create_category' %}">{% trans 'Creade category' %}</a></button>
     </article>
     {% if is_paginated %}
 
     <ul class="actions pagination">
         {% if page_obj.has_previous %}
-        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Предыдущая страница" %}</a></li>
+        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Previous page" %}</a></li>
         {% endif %}
         <li>
-            <p class="button large">{% trans "Cтраница" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p>
+            <p class="button large">{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ paginator.num_pages }}</p>
         </li>
         {% if page_obj.has_next %}
-        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Следующая страница" %}</a></li>
+        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Next page" %}</a></li>
         {% endif %}
     </ul>
     {% endif %}

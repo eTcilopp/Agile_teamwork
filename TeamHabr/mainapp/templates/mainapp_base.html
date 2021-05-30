@@ -21,7 +21,7 @@
     <div id="wrapper">
         {% block menu %}
         <header id="header">
-            <h1><a href="/">{% trans "}{абр" %}</a></h1>
+            <h1><a href="/">{% trans "}{abr" %}</a></h1>
             <nav class="links">
                 <ul>
                     {% for category in categories %}
@@ -44,13 +44,13 @@
                     </li>
                     {% endif %}
                     <li class="search">
-                        <a class="fa-search" href="#search">{% trans "Поиск" %}</a>
+                        <a class="fa-search" href="#search">{% trans "Search" %}</a>
                         <form id="search" method="get" action="#">
-                            <input name="q" placeholder="{% trans 'Поиск' %}..." class="form-control" type="text" aria-label="{% trans 'Поиск' %}" aria-describedby="basic-addon2">
+                            <input name="q" placeholder="{% trans 'Search' %}..." class="form-control" type="text" aria-label="{% trans 'Search' %}" aria-describedby="basic-addon2">
                         </form>
                     </li>
                     <li class="menu">
-                        <a class="fa-bars" href="#menu">{% trans 'Меню' %}</a>
+                        <a class="fa-bars" href="#menu">{% trans 'Manu' %}</a>
                     </li>
                 </ul>
             </nav>
@@ -62,7 +62,7 @@
                     <li><a href="{% url 'auth:account' %}">
                             {% if user.is_superuser or user|has_group:"Moder"  %} <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="30px" height="20px"> {% endif %} <h3>{{ user.name }}</h3></a></li>
                     <li><a href="{% url 'auth:logout' %}">
-                            <h3>Выход</h3>
+                            <h3>Exit</h3>
                         </a></li>
                     {% else %}
                     <li>
@@ -71,7 +71,7 @@
                         {% endfor %}
                     </li>
                     <li>
-                        <h3>{% trans 'Авторизация' %}</h3>
+                        <h3>{% trans 'Sign In' %}</h3>
                     </li>
                     <li>
                         {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
@@ -81,25 +81,25 @@
                                 {% endif %}
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="id_username">{% trans 'Логин' %}</label>
-                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="{% trans 'Например user' %}" />
+                                    <label for="id_username">{% trans 'Username' %}</label>
+                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="{% trans 'User' %}" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_password">{% trans 'Пароль' %}</label>
-                                    <input type="password" name="password" id="id_password" placeholder="{% trans 'Пароль' %}" />
+                                    <label for="id_password">{% trans 'Password' %}</label>
+                                    <input type="password" name="password" id="id_password" placeholder="{% trans 'Password' %}" />
                                 </div>
 
-                                <input class="form-control" type="submit" style="margin-top: 7%" value="{% trans 'войти' %}">
-                                <a class="text-info" href="{%url 'authapp:reset_password'%}">{% trans "Забыли пароль?" %}</a>
+                                <input class="form-control" type="submit" style="margin-top: 7%" value="{% trans 'enter' %}">
+                                <a class="text-info" href="{%url 'authapp:reset_password'%}">{% trans "Forgot your password?" %}</a>
                             </form>
                     </li>
                     <li><a href="{% url 'auth:register' %}">
-                            <h3>{% trans "Регистрация" %}</h3>
+                            <h3>{% trans "Sign Up" %}</h3>
                         </a></li>
                     {% endif %}
                     {% if user.is_superuser or user|has_group:"Moder" %}
                     <li><a href="{% url 'admin:user_list' %}">
-                            <h3>{% trans "Администрирование" %}</h3>
+                            <h3>{% trans "Administration" %}</h3>
                         </a></li>
                     {% endif %}
                 </ul>
@@ -107,7 +107,7 @@
             <section>
                 <ul class="links">
                     <li>
-                        <h3>{% trans 'Разделы' %}</h3>
+                        <h3>{% trans 'Sections' %}</h3>
                     </li>
                     {% for category in categories %}
                     <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
@@ -116,7 +116,7 @@
             </section>
             <section>
                 <p><a href="{% url 'main:help' %}">
-                        <h3>{% trans 'Помощь' %}</h3>
+                        <h3>{% trans 'Help' %}</h3>
                     </a></p>
                 <script>
                     document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");

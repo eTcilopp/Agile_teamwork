@@ -2,9 +2,9 @@
 
 {% blocktranslate with username=post.user_id.username post_title=post.title moderator=moder trimmed %}
 
-Здравствуйте, {{ username }}!
-Вашу статью "{{ post_title }}" отклонил модератор {{ moderator }},
-по причине
+Hello {{ username }}!
+Your post "{{ post_title }}" have been declined by moderator with nickname {{ moderator }},
+for the following reason:
 
 {% endblocktranslate %}
 
@@ -14,8 +14,8 @@
 
 {% blocktranslate with slug=post.slug trimmed %}
 
-Вы можете исправить свои ошибки и отправить на рассмотрению Вашу статью повторно
-Ссылка на вашу статью : http://{{ domain }}/post/{{post.slug}}/
+We recommend you to make necessary corrections and re-submit the post for review.
+Here's the link to your post: http://{{ domain }}/post/{{post.slug}}/
 
 {% endblocktranslate %}
 

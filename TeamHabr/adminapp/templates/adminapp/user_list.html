@@ -13,12 +13,12 @@
         <table class = "table" >
            <thead class = "thead-dark" >
                <tr class = "text-center" >
-                    <th> {% trans 'Группа' %}</th>
-                    <th> {% trans 'Блокирован' %}</th>
-                    <th> {% trans 'Имя пользователя' %}</th>
-                    <th> {% trans 'Имя/Фамилия' %}</th>
-                    <th> {% trans 'Электропочта' %}</th>
-                    <th> {% trans 'Дата последнего входа' %}</th>
+                    <th> {% trans 'Group' %}</th>
+                    <th> {% trans 'Blocked' %}</th>
+                    <th> {% trans 'Username' %}</th>
+                    <th> {% trans 'First/Last name' %}</th>
+                    <th> {% trans 'Email' %}</th>
+                    <th> {% trans 'Last logon date' %}</th>
                 </tr>
            </thead>
             <tbody>
@@ -26,22 +26,22 @@
                 <tr class = "text-center" {% if object.status_block == True %} style="opacity: 0.5" {% endif %}>
                     <td>
                         {% if object.is_superuser %}
-                            {% trans 'СуперАдминистратор' %}
+                            {% trans 'SuperAdmin' %}
                         {% elif object|has_group:"Moder" %}
                             {% trans 'Модератор' %}
                             <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="20px" height="15px">
                         {% else %}
-                            {% trans 'Пользователь' %}
+                            {% trans 'User' %}
                         {% endif %}
                         {% if user.is_superuser %}
 <!--                            { % if object.is_superuser % }-->
                             {% if object|has_group:"Moder" %}
                                 <a class="text-info" href="{% url 'admin:delete_moder' object.pk %}">
-                                    {% trans 'Понизить статус' %}
+                                    {% trans 'Downgrade status' %}
                                 </a>
                             {% else %}
                                 <a class="text-info" href="{% url 'admin:create_moder' object.pk %}">
-                                    {% trans 'Назначить модератором' %}
+                                    {% trans 'Promote to Moderator' %}
                                 </a>
                             {% endif %}
                         {% endif %}
@@ -81,13 +81,13 @@
 
     <ul class = "actions pagination">
         {% if page_obj.has_previous %}
-        <li> <a href = "?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Предыдущая страница" %}</a></li>
+        <li> <a href = "?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Previous page" %}</a></li>
         {% endif %}
         <li>
-            <p class = "button large" > {% trans "Cтраница" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p>
+            <p class = "button large" > {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ paginator.num_pages }}</p>
         </li>
         {% if page_obj.has_next %}
-        <li> <a href = "?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Следующая страница" %}</a></li>
+        <li> <a href = "?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Next page" %}</a></li>
         {% endif %}
     </ul>
     {% endif %}

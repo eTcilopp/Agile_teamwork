@@ -13,13 +13,13 @@
             <div class="col-8-xlarge col-12-large">
                 <ul class="actions">
                     {% if Aip != 0%}
-                    <li><a href="{% url 'admin:post_status_list' 'Aip'%}" class="button">{% trans 'Ожидающие одобрения' %} ({{Aip}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Aip'%}" class="button">{% trans 'Pending approval' %} ({{Aip}})</a></li>
                     {% endif %}
-                    <li><a href="{% url 'admin:post_status_list' 'Apr'%}" class="button">{% trans 'Одобреные' %} ({{Apr}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Apr'%}" class="button">{% trans 'Approved' %} ({{Apr}})</a></li>
                     {% if Can != 0%}
-                    <li><a href="{% url 'admin:post_status_list' 'Can'%}" class="button">{% trans 'Отклоненые' %} ({{Can}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Can'%}" class="button">{% trans 'Declined' %} ({{Can}})</a></li>
                     {% endif %}
-                    <li><a href="{% url 'admin:post_status_list' 'Del'%}" class="button">{% trans 'Удаленые статьи' %} ({{Del}})</a></li>
+                    <li><a href="{% url 'admin:post_status_list' 'Del'%}" class="button">{% trans 'Deleted' %} ({{Del}})</a></li>
                 </ul>
             </div>
         </div>
@@ -28,13 +28,13 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr class="text-center">
-                    <th>{% trans 'Статус' %}</th>
-                    <th>{% trans 'Автор' %}</th>
-                    <th>{% trans 'Категория' %}</th>
-                    <th>{% trans 'Заголовок' %}</th>
-                    <th>{% trans 'Читать' %}</th>
-                    <th>{% trans 'Дата создания/обновления' %}</th>
-                    <th>{% trans 'Дата смены статуса' %}</th>
+                    <th>{% trans 'Status' %}</th>
+                    <th>{% trans 'Author' %}</th>
+                    <th>{% trans 'Category' %}</th>
+                    <th>{% trans 'Header' %}</th>
+                    <th>{% trans 'Read' %}</th>
+                    <th>{% trans 'Date creadet/updated' %}</th>
+                    <th>{% trans 'Date updated' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,15 +44,15 @@
                         {{object.get_post_status_display}}
                         <br>
                         {% if object.post_status != 'Apr' %}
-                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="{% trans 'Одобрить' %}">
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Apr'%}" title="{% trans 'Approve' %}">
                             <i class="icon solid fa-check"></i></a>
                         {% endif %}
                         {% if object.post_status != 'Del' %}
-                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="{% trans 'Удалить' %}">
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Del'%}" title="{% trans 'Delete' %}">
                             <i class="icon solid fa-trash"></i></a>
                         {% endif %}
                         {% if object.post_status != 'Can' %}
-                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="{% trans 'Отправить на доработку' %}">
+                        <a class="text-info" href="{% url 'admin:change_status_post' object.slug 'Can'%}" title="{% trans 'Decline' %}">
                             <i class="icon solid fa-window-close"></i></a>
                         {% endif %}
                     </td>
@@ -66,7 +66,7 @@
                         {{object.title}}
                     </td>
                     <td>
-                        <a class="text-info" href="{% url 'main:post' object.slug %}">{% trans 'Читать статью' %}</a>
+                        <a class="text-info" href="{% url 'main:post' object.slug %}">{% trans 'Read post' %}</a>
                     </td>
                     <td>
                         {{object.date_create}}
@@ -86,13 +86,13 @@
 
     <ul class="actions pagination">
         {% if page_obj.has_previous %}
-        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Предыдущая страница" %}</a></li>
+        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Previous page" %}</a></li>
         {% endif %}
         <li>
-            <p class="button large">{% trans "Cтраница" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p>
+            <p class="button large">{% trans "Page" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p>
         </li>
         {% if page_obj.has_next %}
-        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Следующая страница" %}</a></li>
+        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Next page" %}</a></li>
         {% endif %}
     </ul>
     {% endif %}
@@ -100,7 +100,7 @@
 
 {% else %}
 <h2 class="text-center">
-    {% trans 'Нет статей с данным статусом' %}
+    {% trans 'No posts with this status' %}
 </h2>
 {% endif %}
 

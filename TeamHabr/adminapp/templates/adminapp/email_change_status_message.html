@@ -3,10 +3,10 @@
 
 {% blocktranslate  trimmed %}
 
-Здравствуйте, {{ post.user_id.username }}!
-На вашей статье "{{ post.title }}" сменился статус на {{ post.get_post_status_display }},
-Вы можете перейти к ней для просмотра.
-Ссылка на вашу статью : http://{{ domain }}/post/{{post.slug}}/
+Hello, {{ post.user_id.username }}!
+Your post "{{ post.title }}" has its status changed to {{ post.get_post_status_display }},
+Please follow the link to view your post:
+http://{{ domain }}/post/{{post.slug}}/
 
 {% endblocktranslate %}
 
