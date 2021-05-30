@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col text-justify">
-            <p class="h2 text-center">{% trans 'Создание новой статьи' %}</p>
+            <p class="h2 text-center">{% trans 'Create post' %}</p>
             <hr>
             <form method=post action='' enctype="multipart/form-data">
                 {% csrf_token %}
@@ -19,8 +19,8 @@
                 <div class="d-flex align-self-start mr-3">{{field.label}}</div>
                 <div class="form-con-create">{{field}}</div>
                 {% endfor %}
-                <button type="submit" , value="{% trans 'Сохранить' %}" , name="save-article" class="btn btn-primary" style="margin-top: 20px">
-                    {% trans 'Сохранить' %}
+                <button type="submit" , value="{% trans 'Save' %}" , name="save-article" class="btn btn-primary" style="margin-top: 20px">
+                    {% trans 'Save' %}
                 </button>
             </form>
         </div>

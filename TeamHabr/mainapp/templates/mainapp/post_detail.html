@@ -35,7 +35,7 @@
                     {% endif %}{% endif %}
                 </span>
                 {% if object.get_reason %}
-                <h3 class="text-center">{% trans 'REason for decline' %}</h3>
+                <h3 class="text-center">{% trans 'Reason for decline' %}</h3>
                 {% for i in object.get_reason %}
                 <div class="alert alert-danger text-center" role="alert">
                     <strong>От {{i.user_id.username}}</strong> {{i.text}}

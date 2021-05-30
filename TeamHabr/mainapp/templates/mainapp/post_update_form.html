@@ -7,13 +7,13 @@
 <div id="main">
     <article class="post">
 <h2>
-    {% trans 'редактирование' %} {% if slug %}{% trans 'статьи' %}{% elif pk %} {% trans 'коментария' %}{% endif %}
+    {% trans 'Edit' %} {% if slug %}{% trans 'post' %}{% elif pk %} {% trans 'comment' %}{% endif %}
 </h2>
 <hr>
 {% if slug %}
-<a href="{% url 'main:article_delete' slug=slug%}">{% trans 'Удалить статью' %}</a>
+<a href="{% url 'main:article_delete' slug=slug%}">{% trans 'Delete post' %}</a>
 {% elif pk %}
-<a href="{% url 'main:comment_delete' pk=pk%}">{% trans 'Удалить коментарий' %}</a>
+<a href="{% url 'main:comment_delete' pk=pk%}">{% trans 'Delete comment' %}</a>
 {% endif %}
 
 <form method=post enctype="multipart/form-data">
@@ -26,7 +26,7 @@
 
 
     <button type="submit" , value="сохранить" , name="save-article" class="btn" style="margin-top: 20px">
-        {% trans 'Сохранить' %}
+        {% trans 'Save' %}
     </button>
 </form>
         </article>
