@@ -28,7 +28,7 @@
                         {% if object.is_superuser %}
                             {% trans 'SuperAdmin' %}
                         {% elif object|has_group:"Moder" %}
-                            {% trans 'Модератор' %}
+                            {% trans 'Moderator' %}
                             <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="20px" height="15px">
                         {% else %}
                             {% trans 'User' %}

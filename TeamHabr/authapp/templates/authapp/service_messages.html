@@ -9,10 +9,10 @@
 <div id="main">
     <article class="post">
         {% if request.resolver_match.url_name == 'reset_password' %}
-            <h2>{% trans 'Password recovery page.' %}</h2>
+            <h2>{% trans 'Password recovery page' %}</h2>
             <h6>
-                {% trans 'Forgot your password? Please enter email you entered when registering
-                and we will send you a link to password reset page. %}
+                {% trans 'Forgot your password?' %} <br>
+                {% trans 'Please enter email you entered when registering and we will send you a link to password reset page' %}
             </h6>
         <form action="" method="POST" class="text-center">
             {% csrf_token %}

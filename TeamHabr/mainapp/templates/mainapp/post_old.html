@@ -128,7 +128,7 @@
                         <p class="alert alert-warning text-center">{% trans 'Comment was deleted' %}</p>
                         {% if user|has_group:"Moder" %}
                         <p class="text-muted"> {{comment.text}} </p>
-                        <p class="bg-danger text-white text-center">{% trans 'Only moderator can view comment' %}</p>
+                        <p class="bg-danger text-white text-center">{% trans 'Only Moderator can view comment' %}</p>
                         {% endif %}
                         {% else %}
                         {{comment.text | linebreaks}}

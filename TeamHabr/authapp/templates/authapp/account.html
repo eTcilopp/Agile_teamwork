@@ -57,7 +57,7 @@
                 <a class="text-info" href="{% url 'authapp:edit' %}">{% trans 'Edit' %}</a>
             </div>
             <div class="meta"> {% if user.is_superuser or user|has_group:"Moder"  %}
-                <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" title="{% trans 'You've been promoted to Moderator' %}" width="150px" height="100px">
+                <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" title="{% trans "You've been promoted to Moderator" %}" width="150px" height="100px">
                 {% endif %}
                 {% if user.avatar %}
                 <img class="rounded-circle" src="{{ user.avatar.url }}" title="{{ user.name }} {{ user.surname }}" height="100px">
@@ -69,7 +69,7 @@
 
 
         </header>
-        <h4>{% trans 'О себе' %}</h4> {{ user.aboutMe }}
+        <h4>{% trans 'About me' %}</h4> {{ user.aboutMe }}
     </article>
 
     <article class="post">
@@ -100,7 +100,7 @@
             <div class="title">
                 <h3>{{ article.title }}</h3>
                 <hr>
-                <p>{% trans 'Статус' %}: {{ article.get_post_status_display }}</p>
+                <p>{% trans 'Status' %}: {{ article.get_post_status_display }}</p>
             </div>
             <div class="meta"><a class="text-info" href="{% url 'main:article_edit' slug=article.slug %}">{% trans 'Edit post' %}</a>
                 <br>

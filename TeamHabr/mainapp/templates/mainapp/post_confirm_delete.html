@@ -9,7 +9,7 @@
 
 <div id="main">
     <article class="post">
-        <p>{% trans 'Are you sure you want to delete ' %} {% if object.title %}post "{{ object.title }} {% elif object.text %} {% trans 'comment' %}} <br> "{{object.text | truncatewords:10}} {% endif %}"?</p>
+        <p>{% trans 'Are you sure you want to delete ' %} {% if object.title %}post "{{ object.title }} {% elif object.text %} {% trans 'comment' %}: <br> "{{object.text | truncatewords:10}}{% endif %}"?</p>
         <form method="post">{% csrf_token %}
             <input type="submit" class="btn btn-outline-danger text-center" value="{% trans 'Delete' %}">
         </form>

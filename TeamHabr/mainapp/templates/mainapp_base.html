@@ -21,7 +21,7 @@
     <div id="wrapper">
         {% block menu %}
         <header id="header">
-            <h1><a href="/">{% trans "}{abr" %}</a></h1>
+            <h1><a href="/">{% translate "}{abr" %}</a></h1>
             <nav class="links">
                 <ul>
                     {% for category in categories %}
@@ -38,19 +38,19 @@
                         </a></p>
                         {% else %}
                         <p style="margin-top: auto;"><a href="{% url 'auth:account' %}">
-                        <img style="max-width: 40px" class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="{% trans 'Аватарка' %}">
+                        <img style="max-width: 40px" class="author-pa" src="https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" title="{% translate 'Avatar' %}">
                         </a></p>
                         {% endif %}
                     </li>
                     {% endif %}
                     <li class="search">
-                        <a class="fa-search" href="#search">{% trans "Search" %}</a>
+                        <a class="fa-search" href="#search">{% translate "Search" %}</a>
                         <form id="search" method="get" action="#">
-                            <input name="q" placeholder="{% trans 'Search' %}..." class="form-control" type="text" aria-label="{% trans 'Search' %}" aria-describedby="basic-addon2">
+                            <input name="q" placeholder="{% translate 'Search' %}..." class="form-control" type="text" aria-label="{% translate 'Search' %}" aria-describedby="basic-addon2">
                         </form>
                     </li>
                     <li class="menu">
-                        <a class="fa-bars" href="#menu">{% trans 'Manu' %}</a>
+                        <a class="fa-bars" href="#menu">{% translate 'Menu' %}</a>
                     </li>
                 </ul>
             </nav>
@@ -71,7 +71,7 @@
                         {% endfor %}
                     </li>
                     <li>
-                        <h3>{% trans 'Sign In' %}</h3>
+                        <h3>{% translate 'Sign In' %}</h3>
                     </li>
                     <li>
                         {% if "/account/reset/done" in request.get_full_path or "activate/" in request.get_full_path %}
@@ -81,25 +81,25 @@
                                 {% endif %}
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <label for="id_username">{% trans 'Username' %}</label>
-                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="{% trans 'User' %}" />
+                                    <label for="id_username">{% translate 'Username' %}</label>
+                                    <input type="text" name="username" maxlength="30" id="id_username" placeholder="{% translate 'User' %}" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_password">{% trans 'Password' %}</label>
-                                    <input type="password" name="password" id="id_password" placeholder="{% trans 'Password' %}" />
+                                    <label for="id_password">{% translate 'Password' %}</label>
+                                    <input type="password" name="password" id="id_password" placeholder="{% translate 'Password' %}" />
                                 </div>
 
-                                <input class="form-control" type="submit" style="margin-top: 7%" value="{% trans 'enter' %}">
-                                <a class="text-info" href="{%url 'authapp:reset_password'%}">{% trans "Forgot your password?" %}</a>
+                                <input class="form-control" type="submit" style="margin-top: 7%" value="{% translate 'enter' %}">
+                                <a class="text-info" href="{%url 'authapp:reset_password'%}">{% translate "Forgot your password?" %}</a>
                             </form>
                     </li>
                     <li><a href="{% url 'auth:register' %}">
-                            <h3>{% trans "Sign Up" %}</h3>
+                            <h3>{% translate "Sign Up" %}</h3>
                         </a></li>
                     {% endif %}
                     {% if user.is_superuser or user|has_group:"Moder" %}
                     <li><a href="{% url 'admin:user_list' %}">
-                            <h3>{% trans "Administration" %}</h3>
+                            <h3>{% translate "Administration" %}</h3>
                         </a></li>
                     {% endif %}
                 </ul>
@@ -107,7 +107,7 @@
             <section>
                 <ul class="links">
                     <li>
-                        <h3>{% trans 'Sections' %}</h3>
+                        <h3>{% translate 'Categories' %}</h3>
                     </li>
                     {% for category in categories %}
                     <li><a href="{% url 'main:category' slug=category.slug %}">{{ category.name }}</a></li>
@@ -116,7 +116,7 @@
             </section>
             <section>
                 <p><a href="{% url 'main:help' %}">
-                        <h3>{% trans 'Help' %}</h3>
+                        <h3>{% translate 'Help' %}</h3>
                     </a></p>
                 <script>
                     document.write("&copy; " + new Date().getFullYear() + " Server Monkeys");

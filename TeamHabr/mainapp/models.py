@@ -38,7 +38,7 @@ class CategoryPost(models.Model):
     """
 
     name = models.CharField(
-        verbose_name='Категория',
+        verbose_name='Category',
         max_length=30,
         unique=True)
     slug = models.SlugField(
@@ -46,7 +46,7 @@ class CategoryPost(models.Model):
         max_length=64,
         editable=False,
         unique=True)
-    description = models.TextField(verbose_name='Описание', max_length=64)
+    description = models.TextField(verbose_name='Descriprion', max_length=64)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -70,8 +70,8 @@ class CategoryPost(models.Model):
         а также принцип сортировки вывода списка категорий (по наименованию, по возрастанию)
         """
 
-        verbose_name_plural = 'Категории'
-        verbose_name = 'Категория'
+        verbose_name_plural = 'Categories'
+        verbose_name = 'Category'
         ordering = ['name']
 
     def get_absolute_url(self):
@@ -101,37 +101,37 @@ class Post(models.Model):
     date_update - дата и встемя любого последнего изменения статьи
     """
 
-    CHOICES_STATUS = [('Aip', 'Ждет одобрения'), ('Apr', 'Одобрено'),
-                      ('Del', 'Удалено'), ('Can', 'Отклоненая'), ('Drf', 'Черновик')]
+    CHOICES_STATUS = [('Aip', 'Pending approval'), ('Apr', 'Approved'),
+                      ('Del', 'Deleted'), ('Can', 'Declined'), ('Drf', 'Draft')]
     category_id = models.ForeignKey(
         CategoryPost,
         on_delete=models.CASCADE,
-        verbose_name='Категория')
+        verbose_name='Category')
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='Заголовок', max_length=64)
+    title = models.CharField(verbose_name='Header', max_length=64)
     slug = models.SlugField(
         allow_unicode=True,
         max_length=64,
         editable=False,
         unique=True)
-    text = RichTextUploadingField(verbose_name='Содержание')
+    text = RichTextUploadingField(verbose_name='Description')
     post_status = models.CharField(
         max_length=3,
         choices=CHOICES_STATUS,
         default='Drf')
     status_update = models.DateTimeField(
-        verbose_name='Дата обновления статуса',
+        verbose_name='Status update date',
         default=datetime.datetime.today)
     date_create = models.DateTimeField(
-        verbose_name='Дата создания статьи',
+        verbose_name='Post creation date',
         default=datetime.datetime.today)
     date_update = models.DateTimeField(
-        verbose_name='Дата изменения статьи',
+        verbose_name='Post update date',
         default=datetime.datetime.today)
     title_photo = models.ImageField(
-        verbose_name='Картинка статьи',
+        verbose_name='Image',
         validators=[valid_photo],
         null=True,
         blank=True,
@@ -199,13 +199,13 @@ class Post(models.Model):
 
         delta = (now - self.status_update)
         if delta.days < 1:
-            answer = "Меньше суток назад"
+            answer = "Less than 1 day"
         elif delta.days == 1:
-            answer = f"{delta.days} день назад"
+            answer = f"{delta.days} 1 day ago"
         elif 2 >= delta.days < 5:
-            answer = f"{delta.days} дня назад"
+            answer = f"{delta.days} days ago"
         else:
-            answer = f"{delta.days} дней назад"
+            answer = f"{delta.days} days ago"
         return answer
 
 # Удаляет файл фотографии если удалена запись о ней из базы
@@ -234,9 +234,9 @@ class Comment(models.Model):
         'self',
         null=True,
         blank=True,
-        related_name='ответы',
+        related_name='replies',
         on_delete=models.CASCADE)
-    text = models.TextField(verbose_name='Комментарий')
+    text = models.TextField(verbose_name='Comment')
     date_create = models.DateTimeField(
         verbose_name='Дата создания комментария',
         default=datetime.datetime.today)
@@ -244,7 +244,7 @@ class Comment(models.Model):
         verbose_name='Дата изменения комментария',
         default=datetime.datetime.today)
     comment_status = models.CharField(
-        verbose_name='Статус комментария',
+        verbose_name='Comment status',
         max_length=3,
         null=True,
         blank=True
@@ -266,13 +266,13 @@ class Comment(models.Model):
     def delta_update(self):
         delta = (now - self.date_create)
         if delta.days < 1:
-            answer = "Меньше суток назад"
+            answer = "Less than a day ago"
         elif delta.days == 1:
-            answer = f"{delta.days} день назад"
+            answer = f"{delta.days} 1 day ago"
         elif 2 >= delta.days < 5:
-            answer = f"{delta.days} дня назад"
+            answer = f"{delta.days} days ago"
         else:
-            answer = f"{delta.days} дней назад"
+            answer = f"{delta.days} days ago"
         return answer
 
 
@@ -311,7 +311,7 @@ class Reason(models.Model):
     post_id = models.ForeignKey(
         Post, on_delete=models.CASCADE)
     text = models.TextField(
-        verbose_name="причина отклонения",
+        verbose_name="reason for decline",
         max_length=512, blank=False)
     date_create = models.DateTimeField(
         default=datetime.datetime.today)

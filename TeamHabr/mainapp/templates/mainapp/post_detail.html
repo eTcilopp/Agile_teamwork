@@ -15,7 +15,7 @@
         <header>
             <div class="title">
                 <h2><a href="#">{{object.title}}</a></h2>
-                <p>{% trans 'Section' %}: {{ object.category_id.name }}</p>
+                <p>{% trans 'Category' %}: {{ object.category_id.name }}</p>
 
                 <span style="font-size: 14px">{% if user.is_superuser or user|has_group:"Moder"  %}
                     <hr>
@@ -130,12 +130,12 @@
                        {% endif %}
                        >{{comment.get_count_comment}}</a>
                     <br>
-                    Автор: {{comment.user_id.username}}
+                    {% trans 'Author' %}: {{comment.user_id.username}}
                     <br>
                     {{comment.date_create}}
                     {% if comment.date_update|date:"Y,m,d,h,i" > comment.date_create|date:"Y,m,d,h,i" %}
                     <br>
-                    Обновлен {{comment.date_update}}
+                    {% trans 'Date updated' %} {{comment.date_update}}
                     {% endif %}
                     {% if comment.user_id_id == user.id and 'Del' != comment.comment_status %}
                     <br>
@@ -145,7 +145,7 @@
                     {% endif %}
                     {% if user.is_authenticated %}
                     <br>
-                    <a  class="text-info" href="#modelComment" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">{% trans 'Reply' %}}</a>
+                    <a  class="text-info" href="#modelComment" onclick="addReview('{{comment.user_id.username}}', '{{comment.id}}')">{% trans 'Reply' %}</a>
                     {% endif %}
                 </p>
 
@@ -200,12 +200,12 @@
                                    {% endif %}>{{answer.get_count_comment}}</a>
 
                             <br>
-                            {% trans 'Автор' %}: <b>{{answer.user_id.username}}</b>
+                            {% trans 'Author' %}: <b>{{answer.user_id.username}}</b>
                             <br>
                             {{answer.date_create}}
                             {% if answer.date_update|date:"Y,m,d,h,i" > answer.date_create|date:"Y,m,d,h,i" %}
                             <br>
-                            {% trans 'Обновлен' %} {{answer.date_update}}
+                            {% trans 'Updated' %} {{answer.date_update}}
                             {% endif %}
                             {% if answer.user_id_id == user.id and 'Del' != answer.comment_status %}
                             <br>
