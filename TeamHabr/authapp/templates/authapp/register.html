@@ -2,10 +2,11 @@
 {% load static %}
 {% load i18n %}
 
+
 {% block content %}
 
 
-<h2>New user registration</h2>
+<h2>{% translate 'New user registration' %}</h2>
 {% for message in messages %}
 {{ message }}
 {% endfor %}
@@ -20,7 +21,7 @@
         </div>
         {% endfor %}
     </div>
-    <input class="form-control" type="submit" value="{% trans 'sign up' %}">
+    <input class="form-control" type="submit" value="{% translate 'sign up' %}">
 </form>
 
 

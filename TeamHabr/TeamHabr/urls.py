@@ -27,13 +27,13 @@ urlpatterns = [
     #      include('mainapp.urls',
     #              namespace='main')),
 
-    path('',
-         include('authapp.urls',
-                 namespace='auth')),
+    # path('',
+    #      include('authapp.urls',
+    #              namespace='auth')),
 
-    path('admins/',
-         include('adminapp.urls',
-                 namespace='admin')),
+    # path('admins/',
+    #      include('adminapp.urls',
+    #              namespace='admin')),
 
     path(r'ckeditor/',
          include('ckeditor_uploader.urls')),
@@ -45,6 +45,8 @@ urlpatterns = [
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += i18n_patterns(path('', include('mainapp.urls', namespace='main')),)
+urlpatterns += i18n_patterns(path('', include('authapp.urls', namespace='auth')),)
+urlpatterns += i18n_patterns(path('', include('adminapp.urls', namespace='admin')),)
 
 import mainapp.views as mainapp
 

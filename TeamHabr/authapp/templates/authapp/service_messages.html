@@ -9,15 +9,15 @@
 <div id="main">
     <article class="post">
         {% if request.resolver_match.url_name == 'reset_password' %}
-            <h2>{% trans 'Password recovery page' %}</h2>
+            <h2>{% translate 'Password recovery page' %}</h2>
             <h6>
-                {% trans 'Forgot your password?' %} <br>
-                {% trans 'Please enter email you entered when registering and we will send you a link to password reset page' %}
+                {% translate 'Forgot your password?' %} <br>
+                {% translate 'Please enter email you entered when registering and we will send you a link to password reset page' %}
             </h6>
         <form action="" method="POST" class="text-center">
             {% csrf_token %}
             {{form}}
-            <input type="submit" style="margin-top: 2%" value="Send email" /><br>
+            <input type="submit" style="margin-top: 2%" value={% translate 'Send email' %} /><br>
         </form>
         {% elif request.resolver_match.url_name == 'password_reset_done' %}
             {% blocktranslate  trimmed %}
@@ -28,18 +28,18 @@
                 Also we recommend to check your Spam folder</h6>
             {% endblocktranslate %}
         {% elif request.resolver_match.url_name == 'password_reset_complete' %}
-            <h2>{% trans 'Password was successfully reset' %}</h2>
-            <h6>{% trans 'Password was successfully reset. You can login now with a new password.' %}</h6>
+            <h2>{% translate 'Password was successfully reset' %}</h2>
+            <h6>{% translate 'Password was successfully reset. You can login now with a new password.' %}</h6>
         {% elif request.resolver_match.url_name == 'password_change_done' %}
-            <h2>{% trans 'Success!' %}</h2>
-            <h6>{% trans 'Password was updated successfully.' %}'</h6>
+            <h2>{% translate 'Success!' %}</h2>
+            <h6>{% translate 'Password was updated successfully.' %}'</h6>
         {% else %}
             {{ service_message }}
             {% if login_allowed %}
-            <a class="text-secondary h6" href=#menu">{% trans 'Log in' %}</a>
+            <a class="text-secondary h6" href=#menu">{% translate 'Log in' %}</a>
             {% endif %}
         {% endif %}
-            <a href="{% url 'mainapp:index' %}">{% trans 'Back to Main page' %}</a>
+            <a href="{% url 'mainapp:index' %}">{% translate 'Back to Main page' %}</a>
     </article>
 </div>
 {% endblock %}
