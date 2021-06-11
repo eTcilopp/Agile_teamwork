@@ -53,7 +53,7 @@
         {% if page_obj.has_previous %}
         <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Previous page" %}</a></li>
         {% endif %}
-        <li><p class="button large">{% trans "Page" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p></li>
+        <li><p class="button large">{% trans "Page" %} {{ page_obj.number }} {% trans "out of" %} {{ paginator.num_pages }}</p></li>
         {% if page_obj.has_next %}
         <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Next page" %}</a></li>
         {% endif %}

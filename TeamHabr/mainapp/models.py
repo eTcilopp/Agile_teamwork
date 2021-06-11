@@ -9,6 +9,7 @@ from authapp.models import User
 import datetime
 from slugify import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.translation import ugettext_lazy as _
 
 now = datetime.datetime.now().replace(tzinfo=utc)
 
@@ -38,7 +39,7 @@ class CategoryPost(models.Model):
     """
 
     name = models.CharField(
-        verbose_name='Category',
+        verbose_name=_('Category'),
         max_length=30,
         unique=True)
     slug = models.SlugField(
@@ -46,7 +47,7 @@ class CategoryPost(models.Model):
         max_length=64,
         editable=False,
         unique=True)
-    description = models.TextField(verbose_name='Descriprion', max_length=64)
+    description = models.TextField(verbose_name=_('Description'), max_length=64)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -70,8 +71,8 @@ class CategoryPost(models.Model):
         а также принцип сортировки вывода списка категорий (по наименованию, по возрастанию)
         """
 
-        verbose_name_plural = 'Categories'
-        verbose_name = 'Category'
+        verbose_name_plural = _('Categories')
+        verbose_name = _('Category')
         ordering = ['name']
 
     def get_absolute_url(self):
@@ -101,37 +102,37 @@ class Post(models.Model):
     date_update - дата и встемя любого последнего изменения статьи
     """
 
-    CHOICES_STATUS = [('Aip', 'Pending approval'), ('Apr', 'Approved'),
-                      ('Del', 'Deleted'), ('Can', 'Declined'), ('Drf', 'Draft')]
+    CHOICES_STATUS = [('Aip', _('Pending approval')), ('Apr', _('Approved')),
+                      ('Del', _('Deleted')), ('Can', _('Declined')), ('Drf', _('Draft'))]
     category_id = models.ForeignKey(
         CategoryPost,
         on_delete=models.CASCADE,
-        verbose_name='Category')
+        verbose_name=_('Category'))
     user_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='Header', max_length=64)
+    title = models.CharField(verbose_name=_('Header'), max_length=64)
     slug = models.SlugField(
         allow_unicode=True,
         max_length=64,
         editable=False,
         unique=True)
-    text = RichTextUploadingField(verbose_name='Description')
+    text = RichTextUploadingField(verbose_name=_('Description'))
     post_status = models.CharField(
         max_length=3,
         choices=CHOICES_STATUS,
         default='Drf')
     status_update = models.DateTimeField(
-        verbose_name='Status update date',
+        verbose_name=_('Status update date'),
         default=datetime.datetime.today)
     date_create = models.DateTimeField(
-        verbose_name='Post creation date',
+        verbose_name=_('Post creation date'),
         default=datetime.datetime.today)
     date_update = models.DateTimeField(
-        verbose_name='Post update date',
+        verbose_name=_('Post update date'),
         default=datetime.datetime.today)
     title_photo = models.ImageField(
-        verbose_name='Image',
+        verbose_name=_('Image'),
         validators=[valid_photo],
         null=True,
         blank=True,
@@ -169,8 +170,8 @@ class Post(models.Model):
         Вложенный класс, определяет вид заголовков формы статей в разделе администрирования и
         определяет порядок сортироки при выводе перечня статей (по убыванию даты создания)
         """
-        verbose_name_plural = 'Статьи'
-        verbose_name = 'Статья'
+        verbose_name_plural = _('Articles')
+        verbose_name = _('Article')
         ordering = ['-date_create']
 
     def get_absolute_url(self):
@@ -199,7 +200,7 @@ class Post(models.Model):
 
         delta = (now - self.status_update)
         if delta.days < 1:
-            answer = "Less than 1 day"
+            answer = _("Less than 1 day")
         elif delta.days == 1:
             answer = f"{delta.days} 1 day ago"
         elif 2 >= delta.days < 5:
@@ -236,15 +237,15 @@ class Comment(models.Model):
         blank=True,
         related_name='replies',
         on_delete=models.CASCADE)
-    text = models.TextField(verbose_name='Comment')
+    text = models.TextField(verbose_name=_('Comment'))
     date_create = models.DateTimeField(
-        verbose_name='Дата создания комментария',
+        verbose_name=_('Date created'),
         default=datetime.datetime.today)
     date_update = models.DateTimeField(
-        verbose_name='Дата изменения комментария',
+        verbose_name=_('Date updated'),
         default=datetime.datetime.today)
     comment_status = models.CharField(
-        verbose_name='Comment status',
+        verbose_name=_('Comment status'),
         max_length=3,
         null=True,
         blank=True
@@ -266,7 +267,7 @@ class Comment(models.Model):
     def delta_update(self):
         delta = (now - self.date_create)
         if delta.days < 1:
-            answer = "Less than a day ago"
+            answer = _("Less than a day ago")
         elif delta.days == 1:
             answer = f"{delta.days} 1 day ago"
         elif 2 >= delta.days < 5:
@@ -311,7 +312,7 @@ class Reason(models.Model):
     post_id = models.ForeignKey(
         Post, on_delete=models.CASCADE)
     text = models.TextField(
-        verbose_name="reason for decline",
+        verbose_name=_("reason for decline"),
         max_length=512, blank=False)
     date_create = models.DateTimeField(
         default=datetime.datetime.today)
