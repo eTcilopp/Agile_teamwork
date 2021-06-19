@@ -1,5 +1,7 @@
 from django.urls import path
 import mainapp.views as mainapp
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'mainapp'
 
@@ -17,6 +19,7 @@ urlpatterns = [
         '',
         mainapp.Index.as_view(),
         name='index'),
+
     path(
         'search_results',
         mainapp.Index.as_view(),
@@ -62,11 +65,31 @@ urlpatterns = [
         mainapp.CommentUpdate.as_view(),
         name='comment_update'),
     path(
-        'like/<int:pk>/<str:type_likes>',
+        'like/<int:pk>/<str:type_likes>/',
         mainapp.likes,
         name='like'),
     path(
         'help',
         mainapp.HelpPage.as_view(),
         name='help'),
+    path(
+        'video/create/',
+        mainapp.VideoCreate.as_view(),
+        name='video_create'),
+    path(
+        'video/list/',
+        mainapp.VideoList.as_view(),
+        name='video_list'),
+    path(
+        'video/<int:pk>/',
+        mainapp.VideoDetail.as_view(),
+        name='video_detail'),
+    path(
+        'bufferzone/',
+        mainapp.SecretZone.as_view(),
+        name='bufferzone'),
+
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

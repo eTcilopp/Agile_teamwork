@@ -1,5 +1,6 @@
 from django import forms
-from .models import Post, Comment, Reason
+from .models import Post, Comment, Reason, Video
+from django.core.files.images import get_image_dimensions
 
 
 class CommentForm(forms.ModelForm):
@@ -40,7 +41,8 @@ class PostCreationForm(forms.ModelForm):
         model = Post
         fields = ('title',
                   'text',
-                  'category_id')
+                  'category_id',
+                  'title_photo')
 
 
 class ReasonCreateForm(forms.ModelForm):
@@ -61,3 +63,20 @@ class ReasonCreateForm(forms.ModelForm):
     class Meta:
         model = Reason
         fields = ('text',)
+
+
+class VideoCreationForm(forms.ModelForm):
+    """
+    Test
+    """
+
+    def __int__(self, *args, **kwargs):
+        super(VideoCreationForm, self).__int__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+
+    class Meta:
+        model = Video
+        fields = ('title',
+                  'file')

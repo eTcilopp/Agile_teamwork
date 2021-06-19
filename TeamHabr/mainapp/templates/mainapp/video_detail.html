@@ -1,0 +1,10 @@
+{% extends 'mainapp_base.html' %}
+{% load static %}
+{% load auth_extras %}
+
+{% block content %}
+<div class="container-fluid">
+    <video style="display: block; margin: 0 auto" src="{{object.file.url}}" poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGiZRG9ufVhPZm3m0NRpcMW2WgjJ5qpGhELQ&usqp=CAU" controls autoplay></video>
+
+</div>
+{% endblock %}

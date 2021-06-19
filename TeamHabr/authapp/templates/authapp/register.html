@@ -3,22 +3,24 @@
 
 {% block content %}
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col">
-            <p class="h2 text-center">Регистрация</p>
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
-            <form class="form-horizontal" action="{% url 'auth:register' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ register_form.as_p }}
-                <input class="form-control" type="submit" value="зарегистрироваться">
-            </form>
+
+<h2>Регистрация</h2>
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+<form class="form-horizontal" action="{% url 'auth:register' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!--                {{ register_form.as_table }}-->
+    <div class="row gtr-uniform">
+        {% for field in register_form %}
+
+        <div class="col-6 col-12-xsmall">
+            {{field.label_tag }} <span style="color: red">{{field.errors}}</span> {{field}}
         </div>
-        <div class="col-2"></div>
+        {% endfor %}
     </div>
-</div>
+    <input class="form-control" type="submit" value="зарегистрироваться">
+</form>
+
 
 {% endblock %}

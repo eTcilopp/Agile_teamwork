@@ -1,9 +1,28 @@
+from django.core.exceptions import ValidationError
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from django.utils.timezone import utc
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from authapp.models import User
 import datetime
 from slugify import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
+
+now = datetime.datetime.now().replace(tzinfo=utc)
+
+
+def valid_photo(photo):
+    """
+    Функция валидации размера фото
+    :param photo: принимает фотографию
+    :return: ошибку в случае провала валидации
+    """
+    filesize = photo.file.size
+    megabyte_limit = 0.9
+    if filesize > megabyte_limit * 1250 * 700:
+        raise ValidationError(f"Максимальный размер картинки {megabyte_limit}MB и размеры 1250 * 700")
 
 
 class CategoryPost(models.Model):
@@ -97,7 +116,7 @@ class Post(models.Model):
         max_length=64,
         editable=False,
         unique=True)
-    text = models.TextField(verbose_name='Содержание')
+    text = RichTextUploadingField(verbose_name='Содержание')
     post_status = models.CharField(
         max_length=3,
         choices=CHOICES_STATUS,
@@ -111,6 +130,13 @@ class Post(models.Model):
     date_update = models.DateTimeField(
         verbose_name='Дата изменения статьи',
         default=datetime.datetime.today)
+    title_photo = models.ImageField(
+        verbose_name='Картинка статьи',
+        validators=[valid_photo],
+        null=True,
+        blank=True,
+        upload_to="post_title_photo",
+    )
 
     @property
     def post_updated(self):
@@ -169,6 +195,24 @@ class Post(models.Model):
     def get_reason(self):
         return Reason.objects.filter(post_id_id=self.pk)
 
+    def delta_update(self):
+
+        delta = (now - self.status_update)
+        if delta.days < 1:
+            answer = "Меньше суток назад"
+        elif delta.days == 1:
+            answer = f"{delta.days} день назад"
+        elif 2 >= delta.days < 5:
+            answer = f"{delta.days} дня назад"
+        else:
+            answer = f"{delta.days} дней назад"
+        return answer
+
+# Удаляет файл фотографии если удалена запись о ней из базы
+@receiver(post_delete, sender=Post)
+def submission_delete(sender, instance, **kwargs):
+    instance.image.delete(False)
+
 
 class Comment(models.Model):
     """
@@ -219,6 +263,18 @@ class Comment(models.Model):
     def get_count_comment(self):
         return Like.objects.filter(comment_id_id=self.pk).count()
 
+    def delta_update(self):
+        delta = (now - self.date_create)
+        if delta.days < 1:
+            answer = "Меньше суток назад"
+        elif delta.days == 1:
+            answer = f"{delta.days} день назад"
+        elif 2 >= delta.days < 5:
+            answer = f"{delta.days} дня назад"
+        else:
+            answer = f"{delta.days} дней назад"
+        return answer
+
 
 class Like(models.Model):
     """
@@ -236,11 +292,11 @@ class Like(models.Model):
     author_user_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='Author_like')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, default=None,
-        null=True,
-        blank=True)
+                                null=True,
+                                blank=True)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, default=None,
-        null=True,
-        blank=True)
+                                null=True,
+                                blank=True)
     comment_id = models.ForeignKey(
         Comment, on_delete=models.CASCADE, default=None,
         null=True,
@@ -259,3 +315,9 @@ class Reason(models.Model):
         max_length=512, blank=False)
     date_create = models.DateTimeField(
         default=datetime.datetime.today)
+
+
+class Video(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    file = models.FileField(upload_to='video/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)

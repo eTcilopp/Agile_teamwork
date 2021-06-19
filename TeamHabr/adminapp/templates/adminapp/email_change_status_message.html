@@ -1,0 +1,7 @@
+{% autoescape off %}
+
+Здравствуйте, {{ post.user_id.username }}!
+На вашей статье "{{ post.title }}" сменился статус на {{ post.get_post_status_display }},
+Вы можете перейти к ней для просмотра.
+Ссылка на вашу статью : http://{{ domain }}/post/{{post.slug}}/
+{% endautoescape %}

@@ -14,9 +14,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.views.generic.detail import DetailView
+import smtplib
 
 from .models import User
-from mainapp.models import Post, CategoryPost
+from mainapp.models import Post, CategoryPost, Comment
 from .forms import UserRegisterForm
 
 
@@ -96,19 +97,24 @@ class Register(View):
             new_user.is_active = False
             new_user.avatar = 'users_avatars/00_default_avatar.png'
             new_user.save()
-            current_site = get_current_site(request)
-            mail_subject = 'Activate your account.'
-            message = render_to_string('authapp/acc_active_email.html', {
-                'user': new_user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(new_user.pk)),
-                'token': default_token_generator.make_token(new_user),
-            })
-            to_email = register_form.cleaned_data.get('email')
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
+            try:
+                current_site = get_current_site(request)
+                mail_subject = 'Activate your account.'
+                message = render_to_string('authapp/acc_active_email.html', {
+                    'user': new_user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(new_user.pk)),
+                    'token': default_token_generator.make_token(new_user),
+                })
+                to_email = register_form.cleaned_data.get('email')
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+                service_message = 'Для активации Вашего профиля перейдите по ссылке, ' \
+                                  'отправленной Вам по электронной почте.'
+            except smtplib.SMTPAuthenticationError as server:
+                print(f"ERROR\n {server} \n ************")
+                service_message = 'Что то пошло не так свяжитесь с администрацией сайта'
             template_name = 'authapp/service_messages.html'
-            service_message = 'Для активации Вашего профиля перейдите по ссылке, отправленной Вам по электронной почте.'
             content = {"service_message": service_message}
             return render(request, template_name, content)
         else:
@@ -142,7 +148,7 @@ class Activate(View):
             self.context['service_message'] = 'Ссылка устарела или недействительна.'
         return render(request, self.template_name, self.context)
 
-
+from django.db.models import Q
 class Account(DetailView):
     """
     Класс контроллера обрабоки запросов на просмотр личного кабинета пользователя.
@@ -175,6 +181,18 @@ class Account(DetailView):
         self.context['Can'] = Post.objects.filter(user_id=self.request.user.id, post_status='Can').count
         self.context['Drf'] = Post.objects.filter(user_id=self.request.user.id, post_status='Drf').count
         self.context['articles'] = articles
+        parent_comment = Comment.objects.all().exclude(parent_comment=None)
+        list_parent_comment = []
+        for i in parent_comment:
+            list_parent_comment.append(i.parent_comment_id)
+        answer_comments = Comment.objects.filter(user_id=self.request.user,
+                                               pk__in=list_parent_comment,
+                                               parent_comment=None).exclude(
+            comment_status='Del').order_by('-date_create')[:3]
+        self.context['answer_comments'] = answer_comments
+        change_status_post = Post.objects.filter(
+            user_id=self.request.user.id).exclude(post_status='Del').order_by('-status_update')[:3]
+        self.context['change_status_post'] = change_status_post
         return render(request, self.template_name, self.context)
 # TODO: проверить PermissionsMixin
 
@@ -186,13 +204,13 @@ class UserUpdate(UpdateView):
 
     model = User
     fields = [
-        'username',
+        'username', 'email',
         'name',
         'surname',
-        'email',
         'age',
+        'avatar',
         'aboutMe',
-        'avatar']
+        ]
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 

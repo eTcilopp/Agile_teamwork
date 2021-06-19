@@ -68,11 +68,12 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = (
             "username",
+            "email",
             "name",
             "surname",
             "password1",
             "password2",
-            "email")
+            )
 
 
 class UserEditForm(UserChangeForm):

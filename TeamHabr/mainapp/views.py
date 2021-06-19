@@ -1,6 +1,9 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 from django.db import transaction
@@ -12,9 +15,11 @@ import re
 import datetime
 import string
 import random
+import smtplib
+from django.views import View
 
-from .models import Post, CategoryPost, Comment, Like
-from .forms import PostCreationForm, CommentForm
+from .models import Post, CategoryPost, Comment, Like, Video
+from .forms import PostCreationForm, CommentForm, VideoCreationForm
 
 
 class FunctionsMixin:
@@ -126,7 +131,7 @@ class ArticleCreate(FunctionsMixin, CreateView):
 
     model = Post
     category_post_model = CategoryPost
-    fields = ['title', 'text', 'category_id']
+    fields = ['title', 'text', 'category_id', 'title_photo']
     success_url = reverse_lazy("authapp:account")
 
     def get_initial(self):
@@ -155,7 +160,7 @@ class ArticleCreate(FunctionsMixin, CreateView):
 
         context = super(ArticleCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            form = PostCreationForm(self.request.POST)
+            form = PostCreationForm(self.request.POST, self.request.FILES)
         else:
             form = PostCreationForm
         context["postitems"] = form
@@ -189,7 +194,7 @@ class ArticleUpdate(FunctionsMixin, UpdateView):
     """
 
     model = Post
-    fields = ['title', 'text', 'category_id']
+    fields = ['title', 'text', 'category_id', 'title_photo']
     template_name_suffix = '_update_form'
     success_url = reverse_lazy("authapp:account")
 
@@ -261,7 +266,6 @@ class PostRead(DetailView):
         context["comments"] = Comment.objects.filter(
             post_id=self.get_object().id, parent_comment=None)
         context['form'] = self.form()
-        # context['avatar'] =
         return context
 
     def form_valid(self, form):
@@ -276,7 +280,21 @@ class PostRead(DetailView):
         if self.request.POST.get("parent", None):
             form.instance.parent_comment_id = int(
                 self.request.POST.get("parent"))
+            try:
+                comment = Comment.objects.get(pk=int(self.request.POST.get("parent")))
+                current_site = get_current_site(self.request)
+                mail_subject = 'Ответ на ваш коментарий.'
+                message = render_to_string('mainapp/email_answer_message.html', {
+                    'domain': current_site.domain,
+                    'comment': comment
+                })
+                to_email = comment.user_id.email
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+            except smtplib.SMTPAuthenticationError as server:
+                print(f"ERROR\n {server} \n ************")
         form.save()
+
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
@@ -395,6 +413,140 @@ class HelpPage(DetailView):
         return render(request, self.template_name, self.context)
 
 
+class VideoCreate(CreateView):
+    model = Video
+    fields = ['title', 'file']
+    success_url = reverse_lazy("mainapp:video_list")
+
+    def get_initial(self):
+        """
+        Функция задает исходные параметры полей формы создания статьи
+        :return: функуия возвращает словарь initial, содержащий исходные (присутствующие по умолчанию) параметры
+        """
+
+        initial = super(VideoCreate, self).get_initial()
+        return initial
+
+    def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенного метода get_context_data
+        Добавляется проверка: в случае получения запроса методом POST, создается экземпляр класса PostCreationForm
+        с параметром POST, и с заполненными полями.
+        если запрос получен другим методом (очевидно, get),
+        создается экземпляр класса PostCreationForm с пустыми полями.
+        Далее, в словарь data добавляется экземпряр класса PostCreationForm и обновленный словарь возвращается шаблону.
+        """
+
+        context = super(VideoCreate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            form = VideoCreationForm(self.request.POST)
+        else:
+            form = VideoCreationForm
+        context["postitems"] = form
+        context['title'] = 'Создание новой статьи'
+        return context
+
+    def form_valid(self, form):
+        """
+        Метод выполняет проверку правильности заполнения формы данными,
+        осуществляет дозаполнение поля сгенерируемым автоматически слагом,
+        сохраняет данные в базе данных безопасным для даных образом (по принципу 'все или ничего')
+        """
+
+        context = self.get_context_data()
+        postitems = context["postitems"]
+        self.object = form.save()
+        if postitems.is_valid():
+            postitems.instance = self.object
+            postitems.save()
+        return super(VideoCreate, self).form_valid(form)
+
+
+class VideoList(ListView):
+    """
+    Класс контроллера обрабоки запросов на просмотр главной станицы.
+    Класс наследует от встроенного класса ListView
+    Задается связанная модель
+    Задается количество статей, выводимых на одном экране одновременно (пагинация)
+    """
+
+    model = Video
+    paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        """
+        Функция получения набора данных со статьями из базы данных. Выдираются только статьи со статусом 'Утверждено'
+        В случае, если запросе присутствуте поле 'slug', фильтрация выполняется и по полю slug категории
+        Функция возвращает queryset, используемой родительским классом ListView
+        """
+        return self.model.objects.all()
+
+    def get_context_data(self, **kwargs):
+        """
+        Переопределение встроенной функция получения информации из базы данных,
+        передаваемой шаблону для формирования главной старицы.
+        В словарь context добавляются значения заголовка и списка категорий для формирования меню.
+        """
+
+        context = super().get_context_data(**kwargs)
+
+        context['title'] = 'Главная'
+        context['categories'] = CategoryPost.objects.all()
+        return context
+
+
+class VideoDetail(DetailView):
+    """
+    Класс контроллера обрабоки запросов на просмотр индивидуальной статьи.
+    Класс наследуется от встроенного класса DetailView
+    Задается связанная модель - Post
+    """
+
+    model = Video
+
+    def get_context_data(self, **kwargs):
+        """
+        В словарь контекста data добавляется заголовок страницы, коментарии, количество коментариев
+        """
+
+        context = super(VideoDetail, self).get_context_data(**kwargs)
+        context["title"] = "Статья"
+        return context
+
+    def get_object(self, queryset=None):
+        """
+        Функция возвращает объект со статьей и базы данных, найденный по полю slug
+        """
+
+        return get_object_or_404(Video, pk=self.kwargs.get('pk'))
+
+
+class SecretZone(View):
+    title = 'вход в закрытый раздел'
+    template_name = 'mainapp/bufferzone.html'
+    content = {
+        "title": title,
+        'categories': CategoryPost.objects.all(),
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.content)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST['password'] == "Revers":
+            template_name = 'mainapp/bufferzone.html'
+            title = 'Закрытый раздел'
+            content = {
+                "title": title,
+                "text": 1,
+                'categories': CategoryPost.objects.all(),
+            }
+            return render(request, template_name, content)
+
+        else:
+            return render(request, self.template_name, self.content)
+
+
 def source_page(request):
     source_page = request.META["HTTP_REFERER"]
     return re.search('.*/(.*)/', source_page).group(1)
@@ -416,6 +568,10 @@ def likes(request, pk, type_likes):
     if not created:
         Like.objects.filter(
             **{field_id: pk}, author_user_id_id=author.pk).delete()
+        if request.is_ajax():
+            return JsonResponse({'like_change': -1})
+    if request.is_ajax():
+        return JsonResponse({'like_change': 1})
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
