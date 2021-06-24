@@ -1,7 +1,12 @@
+{% load i18n %}
 {% autoescape off %}
 
-Здравствуйте, {{ comment.user_id.username }}!
-На ваш коменатрий "{{ comment.text}}" пришел ответ...
-Вы можете его посмотреть на странице со статьей
-Ссылка на вашу статью : http://{{ domain }}/post/{{comment.post_id.slug}}/
+{% blocktranslate  trimmed %}
+
+Hello {{ comment.user_id.username }}!
+Your comment "{{ comment.text}}" was answered...
+You can review the answer here: http://{{ domain }}/post/{{comment.post_id.slug}}/
+
+{% endblocktranslate %}
+
 {% endautoescape %}

@@ -11,7 +11,7 @@
         <header>
             <div class="title">
                 <h2><a href="{% url 'main:post' article.slug %}">{{article.title}}</a></h2>
-                <p><a href="{% url 'main:category' slug=article.category_id.slug %}">{% trans "Раздел" %}: {{ article.category_id.name }}</a></p>
+                <p><a href="{% url 'main:category' slug=article.category_id.slug %}">{% trans "Category" %}: {{ article.category_id.name }}</a></p>
             </div>
             <div class="meta">
                 <time class="published" datetime="2015-11-01">{{article.date_create}}</time>
@@ -30,7 +30,7 @@
         </div>
         <footer>
             <ul class="actions">
-                <li><a href="{% url 'main:post' article.slug %}" class="button large">{% trans "Продолжить чтение" %}</a></li>
+                <li><a href="{% url 'main:post' article.slug %}" class="button large">{% trans "Continue reading" %}</a></li>
             </ul>
             <ul class="stats">
                 <li><a href="{% url 'main:category' slug=article.category_id.slug %}">{{ article.category_id.name }}</a></li>
@@ -51,11 +51,11 @@
 
     <ul class="actions pagination">
         {% if page_obj.has_previous %}
-        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Предыдущая страница" %}</a></li>
+        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Previous page" %}</a></li>
         {% endif %}
-        <li><p class="button large">{% trans "Cтраница" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p></li>
+        <li><p class="button large">{% trans "Page" %} {{ page_obj.number }} {% trans "out of" %} {{ paginator.num_pages }}</p></li>
         {% if page_obj.has_next %}
-        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Следующая страница" %}</a></li>
+        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Next page" %}</a></li>
         {% endif %}
     </ul>
     {% endif %}
@@ -107,7 +107,7 @@
                         <h3><a href="{% url 'main:post' article.slug %}">{{article.title}}</a></h3>
                         <time class="published" datetime="2015-10-20">{{article.date_create}}</time>
                     </header>
-                    <a href="{% url 'main:post' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="Нет картинки" {% endif %} alt="" /></a>
+                    <a href="{% url 'main:post' article.slug %}" class="image"><img {% if article.title_photo %}src="{{ article.title_photo.url }}" title="{{ article.title_photo }}" {% else %}src="https://vkstik.ru/wp-content/uploads/reklamko.png" title="{% trans 'No image' %}" {% endif %} alt="" /></a>
                 </article>
             </li>
             {% endfor %}

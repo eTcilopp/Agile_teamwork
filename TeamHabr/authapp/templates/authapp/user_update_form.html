@@ -1,10 +1,11 @@
 {% extends 'mainapp_base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
     <article class="post">
-        <h2>Редактирование данных пользователя</h2>
+        <h2>{% translate 'User details page' %}</h2>
         <form method=post enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
@@ -13,9 +14,9 @@
                 <div class="{% if field.label == 'О себе' %}col-12{% else %}col-6{% endif %} col-12-xsmall"><p>{{field.label}}{{field}}</p></div>
             {% endfor %}
                 </div>
-            <button type="submit"  value="сохранить"  name="save-article"> Сохранить </button>
+            <button type="submit"  value="сохранить"  name="save-article">{% translate 'Save' %}</button>
         </form>
-        <h6><a href="{% url 'authapp:password_change' %}">Сменить пароль</a></h6>
+        <h6><a href="{% url 'authapp:password_change' %}">{% translate 'Change password' %}</a></h6>
     </article>
 
 {% endblock %}
