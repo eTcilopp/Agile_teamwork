@@ -18,11 +18,11 @@
         <form action="" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <label for="id_password">Пароль</label>
-                <input type="password" name="password" id="id_password" placeholder="{% trans 'Пароль' %}" />
+                <label for="id_password">{% trans 'Password' %}</label>
+                <input type="password" name="password" id="id_password" placeholder="{% trans 'Password' %}" />
             </div>
 
-            <input class="form-control" type="submit" style="margin-top: 7%" value="{% trans 'войти' %}">
+            <input class="form-control" type="submit" style="margin-top: 7%" value="{% trans 'Sign in' %}">
         </form>
         {% endif %}
         </article>

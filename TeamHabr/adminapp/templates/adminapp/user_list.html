@@ -3,35 +3,53 @@
 {% load i18n %}
 {% block content %}
 {% load auth_extras %}
-<div id="main">
-    <article class="post">
-        <div class="row">
+<div id = "main" >
+   <article class = "post">
+       <div class = "row">
 
             {% include 'adminapp/inc_admin_menu.html' %}
 
-
         </div>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr class="text-center">
-                    <th>Группа</th>
-                    <th>Блокирован</th>
-                    <th>Username</th>
-                    <th>Имя/Фамилия</th>
-                    <th>Email</th>
-                    <th>Last Logged</th>
+        <table class = "table" >
+           <thead class = "thead-dark" >
+               <tr class = "text-center" >
+                    <th> {% trans 'Group' %}</th>
+                    <th> {% trans 'Blocked' %}</th>
+                    <th> {% trans 'Username' %}</th>
+                    <th> {% trans 'First/Last name' %}</th>
+                    <th> {% trans 'Email' %}</th>
+                    <th> {% trans 'Last logon date' %}</th>
                 </tr>
-            </thead>
+           </thead>
             <tbody>
                 {% for object in object_list %}
-                <tr class="text-center" {% if object.status_block == True %}style="opacity: 0.5" {% endif %}>
-                    <td>{% if object.is_superuser %}Админ всея Хабра{% elif object|has_group:"Moder" %}Модератор <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="20px" height="15px">{% else %}Юзверь{% endif %}
-                        {% if user.is_superuser %}{% if object.is_superuser %}{% elif object|has_group:"Moder" %}<a class="text-info" href="{% url 'admin:delete_moder' object.pk %}">Разжаловать</a>{% else %}<a class="text-info" href="{% url 'admin:create_moder' object.pk %}">Назначить модером</a>{% endif %}{% endif %}
+                <tr class = "text-center" {% if object.status_block == True %} style="opacity: 0.5" {% endif %}>
+                    <td>
+                        {% if object.is_superuser %}
+                            {% trans 'SuperAdmin' %}
+                        {% elif object|has_group:"Moder" %}
+                            {% trans 'Moderator' %}
+                            <img src="https://radojuva.com/wp-content/uploads/2019/10/moderator-2.jpg" alt="" width="20px" height="15px">
+                        {% else %}
+                            {% trans 'User' %}
+                        {% endif %}
+                        {% if user.is_superuser %}
+<!--                            { % if object.is_superuser % }-->
+                            {% if object|has_group:"Moder" %}
+                                <a class="text-info" href="{% url 'admin:delete_moder' object.pk %}">
+                                    {% trans 'Downgrade status' %}
+                                </a>
+                            {% else %}
+                                <a class="text-info" href="{% url 'admin:create_moder' object.pk %}">
+                                    {% trans 'Promote to Moderator' %}
+                                </a>
+                            {% endif %}
+                        {% endif %}
 
                     </td>
 
                     <td>
-                        {{ object.status_block }}
+                      {{object.status_block}}
                         {% if object.status_block == True %}
                         <br>
                         {{object.status_update}}
@@ -39,39 +57,37 @@
                     </td>
 
                     <td>
-                        <h4>{{ object.username }}</h4>
+                        <h4> {{ object.username }} </h4>
 
                     </td>
 
                     <td>
-                        {{ object.name }} /
-                        {{ object.surname }}
+                      {{object.name}} /
+                       {{object.surname}}
                     </td>
                     <td>
-                        {{ object.email }}
+                      {{object.email}}
                     </td>
                     <td>
-                        {{ object.last_login }}
+                      {{object.last_login}}
                     </td>
                 </tr>
                 {% endfor %}
 
-
-
             </tbody>
         </table>
-    </article>
+   </article>
     {% if is_paginated %}
 
-    <ul class="actions pagination">
+    <ul class = "actions pagination">
         {% if page_obj.has_previous %}
-        <li><a href="?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Предыдущая страница" %}</a></li>
+        <li> <a href = "?page={{ page_obj.previous_page_number }}&{{ request.GET }}" class="button large previous">{% trans "Previous page" %}</a></li>
         {% endif %}
         <li>
-            <p class="button large">{% trans "Cтраница" %} {{ page_obj.number }} {% trans "из" %} {{ paginator.num_pages }}</p>
+            <p class = "button large" > {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ paginator.num_pages }}</p>
         </li>
         {% if page_obj.has_next %}
-        <li><a href="?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Следующая страница" %}</a></li>
+        <li> <a href = "?page={{ page_obj.next_page_number }}&{{ request.GET }}" class="button large next">{% trans "Next page" %}</a></li>
         {% endif %}
     </ul>
     {% endif %}

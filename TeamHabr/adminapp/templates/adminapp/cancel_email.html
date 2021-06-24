@@ -1,12 +1,23 @@
 {% autoescape off %}
 
-Здравствуйте, {{ post.user_id.username }}!
-Вашу статью "{{ post.title }}" отклонил модератор {{ moder }},
-по причине
-{% for i in post.get_reason %}
-{{ i.text }}
+{% blocktranslate with username=post.user_id.username post_title=post.title moderator=moder trimmed %}
 
+Hello {{ username }}!
+Your post "{{ post_title }}" have been declined by moderator with nickname {{ moderator }},
+for the following reason:
+
+{% endblocktranslate %}
+
+{% for i in post.get_reason %}
+    {{ i.text }}
 {% endfor %}
-Вы можете исправить свои ошибки и отправить на рассмотрению Вашу статью повторно
-Ссылка на вашу статью : http://{{ domain }}/post/{{post.slug}}/
+
+{% blocktranslate with slug=post.slug trimmed %}
+
+We recommend you to make necessary corrections and re-submit the post for review.
+Here's the link to your post: http://{{ domain }}/post/{{post.slug}}/
+
+{% endblocktranslate %}
+
+
 {% endautoescape %}

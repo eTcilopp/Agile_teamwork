@@ -1,4 +1,6 @@
 {% extends 'mainapp_base.html' %}
+{% load i18n %}
+
 
 {% block content %}
 
@@ -37,7 +39,7 @@
 </style>
 <div class="over"></div>
 <div class="notfound">
-    <h1>404</h1><br>Вы забрели не туда<br>
-    <a href="/"> Вернитесь на сайт..</a>
+    <h1>404</h1><br>{% trans 'This is not te page you were looking for...' %}<br>
+    <a href="/">{% trans 'Please return to the site...' %}</a>
 </div>
 {% endblock %}
