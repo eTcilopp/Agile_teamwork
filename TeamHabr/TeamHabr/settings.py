@@ -196,7 +196,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'teamhabr@gmail.com'
-EMAIL_HOST_PASSWORD = '*.6fm^"GhqxW\_P('
+# EMAIL_HOST_PASSWORD = '*.6fm^"GhqxW\_P('
+EMAIL_HOST_PASSWORD = 'kkwhdxpasqzvkkle'
+
+# App base password kkwhdxpasqzvkkle
+
 # EMAIL_HOST = 'smtp.mail.ru'
 # EMAIL_HOST_PASSWORD = '*V5ErSQ<e?uRE#Z3'
 # EMAIL_HOST_USER = 'teamhabr@mail.ru'
